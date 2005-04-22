@@ -41,8 +41,8 @@
 #include "playarea.h"
 #include "square.h"
 
-MainWindow::MainWindow(QWidget *parent, const char *name, WFlags f /* =  Qt::WStyle_NoBorder */)
-  : QMainWindow(parent, name, f)
+MainWindow::MainWindow(QWidget *parent, const char *name)
+  : QMainWindow(parent, name)
 {
   // Screws up on fluxbox??
   // statusBar()->setSizeGripEnabled(false);
@@ -62,9 +62,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::about()
 {
-  QString v = "<center><h2>StroQ</h2>" +  VERSION + "<p>Luc Vo Van</p></center>";
-  QMessageBox::about(this, tr("About"),
-		     tr(v));
+  QString v = "<center><h2>StroQ</h2>" +
+				VERSION + "<p>Luc Vo Van</p></center>";
+  QMessageBox::about(this, tr("About"), tr(v));
 }
 
 
@@ -77,7 +77,8 @@ void MainWindow::aboutQt()
 void MainWindow::selectPuzzle()
 {
   QMessageBox::information(this, tr("Start puzzle"),
-						   tr("TODO: Puzzle selection window"), QMessageBox::Ok);
+						   tr("TODO: Puzzle selection window"),
+						   QMessageBox::Ok);
 }
 
 
@@ -97,6 +98,13 @@ void MainWindow::toggleEditMode()
 void MainWindow::copyPuzzleCode()
 {
 	QClipboard *cb = QApplication::clipboard();
+
+	if(cb->supportsSelection())
+	{
+		// In X11, copy to the middle mouse button clipboard as well
+		cb->setText(m_sCurrentCode, QClipboard::Selection);
+	}
+	
 	cb->setText(m_sCurrentCode, QClipboard::Clipboard);
 }
 
@@ -113,6 +121,7 @@ void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 	setCaption(caption);
 	
 	// Changes the window's size
+	sizeHint.setHeight(sizeHint.height() + menuBar()->height());
 	resize(sizeHint);
 	setFixedSize(sizeHint);
 }
@@ -138,7 +147,8 @@ void MainWindow::enterPuzzleCode()
 
 void MainWindow::downloadPuzzleOfTheDay()
 {
-  QMessageBox::information(this, tr("Enter puzzle code"), tr("TODO: Download the day's puzzle"),
+  QMessageBox::information(this, tr("Enter puzzle code"),
+			 tr("TODO: Download the day's puzzle"),
   			 QMessageBox::Ok);
 }
 

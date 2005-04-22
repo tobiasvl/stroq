@@ -44,7 +44,7 @@ class MainWindow : public QMainWindow
   /**
    * Creates the main window, with no border
    */
-  MainWindow(QWidget *parent = 0, const char *name = 0, WFlags f = Qt::WStyle_NoBorder);
+  MainWindow(QWidget *parent = 0, const char *name = 0);
   ~MainWindow();
 
  protected:
