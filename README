@@ -1,0 +1,117 @@
+------------------------------------------------------------------------------
+                    StroQ - A Polarium/Chokkan Hitofude Clone
+                              (C) 2005, Luc Vo Van
+------------------------------------------------------------------------------
+
+April 19th 2005: version 0.2
+
+StroQ is an addictive puzzle game where you have to flip white and black tiles
+in order to form horizontal lines of the same color in a single stroke of your
+mouse. StroQ runs under Windows, Linux/*BSD and Mac OSX.
+
+
+1. Introduction
+3. Installing/Building
+2. Playing StroQ
+4. Internet Connectivity
+5. Thanks and Credits
+6. License
+
+1. Introduction
+     StroQ is a clone of the puzzle game Polarium/Chokkan Hitofude which was
+     originally available on the Nintendo DS, and played with a pen. If you
+     have already played these games, StroQ currently implements only their
+     "puzzle" mode.
+
+2. Playing StroQ
+     The goal of the game is simple, draw a continuous line, the stroke, from
+     one square on the puzzle to another. When you run the puzzle (press F5)
+     white and black squares along this line will flip over (white becoming
+     black, and black becoming white).
+     
+     All uniform horizontal lines (all white, or all black) will then
+     disappear. The puzzle is solved when all white and black squares have
+     disappeared.
+     
+     You can draw the stroke by:
+       - Left-clicking on a square with and holding it while moving the cursor
+       - Left-clicking on squares successively, the stroke will be extended
+         with each valid left-click
+       - Use the arrows on your keyboard to move the end of the stroke,
+         provided you have already placed the first end of the stroke on a
+         square by left-clicking
+     
+     You can erase the current stroke by:
+       - Resetting the puzzle (F4)
+       - Right clicking anywhere on puzzle
+
+3. Installing/Building
+     The Qt 3.3.x libraries are required in order to run stroke. Building the
+     game from source code requires the Qt development package (dev) as well
+     as GCC (other C++ compilers haven't been tested with StroQ).
+
+     To install from a binary package, just extract the archive which will
+     create a StroQ/ directory, and run the StroQ executable within.
+     
+     Building from source:
+      Unix/MacOSX
+       Extract the source package, which will create a StroQ/ directory, and
+       run:
+       
+         qmake -project             // Creates a Makefile for your platform
+         qmake
+         make                       // Starts building the game
+         ./StroQ                    // Launches the game
+     
+      Windows
+       Not tested yet.
+       
+4. Internet Connectivity
+     StroQ has very limited internet support. It can connect to the StroQ
+     website and download what is called the "Puzzle of the Day". As you have
+     probably guessed, this puzzle is updated everyday to keep players
+     entertained.
+     
+     Internet support in StroQ does not current work with proxies, but will
+     in the near future. Sorry about that.
+       
+5. Thanks and Credits
+     I would like to thank everyone from #tukif for their trollesque support
+     as well as my colleagues for making me realize that playing small games
+     can definitely be fun. Thanks to Trolltech for making Qt freely available
+     to free software developments; your toolkit turned C++ into something
+     usable, even by the likes of me :)
+     
+     I would like not to thank Blizzard for their MMORPG has taken away many
+     hours of coding away from StroQ, and sleeping in general. I'm just a
+     willing victim :)
+
+     I develop this software in my spare time and any feedback, even a simple
+     "Hello I play StroQ once in a while" is always greatly appreciated. This
+     is also my first project written in C++ so please be indulgent, and don't
+     hesitate to submit suggestions and/or patches.
+     
+     If you like this game, consider buying the Nintendo DS game Polarium
+     (titled 'Chokkan Hitofude' in Japan) from which StroQ was more than
+     largely inspired.
+
+6. License
+     StroQ is free software; you can redistribute it and/or modify it
+     under the terms of the GNU General Public License as published by the
+     Free Software Foundation; either version 2, or (at your option) any
+     later version.
+
+     StroQ is distributed in the hope that it will be useful, but
+     WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+     General Public License for more details.
+
+     You should have received a copy of the GNU General Public License
+     along with StroQ; see the file COPYING.  If not, write to
+     the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+     Boston, MA 02111-1307, USA.
+
+     Polarium, Nintendo DS, Chokkan Hitofude are registered trademarks
+     of Nintendo and/or MITCHELL.
+     Chokkan Hitofude, (C) 2004-2005  Nintendo/MITCHELL.
+     Polarium, (C)2004-2005  Nintendo/MITCHELL.
