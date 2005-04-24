@@ -53,10 +53,7 @@ PlayArea::PlayArea(QCanvas *c, QWidget* parent,  const char* name, WFlags f)
 	// The background image
 	if(!m_qpmBackground)
 	{
-		QImage tmpImage;
-		m_qpmBackground = new QPixmap;
-		tmpImage.load("images/background.png");
-		m_qpmBackground->convertFromImage(tmpImage, OrderedAlphaDither);
+		m_qpmBackground = new QPixmap("images/background.png");
 		canvas()->setBackgroundPixmap(*m_qpmBackground);
 		canvas()->update();
 	}
