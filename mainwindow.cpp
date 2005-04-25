@@ -37,6 +37,7 @@
 #include <qclipboard.h>
 
 #include "stroqconst.h"
+#include "selectpuzzledialog.h"
 #include "mainwindow.h"
 #include "playarea.h"
 #include "square.h"
@@ -76,9 +77,8 @@ void MainWindow::aboutQt()
 
 void MainWindow::selectPuzzle()
 {
-  QMessageBox::information(this, tr("Start puzzle"),
-						   tr("TODO: Puzzle selection window"),
-						   QMessageBox::Ok);
+  SelectPuzzleDialog *spd = new SelectPuzzleDialog(this);
+  spd->show();
 }
 
 
@@ -122,8 +122,8 @@ void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 	
 	// Changes the window's size
 	sizeHint.setHeight(sizeHint.height() + menuBar()->height());
-	resize(sizeHint);
-	setFixedSize(sizeHint);
+	//resize(sizeHint);
+	//setFixedSize(sizeHint);
 }
 
 
