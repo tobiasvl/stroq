@@ -17,50 +17,27 @@
  Boston, MA 02111-1307, USA.
 
  Class          :   SelectPuzzleDialog
- Author         :   Luc Vo Van
+ Author         :   Ahmed Aït Mouss
  Original Date  :   22.05.2005
  Description    :   The puzzle selection dialog
 */
+
 #ifndef SELECTPUZZLEDIALOG_H
 #define SELECTPUZZLEDIALOG_H
 
-#include <qvariant.h>
-#include <qdialog.h>
+#include "selectpuzzledialogbase.h"
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QPushButton;
-class QSplitter;
-class QListBox;
-class QListBoxItem;
 class QCanvasView;
 class QLabel;
 
-class SelectPuzzleDialog : public QDialog
+class SelectPuzzleDialog : public SelectPuzzleDialogBase
 {
-    Q_OBJECT
-
 public:
-    SelectPuzzleDialog( QWidget* parent = 0, const char* name = 0, bool modal = TRUE, WFlags fl = 0 );
-    ~SelectPuzzleDialog();
+    SelectPuzzleDialog(QWidget *parent = 0, const char *name = 0,
+                   bool modal = true, WFlags fl = 0);
 
-    QPushButton* m_pbCancel;
-    QPushButton* m_pbOK;
-    QSplitter* m_sTopSplitter;
-    QListBox* m_lbPuzzleList;
-    QCanvasView* m_cvPuzzlePreview;
-    QLabel* m_tlPuzzleDescription;
-
-protected:
-    QHBoxLayout* m_lBottomLayout;
-    QSpacerItem* m_isSpacer;
-    QVBoxLayout* m_lPreviewLayout;
-
-protected slots:
-    virtual void languageChange();
-
+    QCanvasView *puzzlePreviewCanvasView;
+    QLabel *descriptionLabel;
 };
 
 #endif // SELECTPUZZLEDIALOG_H
