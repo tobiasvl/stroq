@@ -77,8 +77,11 @@ void MainWindow::aboutQt()
 
 void MainWindow::selectPuzzle()
 {
-  SelectPuzzleDialog *spd = new SelectPuzzleDialog(this);
-  spd->show();
+	SelectPuzzleDialog *spd = new SelectPuzzleDialog(this);
+	if(spd->exec() == QDialog::Accepted)
+	{
+		playArea->loadPuzzle(new Puzzle(spd->getPuzzleCode()));
+	}
 }
 
 
@@ -86,6 +89,7 @@ void MainWindow::toggleEditMode()
 {
 	playArea->toggleEditMode();
 	newEditPuzzleAct->setEnabled(playArea->getEditMode());
+	invertPuzzleAct->setEnabled(playArea->getEditMode());
 	copyPuzzleCodeAct->setEnabled(playArea->getEditMode());
 	
 	if(playArea->getEditMode())
@@ -122,8 +126,6 @@ void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 	
 	// Changes the window's size
 	sizeHint.setHeight(sizeHint.height() + menuBar()->height());
-	//resize(sizeHint);
-	//setFixedSize(sizeHint);
 }
 
 
@@ -136,11 +138,6 @@ void MainWindow::enterPuzzleCode()
 	if ( ok && !code.isEmpty() )
 	{
 		playArea->loadPuzzle(new Puzzle(code));
-	}
-	else
-	{
-		QMessageBox::information(this, tr("Code"),
-					 tr("You cancelled"), QMessageBox::Ok);    
 	}
 }
 
@@ -201,7 +198,12 @@ void MainWindow::createActions()
   newEditPuzzleAct->setStatusTip(tr("Edit a new puzzle"));
   connect(newEditPuzzleAct, SIGNAL(activated()),
 		  playArea, SLOT(editModeSetDimensions()));
-  
+
+  invertPuzzleAct = new QAction("Invert", 0, this);
+  invertPuzzleAct->setStatusTip(tr("Invert the puzzle"));
+  connect(invertPuzzleAct, SIGNAL(activated()),
+		  playArea, SLOT(invertPuzzle()));
+		    
   copyPuzzleCodeAct = new QAction("Copy puzzle code", CTRL + Key_C, this);
   copyPuzzleCodeAct->setStatusTip(tr("Copy puzzle code to clipboard"));
   connect(copyPuzzleCodeAct, SIGNAL(activated()),
@@ -236,9 +238,11 @@ void MainWindow::createMenus()
   editMenu = new QPopupMenu(this);   
   editPuzzleAct->addTo(editMenu);
   newEditPuzzleAct->addTo(editMenu);
+  invertPuzzleAct->addTo(editMenu);
   copyPuzzleCodeAct->addTo(editMenu);
   
   newEditPuzzleAct->setEnabled(false);
+  invertPuzzleAct->setEnabled(false);
   copyPuzzleCodeAct->setEnabled(false);
   
   menuBar()->insertItem(tr("&Puzzle"), puzzleMenu); // 0
@@ -265,30 +269,6 @@ void MainWindow::createGameArea()
 
 void MainWindow::loadFirstPuzzle()
 {
-	/*
-	Puzzle* puzzle = new Puzzle(4, 4, QPoint(0, 0), QPoint(0, 0));
-	puzzle->setSquare(new Square(QPoint(1, 1), Square::Black));
-	puzzle->setSquare(new Square(QPoint(2, 1), Square::White));
-	puzzle->setSquare(new Square(QPoint(3, 1), Square::Black));
-	puzzle->setSquare(new Square(QPoint(4, 1), Square::White));
-	
-	puzzle->setSquare(new Square(QPoint(1, 2), Square::Black));
-	puzzle->setSquare(new Square(QPoint(2, 2), Square::White));
-	puzzle->setSquare(new Square(QPoint(3, 2), Square::Black));
-	puzzle->setSquare(new Square(QPoint(4, 2), Square::White));
-	
-	puzzle->setSquare(new Square(QPoint(1, 3), Square::Black));
-	puzzle->setSquare(new Square(QPoint(2, 3), Square::White));
-	puzzle->setSquare(new Square(QPoint(3, 3), Square::Black));
-	puzzle->setSquare(new Square(QPoint(4, 3), Square::White));
-	
-	puzzle->setSquare(new Square(QPoint(1, 4), Square::Black));
-	puzzle->setSquare(new Square(QPoint(2, 4), Square::White));
-	puzzle->setSquare(new Square(QPoint(3, 4), Square::Black));
-	puzzle->setSquare(new Square(QPoint(4, 4), Square::White));
-	
-	playArea->loadPuzzle(puzzle); 
-	*/
 	playArea->loadPuzzle(new Puzzle("AOEAAAFFFF"));
 	playArea->show();
 }

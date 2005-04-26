@@ -20,3 +20,7 @@ Just for the h*ll of it:
  19/04/2005 - Make the game easily themable
  19/04/2005 - Make a tutorial video (French/English)
  19/04/2005 - Make StroK, a KDE port of StroQ
+
+When Qt4 is released:
+ 26/04/2005 - Make a Windows release
+ 26/04/2005 - Embed images in the binary with Qt resources

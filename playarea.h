@@ -82,6 +82,9 @@ public slots:
    * validating action from the player. Once the stroke is
    * toggled, the game ends (and win or loss is determined)
    * This is also called 'running' the Puzzle
+   *
+   * If the puzzle was solved, store in the settings
+   * that it was successful
    */
   void toggleStroke();
   
@@ -96,6 +99,11 @@ public slots:
    * the input is valid.
    */
   void editModeSetDimensions(); // Enters the dimensions for a new puzzle
+  
+  /**
+   * Inverts the whole play puzzle (white to black, black to white)
+   */
+  void invertPuzzle();
 
 private:
   /**
@@ -146,7 +154,7 @@ private:
    * Clears the current stroke
    */
   void clearStroke();
-  
+    
   /**
    * DEBUG: Prints out the stroke to standard output
    */

@@ -135,6 +135,7 @@ class MainWindow : public QMainWindow
   // Edit menu
   QPopupMenu *editMenu;
   QAction *newEditPuzzleAct;
+  QAction *invertPuzzleAct;
   QAction *copyPuzzleCodeAct;
   
   // Game area

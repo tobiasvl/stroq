@@ -32,6 +32,8 @@
 #include <qpoint.h>
 #include <qimage.h>
 #include <qpixmap.h>
+#include <qsettings.h>
+#include <qfile.h>
 #include <vector>
 
 #include "playarea.h"
@@ -397,13 +399,21 @@ void PlayArea::toggleStroke()
 	canvas()->update();
 	
 	if(win)
+	{
 		QMessageBox::information(this, tr("Congratulations"),
-								 tr("You solved this puzzle!"),
-								 QMessageBox::Ok);
+					 tr("You solved this puzzle!"),
+					 QMessageBox::Ok);
+		
+		// Store the success in the settings
+		QSettings settings;
+		settings.setPath("thelemmings.net", "StroQ");
+		QString settingkey = "/puzzles/" + m_ppOriginalPuzzle->getCode();
+		settings.writeEntry(settingkey, true);
+	}
 	else
 		QMessageBox::information(this, tr("Sorry"),
-								 tr("The run was unsuccessful, reset it to try again!"),
-								 QMessageBox::Ok);
+					 tr("The run was unsuccessful, reset it to try again!"),
+					 QMessageBox::Ok);
 	canvas()->update();
 }
 
@@ -587,6 +597,10 @@ void PlayArea::toggleEditMode()
 	resetGrid();
 }
 
+void PlayArea::invertPuzzle()
+{
+	m_ppPlayPuzzle->invert();
+}
 
 void PlayArea::editModeSetDimensions()
 {

@@ -39,7 +39,28 @@ Description    :   A Puzzle contains dimensions, Squares, hint positions
 
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
-
+/*
+ * The code format is as follows:
+ *
+ * 1) The first 6 bits are reserved for the bitwidth, which is how many bits
+ *    are needed to represent the largest of the two coordinates
+ *    ie: max(row,column)
+ * 2) The next bitwidth bits are the number of columns (width) of the puzzle
+ * 3) The next bitwidth bits are the number of height (height) of the puzzle
+ * 4) The next 2*bitwidth bits are the row and height of the start of a solution
+ *    to the puzzle (hint 1)
+ * 5) The next 2*bitwidth bits are the row and height of the end of a solution
+ *    to the puzzle (hint 2). This is of course the end of the solution hinted
+ *    in the previous step
+ * 6) The next width*height bits are the content of the puzzle, 1 for black squares
+ *    0 for whites
+ * 7) The remaining bits are ignored as the puzzle code is right padded with 0s
+ *    until it is a factor of 8.
+ *
+ * In brief:
+ *  [bitwidth][width*][height*][row sol1*][col sol1*][row sol2*][col sol2*][content]
+ *  parameters noted with a * use 'bitwidth' bits.
+ */
 Puzzle::Puzzle(QString code)
 {
 	QString ucode = code.upper();
@@ -49,12 +70,11 @@ Puzzle::Puzzle(QString code)
 		getBin(bincode, ucode[i].unicode()-65, 4);
 	
 	unsigned int bitwidth = evalBin(bincode.left(6));
-	// printf("bitwidth: %d\n", bitwidth);
 	offset += 6;
 	
-	m_iWidth  = evalBin(bincode.mid(6, bitwidth));
+	m_iWidth  = evalBin(bincode.mid(offset, bitwidth));
 	offset += bitwidth;
-	m_iHeight = evalBin(bincode.mid(6, bitwidth));
+	m_iHeight = evalBin(bincode.mid(offset, bitwidth));
 	offset += bitwidth;
 	allocate();
 	
@@ -67,7 +87,11 @@ Puzzle::Puzzle(QString code)
 					evalBin(bincode.mid(offset + bitwidth, bitwidth)));
 	offset += 2* bitwidth;
 
-	// printSpec();
+	/*
+	printf("puzzlecode: %s bincode: %s  bitwidth: %d\n",
+		code.latin1(), bincode.latin1(), bitwidth);
+	printSpec();
+	*/
 	
 	// Copies the squares or playsquares, depending
 	for(int row = 1; row < getHeight() + 1; row++)
@@ -229,6 +253,18 @@ QPoint Puzzle::getSolutionEnd()
 	return m_qpSolutionEnd;
 }
 
+void Puzzle::invert()
+{
+	// Copies the squares or playsquares, depending
+	for(int row = 1; row < getHeight() + 1; row++)
+	{
+		for(int column = 1; column < getWidth() + 1; column++)
+		{
+			getSquareAt(row, column)->toggle();
+		}
+	}
+}
+
 
 QString Puzzle::getCode()
 {
@@ -273,7 +309,7 @@ QString Puzzle::getCode()
 	
 	for(y = 1; y<=getHeight() ; y++)
 	{
-		for(x = getWidth(); x>=1 ; x--)
+		for(x = 1; x < getWidth() + 1; x++)
 		{
 			if(getSquareAt(x, y)->getState() == Square::Black)
 				code = code + "1";

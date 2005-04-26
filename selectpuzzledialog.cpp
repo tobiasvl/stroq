@@ -25,16 +25,103 @@
 #include <qcanvas.h>
 #include <qlayout.h>
 #include <qlabel.h>
+#include <qpushbutton.h>
+#include <qlistbox.h>
+#include <qpixmap.h>
+#include <qsettings.h>
+#define PUZZLECOUNT 10
 
 #include "selectpuzzledialog.h"
+
+QString SelectPuzzleDialog::m_qsPuzzles[] = {
+	"AONAAAKNGLFKI", "AOPAAANOPHLINGC",
+	"AOPAAANOPHLINGK", "BBGAAAACDFKNGDHJMM",
+	"APNAAAIPAGCMBIO", "AOEAAADDMM",
+	"APGAAADAOCIIGBI", "APNAAAMDLHGMJJC",
+	"APLAAABAHBPA", "APEAAAIGBEJO",
+	"", "",
+	"", "",
+	"", "",
+	"", "",
+	"", "",
+	"", "",
+	"", "",
+	"", "",
+	"", "",
+	"", "",
+	"", "",
+	"", "",
+	"", "",
+	"", "",
+	"", "",
+	};
+
+QPixmap* SelectPuzzleDialog::m_qpmCheckmark = NULL;
+
+QPixmap* SelectPuzzleDialog::m_qpmNoCheckmark = NULL;
 
 SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
                                        bool modal, WFlags fl)
     : SelectPuzzleDialogBase(parent, name, modal, fl)
 {
-    QBoxLayout *vl = new QVBoxLayout(previewFrame);
-    puzzlePreviewCanvasView = new QCanvasView(previewFrame);
-    descriptionLabel = new QLabel("Blabla", previewFrame);
-    vl->addWidget(puzzlePreviewCanvasView);
-    vl->addWidget(descriptionLabel);
+		
+	if(!m_qpmCheckmark)
+		m_qpmCheckmark = new QPixmap("images/checkmark.png");
+	if(!m_qpmNoCheckmark)
+		m_qpmNoCheckmark = new QPixmap("images/nocheckmark.png");
+		
+	QBoxLayout *vl = new QVBoxLayout(previewFrame);
+	puzzlePreviewCanvasView = new QCanvasView(previewFrame);
+	puzzlePreviewCanvas = new QCanvas(puzzlePreviewCanvasView->width(),
+						puzzlePreviewCanvasView->height());
+	descriptionLabel = new QLabel("descriptionLabel", previewFrame);
+	vl->addWidget(puzzlePreviewCanvasView);
+	vl->addWidget(descriptionLabel);
+	
+	// Loads the settings so that we can set wether or not puzzles have already
+	// been solved
+	QSettings settings;
+	settings.setPath("thelemmings.net", "StroQ");
+	
+	// Prepares the puzzle code list
+	codesListBox->clear();
+	codesListBox->setSelectionMode(QListBox::Single);
+	for(int i = 0; i<PUZZLECOUNT; i++)
+	{
+		if(settings.readBoolEntry(m_qsPuzzles[i]))
+			codesListBox->insertItem(*m_qpmCheckmark, m_qsPuzzles[i]);
+		else
+			codesListBox->insertItem(m_qsPuzzles[i]);
+	}
+	codesListBox->setCurrentItem(0);
+	
+	connect(codesListBox, SIGNAL(highlighted(const QString &)),
+		this, SLOT(previewPuzzle(const QString &)));
+	
+	// Selects a puzzle when double clicking on the list
+	// or clicking OK
+	connect(codesListBox, SIGNAL(selected(const QString &)),
+		this, SLOT(selectPuzzle(const QString &)));
+	connect(okButton, SIGNAL(clicked()), this, SLOT(selectPuzzle()));
+}
+
+QString SelectPuzzleDialog::getPuzzleCode()
+{
+	return m_qsSelectedCode;
+}
+
+void SelectPuzzleDialog::previewPuzzle(const QString &puzzlecode)
+{
+	descriptionLabel->setText(puzzlecode);
+}
+
+void SelectPuzzleDialog::selectPuzzle()
+{
+	selectPuzzle(codesListBox->currentText());
+}
+
+void SelectPuzzleDialog::selectPuzzle(const QString &puzzlecode)
+{
+	m_qsSelectedCode = puzzlecode;
+	accept();
 }

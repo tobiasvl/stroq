@@ -137,7 +137,12 @@ public:
 	 *
 	 * @return the Puzzle's code
 	 */
-	QString getCode();	
+	QString getCode();
+	
+	/**
+	 * Inverts white and black squares
+	 */
+	void invert();
 	
 private:
 	/**

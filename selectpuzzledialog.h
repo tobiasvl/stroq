@@ -25,6 +25,8 @@
 #ifndef SELECTPUZZLEDIALOG_H
 #define SELECTPUZZLEDIALOG_H
 
+#include <qcanvas.h>
+
 #include "selectpuzzledialogbase.h"
 
 class QCanvasView;
@@ -32,12 +34,46 @@ class QLabel;
 
 class SelectPuzzleDialog : public SelectPuzzleDialogBase
 {
-public:
-    SelectPuzzleDialog(QWidget *parent = 0, const char *name = 0,
-                   bool modal = true, WFlags fl = 0);
+	Q_OBJECT
 
-    QCanvasView *puzzlePreviewCanvasView;
-    QLabel *descriptionLabel;
+public:
+	static QString m_qsPuzzles[];
+	SelectPuzzleDialog(QWidget *parent = 0, const char *name = 0,
+				bool modal = true, WFlags fl = 0);
+
+	QCanvas *puzzlePreviewCanvas;
+	QCanvasView *puzzlePreviewCanvasView;
+	QLabel *descriptionLabel;
+
+	QString getPuzzleCode();
+
+	
+public slots:
+	/**
+	* Previews a puzzle given a code
+	*
+	* @param puzzlecode Code of the puzzle to preview
+	*/
+	void previewPuzzle(const QString &puzzlecode);
+	
+	/**
+	* Selects a puzzle using the currently selected puzzle
+	* in the QListBox
+	*/
+	void selectPuzzle();
+
+	
+	/**
+	* Selects a puzzle given its code
+	*
+	* @param puzzlecode Code of the puzzle to select
+	*/
+	void selectPuzzle(const QString &puzzlecode);
+	
+private:
+	QString m_qsSelectedCode; /**< The code that was selected (if any) */
+	static QPixmap *m_qpmCheckmark;
+	static QPixmap *m_qpmNoCheckmark;
 };
 
-#endif // SELECTPUZZLEDIALOG_H
+#endif
