@@ -391,9 +391,7 @@ void PlayArea::resetGrid() {
 
 
 void PlayArea::toggleStroke()
-{
-	printStroke();
-	
+{	
 	// Toggles the stroke
 	for (unsigned int i = 0; i < m_vStroke.size(); i++)
 		m_vStroke[i]->toggle();
@@ -417,7 +415,7 @@ void PlayArea::toggleStroke()
 		// Row cleared, one color was absent, the other color filled the row
 		if(countwhite == 0 || countblack == 0)
 		{
-			for(column = 1; column <= m_ppOriginalPuzzle->getHeight(); column++)
+			for(column = 1; column <= m_ppOriginalPuzzle->getWidth(); column++)
 				m_ppPlayPuzzle->getSquareAt(column, row)->setState(Square::Border);
 		}
 		else
@@ -626,6 +624,7 @@ void PlayArea::toggleEditMode()
 
 void PlayArea::invertPuzzle()
 {
+	m_ppOriginalPuzzle->invert();
 	m_ppPlayPuzzle->invert();
 }
 

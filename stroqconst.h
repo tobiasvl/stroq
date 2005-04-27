@@ -27,6 +27,12 @@
 #define STROQCONST_H
   
   const QString VERSION = "0.2"; /**< StroQ's version string */
+
+  /**
+   * URL to the puzzle of the day
+   */
+  const QString POTD_URL = "http://stroq.sourceforge.net/potd";
+
   const int MAX_SIDE = 63;	 /**< Maximum size number of squares on the */
 				 /**< side of a Puzzle (max squares is */
 				 /**< pow(MAX_SIDE, 2) */

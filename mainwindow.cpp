@@ -35,6 +35,9 @@
 #include <qcanvas.h>
 #include <qapplication.h>
 #include <qclipboard.h>
+#include <qnetwork.h>
+#include <qurloperator.h>
+#include <qnetworkprotocol.h>
 
 #include "stroqconst.h"
 #include "selectpuzzledialog.h"
@@ -141,20 +144,33 @@ void MainWindow::enterPuzzleCode()
 	}
 }
 
+/* Networking code follows */
 
 void MainWindow::downloadPuzzleOfTheDay()
 {
-  QMessageBox::information(this, tr("Enter puzzle code"),
-			 tr("TODO: Download the day's puzzle"),
-  			 QMessageBox::Ok);
+	qInitNetworkProtocols();
+	QUrlOperator op(POTD_URL);
+    op.get();
+	m_baReceivedData = new QByteArray();
 }
 
+void MainWindow::downloadPuzzleOfTheDayData(const QByteArray & data,
+											QNetworkOperation * op)
+{
+}
+
+void MainWindow::downloadPuzzleOfTheDayFinished()
+{
+	// Done receiving, load the puzzle
+	
+}
 
 void MainWindow::quit()
 {
   close();
 }
 
+/* End of networking code */
 
 void MainWindow::createActions()
 {

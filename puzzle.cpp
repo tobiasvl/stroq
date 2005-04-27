@@ -256,9 +256,9 @@ QPoint Puzzle::getSolutionEnd()
 void Puzzle::invert()
 {
 	// Copies the squares or playsquares, depending
-	for(int row = 1; row < getHeight() + 1; row++)
+	for(int row = 1; row <= getHeight(); row++)
 	{
-		for(int column = 1; column < getWidth() + 1; column++)
+		for(int column = 1; column <= getWidth(); column++)
 		{
 			getSquareAt(row, column)->toggle();
 		}

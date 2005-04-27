@@ -47,6 +47,11 @@ public:
 
 	QString getPuzzleCode();
 
+signals:
+	/**
+	 * Emitted when we want to reload the puzzle list
+	 */
+	 void reloadPuzzleList();
 	
 public slots:
 	/**
@@ -70,10 +75,20 @@ public slots:
 	*/
 	void selectPuzzle(const QString &puzzlecode);
 	
+	/**
+	 * Loads the puzzle list into the dialog (with checkmarks
+	 * and all from the settings file)
+	 */
+	void loadPuzzleList();
+	
+	/**
+	 * Resets all puzzles to unsolved in the settings file 
+	 */
+	 void resetSave();
 private:
 	QString m_qsSelectedCode; /**< The code that was selected (if any) */
-	static QPixmap *m_qpmCheckmark;
-	static QPixmap *m_qpmNoCheckmark;
+	QPixmap m_qpmCheckmark;
+	QPixmap m_qpmNoCheckmark;
 };
 
 #endif

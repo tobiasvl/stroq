@@ -23,7 +23,6 @@
  
  */
 
-
 #include <qcanvas.h>
 #include <qpainter.h>
 #include <qpixmap.h>
@@ -36,6 +35,8 @@
 #include "images/whitesquare.xpm"
 #include "images/blacksquare.xpm"
 #include "images/bordersquare.xpm"
+
+#define DEFAULT_UPDATED_RECT QRect((int)x(), (int)y(), width(), height())
 
 QPixmap* PlaySquare::m_qpmSquares = NULL;
 
@@ -86,7 +87,7 @@ int PlaySquare::getStrokePosition()
 void PlaySquare::setLink(PlaySquare::Links link)
 {
 	m_lLink = link;
-	canvas()->setChanged(QRect((int)x(), (int)y(), width(), height()));
+	canvas()->setChanged(DEFAULT_UPDATED_RECT);
 	canvas()->update();
 
 }
@@ -96,7 +97,7 @@ void PlaySquare::setLink(PlaySquare::Links link, int position)
 {
 	m_lLink = link;
 	m_iStrokePosition = position;
-	canvas()->setChanged(QRect((int)x(), (int)y(), width(), height()));
+	canvas()->setChanged(DEFAULT_UPDATED_RECT);
 	canvas()->update();
 }
 
@@ -106,7 +107,7 @@ void PlaySquare::unsetLink()
 	m_lLink = PlaySquare::None;
 	m_iStrokePosition = -1;
 	unsetStrokeEnd();
-	canvas()->setChanged(QRect((int)x(), (int)y(), width(), height()));
+	canvas()->setChanged(DEFAULT_UPDATED_RECT);
 	canvas()->update();
 }
 
@@ -114,7 +115,7 @@ void PlaySquare::unsetLink()
 void PlaySquare::setStrokeEnd()
 {
 	m_bStrokeEnd = true;
-	canvas()->setChanged(QRect((int)x(), (int)y(), width(), height()));
+	canvas()->setChanged(DEFAULT_UPDATED_RECT);
 	canvas()->update();
 }
 
@@ -122,7 +123,7 @@ void PlaySquare::setStrokeEnd()
 void PlaySquare::unsetStrokeEnd()
 {
 	m_bStrokeEnd = false;
-	canvas()->setChanged(QRect((int)x(), (int)y(), width(), height()));
+	canvas()->setChanged(DEFAULT_UPDATED_RECT);
 	canvas()->update();
 }
 
@@ -136,7 +137,7 @@ void PlaySquare::setStrokePosition(int position)
 void PlaySquare::setHighlight(bool highlight)
 {
 	m_bHighlighted = highlight;
-	canvas()->setChanged(QRect((int)x(), (int)y(), width(), height()));
+	canvas()->setChanged(DEFAULT_UPDATED_RECT);
 	canvas()->update();
 }
 
@@ -144,7 +145,7 @@ void PlaySquare::setHighlight(bool highlight)
 void PlaySquare::toggle()
 {
 	Square::toggle();
-	canvas()->setChanged(QRect((int)x(), (int)y(), width(), height()));
+	canvas()->setChanged(DEFAULT_UPDATED_RECT);
 	canvas()->update();
 }
 

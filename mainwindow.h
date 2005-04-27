@@ -28,6 +28,7 @@
 
 #include <qmainwindow.h>
 #include <qcanvas.h>
+#include <qnetworkprotocol.h>
 
 #include "playarea.h"
 
@@ -103,6 +104,16 @@ class MainWindow : public QMainWindow
    */
   void aboutQt();
 
+  /**
+   * Slot called when data is received from the web server
+   */
+  void downloadPuzzleOfTheDayData(const QByteArray&, QNetworkOperation*);
+  
+  /**
+   * Slot called when the transfer from the web server is finished
+   */
+  void downloadPuzzleOfTheDayFinished();
+  
  private:
   void createActions();
   void createMenus();
@@ -141,6 +152,9 @@ class MainWindow : public QMainWindow
   // Game area
   QCanvas *mainCanvas;
   PlayArea *playArea;
+  
+  // Networking stuff
+  QByteArray *m_baReceivedData;
   
   QString m_sCurrentCode;
 
