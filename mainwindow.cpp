@@ -46,37 +46,35 @@
 #include "square.h"
 
 MainWindow::MainWindow(QWidget *parent, const char *name)
-  : QMainWindow(parent, name)
+	: QMainWindow(parent, name)
 {
-  // Screws up on fluxbox??
-  // statusBar()->setSizeGripEnabled(false);
-  m_sCurrentCode = tr("(No puzzle loaded)");
-  
-  createGameArea();
-  createActions();
-  createMenus();
-  loadFirstPuzzle();
+	// Screws up on fluxbox??
+	// statusBar()->setSizeGripEnabled(false);
+	m_sCurrentCode = tr("(No puzzle loaded)");
+
+	createGameArea();
+	createActions();
+	createMenus();
+	loadFirstPuzzle();
 }
 
 MainWindow::~MainWindow()
 {
-  delete playArea;
-  delete mainCanvas;
+	delete playArea;
+	delete mainCanvas;
 }
 
 void MainWindow::about()
 {
-  QString v = "<center><h2>StroQ</h2>" +
-				VERSION + "<p>Luc Vo Van</p></center>";
-  QMessageBox::about(this, tr("About"), tr(v));
+	QString v = "<center><h2>StroQ</h2>" +
+		    VERSION + "<p>Luc Vo Van</p></center>";
+	QMessageBox::about(this, tr("About"), tr(v));
 }
-
 
 void MainWindow::aboutQt()
 {
-  QMessageBox::aboutQt(this, tr("About Qt"));
+	QMessageBox::aboutQt(this, tr("About Qt"));
 }
-
 
 void MainWindow::selectPuzzle()
 {
@@ -86,7 +84,6 @@ void MainWindow::selectPuzzle()
 		playArea->loadPuzzle(new Puzzle(spd->getPuzzleCode()));
 	}
 }
-
 
 void MainWindow::toggleEditMode()
 {
@@ -101,7 +98,6 @@ void MainWindow::toggleEditMode()
 		setCaption("StroQ");
 }
 
-
 void MainWindow::copyPuzzleCode()
 {
 	QClipboard *cb = QApplication::clipboard();
@@ -114,7 +110,6 @@ void MainWindow::copyPuzzleCode()
 	
 	cb->setText(m_sCurrentCode, QClipboard::Clipboard);
 }
-
 
 void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 {
@@ -131,13 +126,13 @@ void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 	sizeHint.setHeight(sizeHint.height() + menuBar()->height());
 }
 
-
 void MainWindow::enterPuzzleCode()
 {
 	bool ok;
-	QString code = QInputDialog::getText("Puzzle Code", "Enter the puzzle code:",
-						 QLineEdit::Normal,
-						 QString::null, &ok, this );
+	QString code = QInputDialog::getText("Puzzle Code",
+					     "Enter the puzzle code:",
+					     QLineEdit::Normal,
+					     QString::null, &ok, this );
 	if ( ok && !code.isEmpty() )
 	{
 		playArea->loadPuzzle(new Puzzle(code));
@@ -150,138 +145,142 @@ void MainWindow::downloadPuzzleOfTheDay()
 {
 	qInitNetworkProtocols();
 	QUrlOperator op(POTD_URL);
-    op.get();
+	op.get();
 	m_baReceivedData = new QByteArray();
 }
 
-void MainWindow::downloadPuzzleOfTheDayData(const QByteArray & data,
-											QNetworkOperation * op)
+void MainWindow::downloadPuzzleOfTheDayData(const QByteArray &data,
+					    QNetworkOperation * op)
 {
 }
 
 void MainWindow::downloadPuzzleOfTheDayFinished()
 {
 	// Done receiving, load the puzzle
-	
 }
 
 void MainWindow::quit()
 {
-  close();
+	close();
 }
 
 /* End of networking code */
 
 void MainWindow::createActions()
 {
-  // About menu
-  aboutStroQAct = new QAction(tr("&About"), 0, this);
-  aboutStroQAct->setStatusTip(tr("About StroQ"));
-  connect(aboutStroQAct, SIGNAL(activated()), this, SLOT(about()));
-
-  aboutQtAct = new QAction(tr("&About Qt"), 0, this);
-  aboutQtAct->setStatusTip(tr("About the Qt toolkit"));
-  connect(aboutQtAct, SIGNAL(activated()), this, SLOT(aboutQt()));
-
-  // Puzzle menu
-  selectPuzzleAct = new QAction(tr("&Select puzzle"), Key_F2, this);
-  selectPuzzleAct->setStatusTip(tr("Select a puzzle!"));
-  connect(selectPuzzleAct, SIGNAL(activated()), this, SLOT(selectPuzzle()));
-
-  enterPuzzleCodeAct = new QAction(tr("&Enter puzzle code"), Key_F3, this);
-  enterPuzzleCodeAct->setStatusTip(tr("Enter a puzzle code!"));
-  connect(enterPuzzleCodeAct, SIGNAL(activated()), this, SLOT(enterPuzzleCode()));
-
-  downloadPuzzleOfTheDayAct = new QAction(tr("&Puzzle of the Day"), 0, this);
-  downloadPuzzleOfTheDayAct->setStatusTip(tr("Download the puzzle of the day from the official StroQ site!"));
-  connect(downloadPuzzleOfTheDayAct, SIGNAL(activated()), this, SLOT(downloadPuzzleOfTheDay()));
-
-  // Play menu
-  resetPuzzleAct = new QAction(tr("&Reset puzzle"), Key_F4, this);
-  resetPuzzleAct->setStatusTip(tr("Reset the puzzle!"));
-  connect(resetPuzzleAct, SIGNAL(activated()), playArea, SLOT(resetGrid()));
-
-  runPuzzleAct = new QAction(tr("&Run puzzle"), Key_F5, this);
-  runPuzzleAct->setStatusTip(tr("Run the puzzle!"));
-  connect(runPuzzleAct, SIGNAL(activated()), playArea, SLOT(toggleStroke()));
-  
-  editPuzzleAct = new QAction(tr("&Edit mode"), CTRL + Key_E, this);
-  editPuzzleAct->setStatusTip(tr("Edit a new puzzle!"));  
-  editPuzzleAct->setToggleAction(true);
-  connect(editPuzzleAct, SIGNAL(activated()), this, SLOT(toggleEditMode()));
-  
-  newEditPuzzleAct = new QAction("New puzzle...", 0, this);
-  newEditPuzzleAct->setStatusTip(tr("Edit a new puzzle"));
-  connect(newEditPuzzleAct, SIGNAL(activated()),
-		  playArea, SLOT(editModeSetDimensions()));
-
-  invertPuzzleAct = new QAction("Invert", 0, this);
-  invertPuzzleAct->setStatusTip(tr("Invert the puzzle"));
-  connect(invertPuzzleAct, SIGNAL(activated()),
-		  playArea, SLOT(invertPuzzle()));
-		    
-  copyPuzzleCodeAct = new QAction("Copy puzzle code", CTRL + Key_C, this);
-  copyPuzzleCodeAct->setStatusTip(tr("Copy puzzle code to clipboard"));
-  connect(copyPuzzleCodeAct, SIGNAL(activated()),
-		  this, SLOT(copyPuzzleCode()));
-  
-  quitAct = new QAction(tr("&Quit"), 0, this);
-  quitAct->setStatusTip(tr("Quit StroQ"));
-  connect(quitAct, SIGNAL(activated()), this, SLOT(quit()));  
-  
-  connect(playArea, SIGNAL(puzzleChanged(Puzzle*, QSize)),
-		  this, SLOT(puzzleChanged(Puzzle*, QSize)));
+	// About menu
+	aboutStroQAct = new QAction(tr("&About"), 0, this);
+	aboutStroQAct->setStatusTip(tr("About StroQ"));
+	connect(aboutStroQAct, SIGNAL(activated()), this, SLOT(about()));
+	
+	aboutQtAct = new QAction(tr("&About Qt"), 0, this);
+	aboutQtAct->setStatusTip(tr("About the Qt toolkit"));
+	connect(aboutQtAct, SIGNAL(activated()), this, SLOT(aboutQt()));
+	
+	// Puzzle menu
+	selectPuzzleAct = new QAction(tr("&Select puzzle"), Key_F2, this);
+	selectPuzzleAct->setStatusTip(tr("Select a puzzle!"));
+	connect(selectPuzzleAct, SIGNAL(activated()),
+		this, SLOT(selectPuzzle()));
+	
+	enterPuzzleCodeAct = new QAction(tr("&Enter puzzle code"),
+					 Key_F3, this);
+	enterPuzzleCodeAct->setStatusTip(tr("Enter a puzzle code!"));
+	connect(enterPuzzleCodeAct, SIGNAL(activated()),
+		this, SLOT(enterPuzzleCode()));
+	
+	downloadPuzzleOfTheDayAct = new QAction(tr("&Puzzle of the Day"),
+						0, this);
+	downloadPuzzleOfTheDayAct->setStatusTip(tr("Download the puzzle" \
+			"of the day from the official StroQ site!"));
+	connect(downloadPuzzleOfTheDayAct, SIGNAL(activated()),
+		this, SLOT(downloadPuzzleOfTheDay()));
+	
+	// Play menu
+	resetPuzzleAct = new QAction(tr("&Reset puzzle"), Key_F4, this);
+	resetPuzzleAct->setStatusTip(tr("Reset the puzzle!"));
+	connect(resetPuzzleAct, SIGNAL(activated()),
+		playArea, SLOT(resetGrid()));
+	
+	runPuzzleAct = new QAction(tr("&Run puzzle"), Key_F5, this);
+	runPuzzleAct->setStatusTip(tr("Run the puzzle!"));
+	connect(runPuzzleAct, SIGNAL(activated()),
+		playArea, SLOT(toggleStroke()));
+	
+	editPuzzleAct = new QAction(tr("&Edit mode"), CTRL + Key_E, this);
+	editPuzzleAct->setStatusTip(tr("Edit a new puzzle!"));
+	editPuzzleAct->setToggleAction(true);
+	connect(editPuzzleAct, SIGNAL(activated()),
+		this, SLOT(toggleEditMode()));
+	
+	newEditPuzzleAct = new QAction("New puzzle...", 0, this);
+	newEditPuzzleAct->setStatusTip(tr("Edit a new puzzle"));
+	connect(newEditPuzzleAct, SIGNAL(activated()),
+			playArea, SLOT(editModeSetDimensions()));
+	
+	invertPuzzleAct = new QAction("Invert", 0, this);
+	invertPuzzleAct->setStatusTip(tr("Invert the puzzle"));
+	connect(invertPuzzleAct, SIGNAL(activated()),
+		playArea, SLOT(invertPuzzle()));
+	
+	copyPuzzleCodeAct = new QAction("Copy puzzle code",
+					CTRL + Key_C, this);
+	copyPuzzleCodeAct->setStatusTip(tr("Copy puzzle code to clipboard"));
+	connect(copyPuzzleCodeAct, SIGNAL(activated()),
+		this, SLOT(copyPuzzleCode()));
+	
+	quitAct = new QAction(tr("&Quit"), 0, this);
+	quitAct->setStatusTip(tr("Quit StroQ"));
+	connect(quitAct, SIGNAL(activated()), this, SLOT(quit()));
+	
+	connect(playArea, SIGNAL(puzzleChanged(Puzzle*, QSize)),
+		this, SLOT(puzzleChanged(Puzzle*, QSize)));
 }
-
 
 void MainWindow::createMenus()
 {
-  aboutMenu = new QPopupMenu(this);
-  aboutStroQAct->addTo(aboutMenu);
-  aboutQtAct->addTo(aboutMenu);
-
-  puzzleMenu = new QPopupMenu(this);
-  selectPuzzleAct->addTo(puzzleMenu);
-  enterPuzzleCodeAct->addTo(puzzleMenu);
-  downloadPuzzleOfTheDayAct->addTo(puzzleMenu);
-  puzzleMenu->insertSeparator();
-  quitAct->addTo(puzzleMenu);
-  
-  playMenu = new QPopupMenu(this);
-  resetPuzzleAct->addTo(playMenu);
-  runPuzzleAct->addTo(playMenu);
-
-  editMenu = new QPopupMenu(this);   
-  editPuzzleAct->addTo(editMenu);
-  newEditPuzzleAct->addTo(editMenu);
-  invertPuzzleAct->addTo(editMenu);
-  copyPuzzleCodeAct->addTo(editMenu);
-  
-  newEditPuzzleAct->setEnabled(false);
-  invertPuzzleAct->setEnabled(false);
-  copyPuzzleCodeAct->setEnabled(false);
-  
-  menuBar()->insertItem(tr("&Puzzle"), puzzleMenu); // 0
-  menuBar()->insertItem(tr("&Play"), playMenu);     // 1
-  menuBar()->insertItem(tr("&Edit"), editMenu);     // 2
-  menuBar()->insertItem(tr("&About"), aboutMenu);   // 3
+	aboutMenu = new QPopupMenu(this);
+	aboutStroQAct->addTo(aboutMenu);
+	aboutQtAct->addTo(aboutMenu);
+	
+	puzzleMenu = new QPopupMenu(this);
+	selectPuzzleAct->addTo(puzzleMenu);
+	enterPuzzleCodeAct->addTo(puzzleMenu);
+	downloadPuzzleOfTheDayAct->addTo(puzzleMenu);
+	puzzleMenu->insertSeparator();
+	quitAct->addTo(puzzleMenu);
+	
+	playMenu = new QPopupMenu(this);
+	resetPuzzleAct->addTo(playMenu);
+	runPuzzleAct->addTo(playMenu);
+	
+	editMenu = new QPopupMenu(this);
+	editPuzzleAct->addTo(editMenu);
+	newEditPuzzleAct->addTo(editMenu);
+	invertPuzzleAct->addTo(editMenu);
+	copyPuzzleCodeAct->addTo(editMenu);
+	
+	newEditPuzzleAct->setEnabled(false);
+	invertPuzzleAct->setEnabled(false);
+	copyPuzzleCodeAct->setEnabled(false);
+	
+	menuBar()->insertItem(tr("&Puzzle"), puzzleMenu); // 0
+	menuBar()->insertItem(tr("&Play"), playMenu);     // 1
+	menuBar()->insertItem(tr("&Edit"), editMenu);     // 2
+	menuBar()->insertItem(tr("&About"), aboutMenu);   // 3
 }
-
 
 void MainWindow::createGameArea()
 {
-  mainCanvas = new QCanvas(width(), height());
-  mainCanvas->setDoubleBuffering(true);
-  playArea = new PlayArea(mainCanvas, this, tr("playGrid"), 0);
-  playArea->setVScrollBarMode(QScrollView::AlwaysOff);
-  playArea->setHScrollBarMode(QScrollView::AlwaysOff);
-  //setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-  setCentralWidget(playArea);
-  
-  mainCanvas->update();
-  
+	mainCanvas = new QCanvas(width(), height());
+	mainCanvas->setDoubleBuffering(true);
+	playArea = new PlayArea(mainCanvas, this, tr("playGrid"), 0);
+	playArea->setVScrollBarMode(QScrollView::AlwaysOff);
+	playArea->setHScrollBarMode(QScrollView::AlwaysOff);
+	setCentralWidget(playArea);
+	
+	mainCanvas->update();
 }
-
 
 void MainWindow::loadFirstPuzzle()
 {
@@ -291,6 +290,6 @@ void MainWindow::loadFirstPuzzle()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-  event->accept();
+	event->accept();
 }
 

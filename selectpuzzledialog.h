@@ -39,7 +39,7 @@ class SelectPuzzleDialog : public SelectPuzzleDialogBase
 public:
 	static QString m_qsPuzzles[];
 	SelectPuzzleDialog(QWidget *parent = 0, const char *name = 0,
-				bool modal = true, WFlags fl = 0);
+			   bool modal = true, WFlags fl = 0);
 
 	QCanvas *puzzlePreviewCanvas;
 	QCanvasView *puzzlePreviewCanvasView;
@@ -51,7 +51,7 @@ signals:
 	/**
 	 * Emitted when we want to reload the puzzle list
 	 */
-	 void reloadPuzzleList();
+	void reloadPuzzleList();
 	
 public slots:
 	/**
@@ -84,7 +84,8 @@ public slots:
 	/**
 	 * Resets all puzzles to unsolved in the settings file 
 	 */
-	 void resetSave();
+	void resetSave();
+
 private:
 	QString m_qsSelectedCode; /**< The code that was selected (if any) */
 	QPixmap m_qpmCheckmark;

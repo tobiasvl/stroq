@@ -53,7 +53,8 @@ class MainWindow : public QMainWindow
   
  public slots:
   /**
-  * Emitted when the puzzle is changed, usually after a call to PlayArea.loadPuzzle()
+  * Emitted when the puzzle is changed, usually after a call to
+  * PlayArea.loadPuzzle()
   * @param puzzle The puzzle that was just loaded
   * @param canvasSize Size of the canvas used to display the puzzle
   */

@@ -64,7 +64,7 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 
 SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
                                        bool modal, WFlags fl)
-    : SelectPuzzleDialogBase(parent, name, modal, fl)
+	: SelectPuzzleDialogBase(parent, name, modal, fl)
 {
 	m_qpmCheckmark = QPixmap((const char**) checkmark_xpm);
 	m_qpmNoCheckmark = QPixmap(12, 12);
@@ -73,23 +73,24 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	QBoxLayout *vl = new QVBoxLayout(previewFrame);
 	puzzlePreviewCanvasView = new QCanvasView(previewFrame);
 	puzzlePreviewCanvas = new QCanvas(puzzlePreviewCanvasView->width(),
-						puzzlePreviewCanvasView->height());
+					  puzzlePreviewCanvasView->height());
 	descriptionLabel = new QLabel("descriptionLabel", previewFrame);
 	vl->addWidget(puzzlePreviewCanvasView);
 	vl->addWidget(descriptionLabel);
 	
-	// Loads the settings so that we can set wether or not puzzles have already
-	// been solved
+	// Loads the settings so that we can set wether or not puzzles have
+	// already been solved.
 	
 	loadPuzzleList();
 	
 	connect(codesListBox, SIGNAL(highlighted(const QString &)),
 		this, SLOT(previewPuzzle(const QString &)));
 	connect(m_pbReset, SIGNAL(clicked()), this, SLOT(resetSave()));
-	connect(this, SIGNAL(reloadPuzzleList()), this, SLOT(loadPuzzleList()));
+	connect(this, SIGNAL(reloadPuzzleList()),
+		this, SLOT(loadPuzzleList()));
 	
 	// Selects a puzzle when double clicking on the list
-	// or clicking OK
+	// or clicking OK.
 	connect(codesListBox, SIGNAL(selected(const QString &)),
 		this, SLOT(selectPuzzle(const QString &)));
 	connect(m_pbOK, SIGNAL(clicked()),  this, SLOT(selectPuzzle()));
@@ -122,17 +123,19 @@ void SelectPuzzleDialog::loadPuzzleList()
 	QSettings settings;
 	settings.setPath("thelemmings.net", "StroQ");
 	
-	// Prepares the puzzle code list
+	// Prepares the puzzle code list.
 	codesListBox->clear();
 	codesListBox->setSelectionMode(QListBox::Single);
 	
 	for(int i = 0; i<PUZZLECOUNT; i++)
 	{
-		// If entry exists, the puzzle was already solved
+		// If entry exists, the puzzle was already solved.
 		if(settings.readBoolEntry("/puzzles/" + m_qsPuzzles[i]))
-			new QListBoxPixmap(codesListBox, m_qpmCheckmark, m_qsPuzzles[i]);
+			new QListBoxPixmap(codesListBox, m_qpmCheckmark,
+			 		   m_qsPuzzles[i]);
 		else
-			new QListBoxPixmap(codesListBox, m_qpmNoCheckmark, m_qsPuzzles[i]);
+			new QListBoxPixmap(codesListBox, m_qpmNoCheckmark,
+					   m_qsPuzzles[i]);
 	}
 	codesListBox->setCurrentItem(0);
 	codesListBox->sort(true);
@@ -140,7 +143,7 @@ void SelectPuzzleDialog::loadPuzzleList()
 
 void SelectPuzzleDialog::resetSave()
 {
-	// If the user pressed Yes, clear the content of the settings file
+	// If the user pressed Yes, clear the content of the settings file.
 	if(QMessageBox::question(
 				this,
 				tr("StroQ - Reset confirmation"),
@@ -151,10 +154,10 @@ void SelectPuzzleDialog::resetSave()
 		settings->setPath("thelemmings.net", "StroQ");
 		for(int i = 0; i<PUZZLECOUNT; i++)
 		{
-			// If entry exists, the puzzle was already solved
+			// If entry exists, the puzzle was already solved.
 			settings->removeEntry("/puzzles/" + m_qsPuzzles[i]);
 		}
-		// Writes the settings to disk (or wherever)
+		// Writes the settings to disk (or wherever).
 		delete settings;
 		
 		emit reloadPuzzleList();
