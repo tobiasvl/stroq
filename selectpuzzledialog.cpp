@@ -32,6 +32,7 @@
 #define PUZZLECOUNT 10
 
 #include "selectpuzzledialog.h"
+#include "images/checkmark.xpm"
 
 QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"AONAAAKNGLFKI", "AOPAAANOPHLINGC",
@@ -66,9 +67,9 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 {
 		
 	if(!m_qpmCheckmark)
-		m_qpmCheckmark = new QPixmap("images/checkmark.png");
+		m_qpmCheckmark = new QPixmap(*checkmark);
 	if(!m_qpmNoCheckmark)
-		m_qpmNoCheckmark = new QPixmap("images/nocheckmark.png");
+		m_qpmNoCheckmark = new QPixmap(*checkmark);
 		
 	QBoxLayout *vl = new QVBoxLayout(previewFrame);
 	puzzlePreviewCanvasView = new QCanvasView(previewFrame);
@@ -89,9 +90,11 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	for(int i = 0; i<PUZZLECOUNT; i++)
 	{
 		if(settings.readBoolEntry(m_qsPuzzles[i]))
-			codesListBox->insertItem(*m_qpmCheckmark, m_qsPuzzles[i]);
+    		// new QListBoxPixmap(codesListBox, *m_qpmCheckmark, m_qsPuzzles[i] );
+			new QListBoxPixmap( codesListBox, *m_qpmCheckmark, m_qsPuzzles[i] );
 		else
-			codesListBox->insertItem(m_qsPuzzles[i]);
+			new QListBoxPixmap(codesListBox, *m_qpmNoCheckmark, m_qsPuzzles[i] );
+			//new QListBoxPixmap( codesListBox, pm, "Blue" );
 	}
 	codesListBox->setCurrentItem(0);
 	

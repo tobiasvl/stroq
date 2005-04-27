@@ -33,6 +33,9 @@
 #include "playsquare.h"
 #include "stroqconst.h"
 
+#include "images/whitesquare.xpm"
+#include "images/blacksquare.xpm"
+#include "images/bordersquare.xpm"
 
 QPixmap* PlaySquare::m_qpmSquares = NULL;
 
@@ -47,14 +50,10 @@ PlaySquare::PlaySquare(QCanvas *canvas, QPoint pos, Square::States state)
 	// Loads the pixmaps, if necessary
 	if(m_qpmSquares == NULL)
 	{
-		QImage tmpImage;
 		m_qpmSquares = new QPixmap[3];
-		tmpImage.load("images/white.png");
-		m_qpmSquares[(int) Square::White].convertFromImage(tmpImage, OrderedAlphaDither);
-		tmpImage.load("images/black.png");
-		m_qpmSquares[(int) Square::Black].convertFromImage(tmpImage, OrderedAlphaDither);
-		tmpImage.load("images/border.png");
-		m_qpmSquares[(int) Square::Border].convertFromImage(tmpImage, OrderedAlphaDither);
+		m_qpmSquares[(int) Square::White] = QPixmap(whitesquare);
+		m_qpmSquares[(int) Square::Black] = QPixmap(blacksquare);
+		m_qpmSquares[(int) Square::Border] = QPixmap(bordersquare);
 	}
 	
 	// Sets the pixel position on the canvas
@@ -87,7 +86,7 @@ int PlaySquare::getStrokePosition()
 void PlaySquare::setLink(PlaySquare::Links link)
 {
 	m_lLink = link;
-	canvas()->setAllChanged();
+	canvas()->setChanged(QRect((int)x(), (int)y(), width(), height()));
 	canvas()->update();
 
 }
@@ -97,7 +96,7 @@ void PlaySquare::setLink(PlaySquare::Links link, int position)
 {
 	m_lLink = link;
 	m_iStrokePosition = position;
-	canvas()->setAllChanged();
+	canvas()->setChanged(QRect((int)x(), (int)y(), width(), height()));
 	canvas()->update();
 }
 
@@ -107,7 +106,7 @@ void PlaySquare::unsetLink()
 	m_lLink = PlaySquare::None;
 	m_iStrokePosition = -1;
 	unsetStrokeEnd();
-	canvas()->setAllChanged();
+	canvas()->setChanged(QRect((int)x(), (int)y(), width(), height()));
 	canvas()->update();
 }
 
@@ -115,7 +114,7 @@ void PlaySquare::unsetLink()
 void PlaySquare::setStrokeEnd()
 {
 	m_bStrokeEnd = true;
-	canvas()->setAllChanged();
+	canvas()->setChanged(QRect((int)x(), (int)y(), width(), height()));
 	canvas()->update();
 }
 
@@ -123,7 +122,7 @@ void PlaySquare::setStrokeEnd()
 void PlaySquare::unsetStrokeEnd()
 {
 	m_bStrokeEnd = false;
-	canvas()->setAllChanged();
+	canvas()->setChanged(QRect((int)x(), (int)y(), width(), height()));
 	canvas()->update();
 }
 
@@ -137,7 +136,7 @@ void PlaySquare::setStrokePosition(int position)
 void PlaySquare::setHighlight(bool highlight)
 {
 	m_bHighlighted = highlight;
-	canvas()->setAllChanged();
+	canvas()->setChanged(QRect((int)x(), (int)y(), width(), height()));
 	canvas()->update();
 }
 
@@ -145,7 +144,7 @@ void PlaySquare::setHighlight(bool highlight)
 void PlaySquare::toggle()
 {
 	Square::toggle();
-	canvas()->setAllChanged();
+	canvas()->setChanged(QRect((int)x(), (int)y(), width(), height()));
 	canvas()->update();
 }
 

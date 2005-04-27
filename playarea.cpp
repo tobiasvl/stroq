@@ -120,37 +120,61 @@ void PlayArea::contentsMousePressEvent(QMouseEvent* e)
 				emit puzzleChanged(m_ppPlayPuzzle, sizeHint());
 			}
 		}
+		m_bButtonPressed = true;
 	}
 }
 
 
 void PlayArea::contentsMouseMoveEvent(QMouseEvent* e)
 {
-	// Pick the Square that was under the cursor and highlight it
-	QPoint p = inverseWorldMatrix().map(e->pos());
-	QCanvasItemList l=canvas()->collisions(p);
-	if(l.size() > 0) {
-		for (QCanvasItemList::Iterator it=l.begin(); it!=l.end(); ++it)
-		{
-			if ( dynamic_cast<PlaySquare*>(*it) != NULL )
+	if(!m_bEditMode)
+	{
+		// Pick the Square that was under the cursor and highlight it
+		QPoint p = inverseWorldMatrix().map(e->pos());
+		QCanvasItemList l=canvas()->collisions(p);
+		if(l.size() > 0) {
+			for (QCanvasItemList::Iterator it=l.begin(); it!=l.end(); ++it)
 			{
-				highlightPlaySquare((PlaySquare*) (*it));
-			}
+				if ( dynamic_cast<PlaySquare*>(*it) != NULL )
+				{
+					highlightPlaySquare((PlaySquare*) (*it));
+				}
 			
-			// If we're already holding the button, make this square the selected square
-			if (m_bButtonPressed)
+				// If we're already holding the button, make this square the
+				// selected square
+				if (m_bButtonPressed)
+				{
+					selectPlaySquare((PlaySquare*) (*it));
+				}
+			}
+		}
+		else
+		{
+			// No square under the cursor, dehilight the last hovered cursor
+			if(m_psHighlightedSquare)
 			{
-				selectPlaySquare((PlaySquare*) (*it));
+				m_psHighlightedSquare->setHighlight(false);
+				m_psHighlightedSquare = NULL;
 			}
 		}
 	}
 	else
 	{
-		// No square under the cursor, dehilight the last hovered cursor
-		if(m_psHighlightedSquare)
+		// Edit mode
+		if(m_bButtonPressed)
 		{
-			m_psHighlightedSquare->setHighlight(false);
-			m_psHighlightedSquare = NULL;
+			// We just toggle white to black and vice versa
+			QPoint p = inverseWorldMatrix().map(e->pos());
+			QCanvasItemList l=canvas()->collisions(p);
+			for (QCanvasItemList::Iterator it=l.begin(); it!=l.end(); ++it)
+			{
+				// We check the cast of it into a PlaySquare
+				if ( dynamic_cast<PlaySquare*>(*it) != NULL )
+				{
+					((PlaySquare*)(*it))->toggle();
+					emit puzzleChanged(m_ppPlayPuzzle, sizeHint());
+				}
+			}
 		}
 	}
 }
@@ -368,18 +392,21 @@ void PlayArea::resetGrid() {
 
 void PlayArea::toggleStroke()
 {
-	for (unsigned int i = 0; i < m_vStroke.size(); ++i)
+	printStroke();
+	
+	// Toggles the stroke
+	for (unsigned int i = 0; i < m_vStroke.size(); i++)
 		m_vStroke[i]->toggle();
 	
 	// Runs the puzzle
 	int row, column, countwhite, countblack;
 	bool win = true;
 	
-	for(row = 1; row <= m_ppOriginalPuzzle->getWidth(); row++)
+	for(row = 1; row <= m_ppOriginalPuzzle->getHeight(); row++)
 	{
 		countwhite = 0;
 		countblack = 0;
-		for(column = 1; column <= m_ppOriginalPuzzle->getHeight(); column++)
+		for(column = 1; column <= m_ppOriginalPuzzle->getWidth(); column++)
 		{
 			if(m_ppPlayPuzzle->getSquareAt(column, row)->getState() == Square::White)
 				countwhite++;

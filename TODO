@@ -6,14 +6,12 @@ TODO list
 Important:
  19/04/2005 - Automatically resize the window to the puzzle's size
  19/04/2005 - Make a puzzle selection window
- 19/04/2005 - Make canvas updates only when necessary
  19/04/2005 - Make validated lines disappear
  19/04/2005 - Check the validity of a puzzle code before processing it
 
 Moderately important:
  19/04/2005 - Download puzzles off the internet
  19/04/2005 - Keyboard support with arrows
- 19/04/2005 - Save the player's progress
  
 Just for the h*ll of it:
  19/04/2005 - Make the puzzle scale to the window's size
