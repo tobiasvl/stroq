@@ -44,7 +44,7 @@
 QPixmap* PlayArea::m_qpmBackground = NULL;
 
 PlayArea::PlayArea(QCanvas *c, QWidget* parent,  const char* name, WFlags f)
-: QCanvasView(c, parent, name, f)
+	: QCanvasView(c, parent, name, f)
 {
 	m_ppOriginalPuzzle = NULL;
 	m_ppPlayPuzzle = NULL;
@@ -52,7 +52,7 @@ PlayArea::PlayArea(QCanvas *c, QWidget* parent,  const char* name, WFlags f)
 	m_bButtonPressed = false;
 	m_bEditMode = false;
 	
-	// The background image
+	// The background image.
 	if(!m_qpmBackground)
 	{
 		m_qpmBackground = new QPixmap("images/background.png");
@@ -78,17 +78,19 @@ PlayArea::~PlayArea()
 
 void PlayArea::contentsMousePressEvent(QMouseEvent* e)
 {
-	// We're in PLAY mode
+	// We're in PLAY mode.
 	if(!m_bEditMode)
 	{
 		if(e->button() == 1)
 		{
-			// Pick the Square that was under the click and select it
+			// Pick the Square that was under the click and
+			// select it.
 			QPoint p = inverseWorldMatrix().map(e->pos());
 			QCanvasItemList l=canvas()->collisions(p);
-			for (QCanvasItemList::Iterator it=l.begin(); it!=l.end(); ++it)
+			QCanvasItemList::Iterator it;
+			for (it=l.begin(); it!=l.end(); ++it)
 			{
-				// We check the cast of it into a PlaySquare
+				// We check the cast of it into a PlaySquare.
 				if ( dynamic_cast<PlaySquare*>(*it) != NULL )
 				{
 					selectPlaySquares((PlaySquare*)(*it));
@@ -98,26 +100,27 @@ void PlayArea::contentsMousePressEvent(QMouseEvent* e)
 		}
 		else if(e->button() == 2)
 		{
-			// Unlinks all the squares in the stroke and clears the stroke
-			// when the right mouse button is clicked
-			
+			// Unlinks all the squares in the stroke and clears
+			// the stroke when the right mouse button is clicked.
 			emit clearStroke();
 		}
 	}
 	
-	// We're in EDIT mode
+	// We're in EDIT mode.
 	else
 	{
-		// We just toggle white to black and vice versa
+		// We just toggle white to black and vice versa.
 		QPoint p = inverseWorldMatrix().map(e->pos());
 		QCanvasItemList l=canvas()->collisions(p);
-		for (QCanvasItemList::Iterator it=l.begin(); it!=l.end(); ++it)
+		QCanvasItemList::Iterator it;
+		for (it=l.begin(); it!=l.end(); ++it)
 		{
-			// We check the cast of it into a PlaySquare
+			// We check the cast of it into a PlaySquare.
 			if ( dynamic_cast<PlaySquare*>(*it) != NULL )
 			{
 				((PlaySquare*)(*it))->toggle();
-				emit puzzleChanged(m_ppPlayPuzzle, sizeHint());
+				emit puzzleChanged(m_ppPlayPuzzle,
+						   sizeHint());
 			}
 		}
 		m_bButtonPressed = true;
@@ -129,19 +132,21 @@ void PlayArea::contentsMouseMoveEvent(QMouseEvent* e)
 {
 	if(!m_bEditMode)
 	{
-		// Pick the Square that was under the cursor and highlight it
+		// Pick the Square that was under the cursor and highlight it.
 		QPoint p = inverseWorldMatrix().map(e->pos());
 		QCanvasItemList l=canvas()->collisions(p);
 		if(l.size() > 0) {
-			for (QCanvasItemList::Iterator it=l.begin(); it!=l.end(); ++it)
+			QCanvasItemList::Iterator it;
+			for (it=l.begin(); it!=l.end(); ++it)
 			{
-				if ( dynamic_cast<PlaySquare*>(*it) != NULL )
+				if (dynamic_cast<PlaySquare*>(*it) != NULL)
 				{
-					highlightPlaySquare((PlaySquare*) (*it));
+					PlaySquare *ps = (PlaySquare*)(*it);
+					highlightPlaySquare(ps);
 				}
 			
-				// If we're already holding the button, make this square the
-				// selected square
+				// If we're already holding the button, make
+				// this square the selected square.
 				if (m_bButtonPressed)
 				{
 					selectPlaySquare((PlaySquare*) (*it));
@@ -150,7 +155,8 @@ void PlayArea::contentsMouseMoveEvent(QMouseEvent* e)
 		}
 		else
 		{
-			// No square under the cursor, dehilight the last hovered cursor
+			// No square under the cursor, dehilight the last
+			// hovered cursor.
 			if(m_psHighlightedSquare)
 			{
 				m_psHighlightedSquare->setHighlight(false);
@@ -160,19 +166,21 @@ void PlayArea::contentsMouseMoveEvent(QMouseEvent* e)
 	}
 	else
 	{
-		// Edit mode
+		// Edit mode.
 		if(m_bButtonPressed)
 		{
-			// We just toggle white to black and vice versa
+			// We just toggle white to black and vice versa.
 			QPoint p = inverseWorldMatrix().map(e->pos());
 			QCanvasItemList l=canvas()->collisions(p);
-			for (QCanvasItemList::Iterator it=l.begin(); it!=l.end(); ++it)
+			QCanvasItemList::Iterator it;
+			for (it=l.begin(); it!=l.end(); ++it)
 			{
-				// We check the cast of it into a PlaySquare
+				// We check the cast of it into a PlaySquare.
 				if ( dynamic_cast<PlaySquare*>(*it) != NULL )
 				{
 					((PlaySquare*)(*it))->toggle();
-					emit puzzleChanged(m_ppPlayPuzzle, sizeHint());
+					emit puzzleChanged(m_ppPlayPuzzle,
+							   sizeHint());
 				}
 			}
 		}
@@ -180,26 +188,28 @@ void PlayArea::contentsMouseMoveEvent(QMouseEvent* e)
 }
 
 
-void PlayArea::contentsMouseReleaseEvent (QMouseEvent* e) {
-	if(e->button() == 1)
+void PlayArea::contentsMouseReleaseEvent (QMouseEvent* e)
+{
+	if (e->button() == 1)
 		m_bButtonPressed = false;
 }
 
 
 void PlayArea::contentsMouseDoubleClickEvent(QMouseEvent* e)
 {
-	if(!m_bEditMode)
+	if (!m_bEditMode)
 	{
 		QPoint p = inverseWorldMatrix().map(e->pos());
 		QCanvasItemList l=canvas()->collisions(p);
-		for (QCanvasItemList::Iterator it=l.begin(); it!=l.end(); ++it)
+		QCanvasItemList::Iterator it;
+		for (it=l.begin(); it!=l.end(); ++it)
 		{
-			// We check the cast of it into a PlaySquare
-			if ( dynamic_cast<PlaySquare*>(*it) != NULL )
+			// We check the cast of it into a PlaySquare.
+			if (dynamic_cast<PlaySquare*>(*it) != NULL)
 			{
 				// Is it the last square in the stroke?
-				if(((PlaySquare*)(*it))->getGridPos() ==
-					m_vStroke[m_vStroke.size()-1]->getGridPos())
+				if (((PlaySquare*)(*it))->getGridPos() ==
+				m_vStroke[m_vStroke.size()-1]->getGridPos())
 					toggleStroke();
 			}
 		}
@@ -209,12 +219,12 @@ void PlayArea::contentsMouseDoubleClickEvent(QMouseEvent* e)
 
 void PlayArea::highlightPlaySquare(PlaySquare *playSquare)
 {
-	// We're on a square
-	// dehilight the previously selected square (if any),
-	// highlight the new one
-	if(m_psHighlightedSquare)
-	{					
-		if(playSquare == m_psHighlightedSquare)
+	// We're on a square.
+	// Dehilight the previously selected square (if any).
+	// Highlight the new one.
+	if (m_psHighlightedSquare)
+	{
+		if (playSquare == m_psHighlightedSquare)
 			return;
 		m_psHighlightedSquare->setHighlight(false);
 	}
@@ -227,7 +237,8 @@ void PlayArea::selectPlaySquares(PlaySquare *playSquare)
 {
 	int i;
 	
-	if(m_vStroke.size() == 0 || playSquare->getLink() != PlaySquare::None)
+	if (m_vStroke.size() == 0 ||
+	    playSquare->getLink() != PlaySquare::None)
 	{
 		selectPlaySquare(playSquare);
 		return;
@@ -236,38 +247,38 @@ void PlayArea::selectPlaySquares(PlaySquare *playSquare)
 	PlaySquare* last = m_vStroke[m_vStroke.size()-1];
 	if(getAlignment(playSquare, last) == ROW_ALIGNED)
 	{
-		// Check if any already linked PlaySquares are in the way
+		// Check if any already linked PlaySquares are in the way.
 		i = last->getGridPos().x();
-		if(i < playSquare->getGridPos().x())	i++;
-		else	i--;
-		while(i != playSquare->getGridPos().x())
+		if (i < playSquare->getGridPos().x()) i++;
+		else i--;
+		while (i != playSquare->getGridPos().x())
 		{
-			// do we encounter an already linked square?
-			if(((PlaySquare*) m_ppPlayPuzzle
-			   ->getSquareAt(i, playSquare->getGridPos().y()))
-			   ->getLink() != PlaySquare::None)
+			// Do we encounter an already linked square?
+			if (((PlaySquare*) m_ppPlayPuzzle
+			    ->getSquareAt(i, playSquare->getGridPos().y()))
+			    ->getLink() != PlaySquare::None)
 				return;
 			
-			// Get closer to last
-			if(i < playSquare->getGridPos().x())
+			// Get closer to last.
+			if (i < playSquare->getGridPos().x())
 				i++;
 			else
 				i--;
 		}
 		
-		// Selects the squares on the way
+		// Selects the squares on the way.
 		i = last->getGridPos().x();
-		if(i < playSquare->getGridPos().x())	i++;
-		else	i--;
+		if (i < playSquare->getGridPos().x()) i++;
+		else i--;
 		
-		while(i != playSquare->getGridPos().x())
+		while (i != playSquare->getGridPos().x())
 		{
-			// do we encounter an already linked square?
+			// Do we encounter an already linked square?
 			selectPlaySquare((PlaySquare*) m_ppPlayPuzzle
-							 ->getSquareAt(i, playSquare->getGridPos().y()));
+			      ->getSquareAt(i, playSquare->getGridPos().y()));
 			
-			// Get closer to last
-			if(i < playSquare->getGridPos().x())
+			// Get closer to last.
+			if (i < playSquare->getGridPos().x())
 				i++;
 			else
 				i--;
@@ -275,39 +286,39 @@ void PlayArea::selectPlaySquares(PlaySquare *playSquare)
 		
 		selectPlaySquare(playSquare);
 	}
-	else if(getAlignment(playSquare, last) == COLUMN_ALIGNED)
+	else if (getAlignment(playSquare, last) == COLUMN_ALIGNED)
 	{
-		// Check if any already linked PlaySquares are in the way
+		// Check if any already linked PlaySquares are in the way.
 		i = last->getGridPos().y();
-		if(i < playSquare->getGridPos().y())	i++;
-		else			i--;
-		while(i != playSquare->getGridPos().y())
+		if (i < playSquare->getGridPos().y()) i++;
+		else i--;
+		while (i != playSquare->getGridPos().y())
 		{
-			// do we encounter an already linked square?
-			if(((PlaySquare*) m_ppPlayPuzzle
-				->getSquareAt(playSquare->getGridPos().x(), i))
+			// Do we encounter an already linked square?
+			if (((PlaySquare*) m_ppPlayPuzzle
+			    ->getSquareAt(playSquare->getGridPos().x(), i))
 			    ->getLink() != PlaySquare::None)
 				return;
 			
-			// Get closer to last
-			if(i < playSquare->getGridPos().y())
+			// Get closer to last.
+			if (i < playSquare->getGridPos().y())
 				i++;
 			else
 				i--;
 		}
 		
-		// Selects the squares on the way
+		// Selects the squares on the way.
 		i = last->getGridPos().y();
-		if(i < playSquare->getGridPos().y())	i++;
-		else			i--;
-		while(i != playSquare->getGridPos().y())
+		if (i < playSquare->getGridPos().y()) i++;
+		else i--;
+		while (i != playSquare->getGridPos().y())
 		{
-			// do we encounter an already linked square?
+			// Do we encounter an already linked square?
 			selectPlaySquare((PlaySquare*) m_ppPlayPuzzle
-							 ->getSquareAt(playSquare->getGridPos().x(), i));
+			      ->getSquareAt(playSquare->getGridPos().x(), i));
 			
-			// Get closer to last
-			if(i < playSquare->getGridPos().y())
+			// Get closer to last.
+			if (i < playSquare->getGridPos().y())
 				i++;
 			else
 				i--;
@@ -321,37 +332,40 @@ void PlayArea::selectPlaySquares(PlaySquare *playSquare)
 void PlayArea::selectPlaySquare(PlaySquare *playSquare)
 {
 	// Checks if playSquare is selectable by verifying the last PlaySquare
-	// of the stroke
-	if(m_vStroke.size() > 0) // Is there something in the stroke?
+	// of the stroke.
+	if (m_vStroke.size() > 0) // Is there something in the stroke?
 	{
-		// Is this PlaySquare already part of the stroke? We just check its
-		// Link to know!
-		if(   playSquare->getLink() != PlaySquare::None
+		// Is this PlaySquare already part of the stroke? We just
+		// check its link to know!
+		if (playSquare->getLink() != PlaySquare::None
 		   && (*playSquare != (*m_vStroke[m_vStroke.size()-1])))
 		{
 			std::vector<PlaySquare*>::const_iterator i;
-			for(i = m_vStroke.begin() + playSquare->getStrokePosition()+1;
+			for (i = m_vStroke.begin() +
+			    playSquare->getStrokePosition()+1;
 			    i!=m_vStroke.end(); i++)
 				(*i)->unsetLink();
-			// Resizes the stroke to go only up to playSquare
+			// Resizes the stroke to go only up to playSquare.
 			m_vStroke.resize(playSquare->getStrokePosition());
 		}
-		// If playSquare's position is not a valid neighbour, don't do a thing
+		// If playSquare's position is not a valid neighbour, don't
+		// do a thing.
 		else
 		{
 			PlaySquare* last = m_vStroke[m_vStroke.size()-1];
-			if(getAlignment(playSquare, last) == NOT_ALIGNED)
+			if (getAlignment(playSquare, last) == NOT_ALIGNED)
 				return;
-			if(!(abs(playSquare->getGridPos().x() - last->getGridPos().x()) == 1
-			   ||
-			   abs(playSquare->getGridPos().y() - last->getGridPos().y()) == 1))
+			if (!(abs(playSquare->getGridPos().x() -
+				 last->getGridPos().x()) == 1
+			  || abs(playSquare->getGridPos().y() -
+				 last->getGridPos().y()) == 1))
 				return;
 		}
 	}
 	
-	m_vStroke.push_back(playSquare); // Add to the stroke
+	m_vStroke.push_back(playSquare); // Add to the stroke.
 	playSquare->setStrokePosition(m_vStroke.size()-1);
-	if(m_vStroke.size() == 1)
+	if (m_vStroke.size() == 1)
 		playSquare->setStrokeEnd();
 	else
 		updateStrokeLinks();
@@ -359,7 +373,7 @@ void PlayArea::selectPlaySquare(PlaySquare *playSquare)
 
 
 void PlayArea::loadPuzzle(Puzzle *puzzle) {
-	if(m_ppOriginalPuzzle)
+	if (m_ppOriginalPuzzle)
 	{
 		// printf("Deleting m_ppOriginalPuzzle\n");
 		delete m_ppOriginalPuzzle;
@@ -367,7 +381,7 @@ void PlayArea::loadPuzzle(Puzzle *puzzle) {
 	
 	m_ppOriginalPuzzle = puzzle;
 	canvas()->resize((puzzle->getWidth() + 2) * DEFAULT_SIDE,
-					  (puzzle->getHeight() + 2) * DEFAULT_SIDE);
+			 (puzzle->getHeight() + 2) * DEFAULT_SIDE);
 	emit puzzleChanged(m_ppOriginalPuzzle, sizeHint());
 	resetGrid();
 }
@@ -379,8 +393,8 @@ void PlayArea::resetGrid() {
 	viewport()->setMouseTracking(false);
 
 	// Copies qvlOriginalPuzzle into qvlPlayPuzzle replacing all Squares
-	// by PlaySquares
-	if(m_ppPlayPuzzle)
+	// by PlaySquares.
+	if (m_ppPlayPuzzle)
 		delete m_ppPlayPuzzle;
 	
 	m_ppPlayPuzzle = new Puzzle(m_ppOriginalPuzzle, canvas());
@@ -392,52 +406,57 @@ void PlayArea::resetGrid() {
 
 void PlayArea::toggleStroke()
 {	
-	// Toggles the stroke
+	// Toggles the stroke.
 	for (unsigned int i = 0; i < m_vStroke.size(); i++)
 		m_vStroke[i]->toggle();
 	
-	// Runs the puzzle
-	int row, column, countwhite, countblack;
+	// Runs the puzzle.
+	int row, col, countwhite, countblack;
 	bool win = true;
 	
-	for(row = 1; row <= m_ppOriginalPuzzle->getHeight(); row++)
+	for (row = 1; row <= m_ppOriginalPuzzle->getHeight(); row++)
 	{
 		countwhite = 0;
 		countblack = 0;
-		for(column = 1; column <= m_ppOriginalPuzzle->getWidth(); column++)
+		for (col = 1; col <= m_ppOriginalPuzzle->getWidth(); col++)
 		{
-			if(m_ppPlayPuzzle->getSquareAt(column, row)->getState() == Square::White)
+			if (m_ppPlayPuzzle->getSquareAt(col, row)->getState()
+			    == Square::White)
 				countwhite++;
 			else
 				countblack++;
 		}
 		
-		// Row cleared, one color was absent, the other color filled the row
-		if(countwhite == 0 || countblack == 0)
+		// Row cleared, one color was absent, the other color filled
+		// the row.
+		if (countwhite == 0 || countblack == 0)
 		{
-			for(column = 1; column <= m_ppOriginalPuzzle->getWidth(); column++)
-				m_ppPlayPuzzle->getSquareAt(column, row)->setState(Square::Border);
+			for (col = 1; col <= m_ppOriginalPuzzle->getWidth();
+			     col++)
+	       m_ppPlayPuzzle->getSquareAt(col,row)->setState(Square::Border);
 		}
 		else
 			win = false;
 	}
 	canvas()->update();
 	
-	if(win)
+	if (win)
 	{
 		QMessageBox::information(this, tr("Congratulations"),
 					 tr("You solved this puzzle!"),
 					 QMessageBox::Ok);
 		
-		// Store the success in the settings
+		// Store the success in the settings.
 		QSettings settings;
 		settings.setPath("thelemmings.net", "StroQ");
-		QString settingkey = "/puzzles/" + m_ppOriginalPuzzle->getCode();
+		QString settingkey = "/puzzles/" +
+				     m_ppOriginalPuzzle->getCode();
 		settings.writeEntry(settingkey, true);
 	}
 	else
 		QMessageBox::information(this, tr("Sorry"),
-					 tr("The run was unsuccessful, reset it to try again!"),
+					 tr("The run was unsuccessful," \
+					    " reset it to try again!"),
 					 QMessageBox::Ok);
 	canvas()->update();
 }
@@ -446,7 +465,7 @@ void PlayArea::toggleStroke()
 void PlayArea::clearStroke()
 {
 	std::vector<PlaySquare*>::const_iterator i;
-	for(i = m_vStroke.begin(); i!=m_vStroke.end(); i++)
+	for (i = m_vStroke.begin(); i!=m_vStroke.end(); i++)
 		(*i)->unsetLink();
 	
 	m_vStroke.clear();
@@ -455,15 +474,16 @@ void PlayArea::clearStroke()
 
 void PlayArea::updateStrokeLinks()
 {
-	if(m_vStroke.size() <= 1)
+	if (m_vStroke.size() <= 1)
 		return;
-	else if(m_vStroke.size() == 2)
+	else if (m_vStroke.size() == 2)
 	{
-		// Determine the link of the second PlaySquare in the stroke
-		if(getAlignment(m_vStroke[0], m_vStroke[1]) == ROW_ALIGNED)
+		// Determine the link of the second PlaySquare in the stroke.
+		if (getAlignment(m_vStroke[0], m_vStroke[1]) == ROW_ALIGNED)
 		{
-			// horizontal alignment
-			if(m_vStroke[0]->getGridPos().x() < m_vStroke[1]->getGridPos().x())
+			// Horizontal alignment.
+			if (m_vStroke[0]->getGridPos().x() <
+			    m_vStroke[1]->getGridPos().x())
 			{
 				m_vStroke[0]->setLink(PlaySquare::LeftRight);
 				m_vStroke[1]->setLink(PlaySquare::LeftRight);
@@ -476,8 +496,9 @@ void PlayArea::updateStrokeLinks()
 		}
 		else
 		{
-			// vertical alignment
-			if(m_vStroke[0]->getGridPos().y() < m_vStroke[1]->getGridPos().y())
+			// Vertical alignment.
+			if (m_vStroke[0]->getGridPos().y() <
+			    m_vStroke[1]->getGridPos().y())
 			{
 				m_vStroke[0]->setLink(PlaySquare::UpDown);
 				m_vStroke[1]->setLink(PlaySquare::UpDown);
@@ -501,99 +522,109 @@ void PlayArea::updateStrokeLinks()
 			   last->getGridPos().y()
 			    ); */
 
-		// Horizontal neighbours
-		if(getAlignment(last, secondlast) == ROW_ALIGNED)
+		// Horizontal neighbours.
+		if (getAlignment(last, secondlast) == ROW_ALIGNED)
 		{
-			if(secondlast->getLink() == PlaySquare::RightLeft)
+			if (secondlast->getLink() == PlaySquare::RightLeft)
 				last->setLink(PlaySquare::RightLeft);
-			else if(secondlast->getLink() == PlaySquare::LeftRight)
+			else if (secondlast->getLink() ==
+				 PlaySquare::LeftRight)
 				last->setLink(PlaySquare::LeftRight);
-			else if(secondlast->getLink() == PlaySquare::DownUp)
+			else if (secondlast->getLink() == PlaySquare::DownUp)
 			{
-				if(secondlast->getGridPos().x() < last->getGridPos().x())
-				{ // secondlast is left of last
-					secondlast->setLink(PlaySquare::DownRight);
-					last->setLink(PlaySquare::LeftRight);
+				if (secondlast->getGridPos().x() <
+				    last->getGridPos().x())
+				{ // secondlast is left of last.
+				   secondlast->setLink(PlaySquare::DownRight);
+				   last->setLink(PlaySquare::LeftRight);
 				}
 				else
-				{ // secondlast is right of secondlast
-					secondlast->setLink(PlaySquare::DownLeft);
-					last->setLink(PlaySquare::RightLeft);
+				{ // secondlast is right of secondlast.
+				   secondlast->setLink(PlaySquare::DownLeft);
+				   last->setLink(PlaySquare::RightLeft);
 				}
 			}
-			else if(secondlast->getLink() == PlaySquare::UpDown) // UpDown
+			else if (secondlast->getLink() == PlaySquare::UpDown)
 			{
-				if(secondlast->getGridPos().x() < last->getGridPos().x())
-				{ // secondlast is left of secondlast
-					secondlast->setLink(PlaySquare::UpRight);
-					last->setLink(PlaySquare::LeftRight);
+				if (secondlast->getGridPos().x() <
+				   last->getGridPos().x())
+				{ // secondlast is left of secondlast.
+				     secondlast->setLink(PlaySquare::UpRight);
+				     last->setLink(PlaySquare::LeftRight);
 				}
 				else
-				{ // secondlast is right of secondlast
-					secondlast->setLink(PlaySquare::UpLeft);
-					last->setLink(PlaySquare::RightLeft);
+				{ // secondlast is right of secondlast.
+				     secondlast->setLink(PlaySquare::UpLeft);
+				     last->setLink(PlaySquare::RightLeft);
 				}
 			}
-			else // Second last is a 'turn' in the stroke, this is possible
-				 // when going back in the stroke (reclicking on a part of the
-				 // stroke. We don't change second last, only last
+			else // Second last is a 'turn' in the stroke, this
+			     // is possible when going back in the stroke
+			     // (reclicking on a part of the stroke. We
+			     // don't change second last, only last.
 			{
-				if(secondlast->getGridPos().x() < last->getGridPos().x())
-				{ // secondlast is left of secondlast
+				if (secondlast->getGridPos().x() <
+				   last->getGridPos().x())
+				{ // secondlast is left of secondlast.
 					last->setLink(PlaySquare::LeftRight);
 				}
 				else
-				{ // secondlast is right of secondlast
+				{ // secondlast is right of secondlast.
 					last->setLink(PlaySquare::RightLeft);
 				}
 			}
 		}
-		else // Vertical alignment
+		else // Vertical alignment.
 		{
-			if(secondlast->getLink() == PlaySquare::UpDown)
+			if (secondlast->getLink() == PlaySquare::UpDown)
 				last->setLink(PlaySquare::UpDown);
-			else if(secondlast->getLink() == PlaySquare::DownUp)
+			else if (secondlast->getLink() == PlaySquare::DownUp)
 				last->setLink(PlaySquare::DownUp);
-			else if(secondlast->getLink() == PlaySquare::LeftRight)
+			else if (secondlast->getLink() ==
+				 PlaySquare::LeftRight)
 			{
-				if(secondlast->getGridPos().y() < last->getGridPos().y())
-				{ // last is below secondlast
-					secondlast->setLink(PlaySquare::LeftDown);
-					last->setLink(PlaySquare::UpDown);
+				if (secondlast->getGridPos().y() <
+				    last->getGridPos().y())
+				{ // last is below secondlast.
+				    secondlast->setLink(PlaySquare::LeftDown);
+				    last->setLink(PlaySquare::UpDown);
 				}
 				else
-				{ // last is above secondlast
-					secondlast->setLink(PlaySquare::LeftUp);
-					last->setLink(PlaySquare::DownUp);
+				{ // last is above secondlast.
+				    secondlast->setLink(PlaySquare::LeftUp);
+				    last->setLink(PlaySquare::DownUp);
 				}
 			}
-			else if(secondlast->getLink() == PlaySquare::RightLeft)
+			else if (secondlast->getLink() ==
+				 PlaySquare::RightLeft)
 			{
-				if(secondlast->getGridPos().y() < last->getGridPos().y())
-				{ // last is below secondlast
-					secondlast->setLink(PlaySquare::RightDown);
-					last->setLink(PlaySquare::UpDown);
+				if (secondlast->getGridPos().y() <
+				    last->getGridPos().y())
+				{ // last is below secondlast.
+				   secondlast->setLink(PlaySquare::RightDown);
+				   last->setLink(PlaySquare::UpDown);
 				}
 				else
-				{ // last is above secondlast
-					secondlast->setLink(PlaySquare::RightUp);
-					last->setLink(PlaySquare::DownUp);
+				{ // last is above secondlast.
+				   secondlast->setLink(PlaySquare::RightUp);
+				   last->setLink(PlaySquare::DownUp);
 				}
 			}
 			else
 			{
-				if(secondlast->getGridPos().y() < last->getGridPos().y())
-				{ // last is below secondlast
+				if (secondlast->getGridPos().y() <
+				    last->getGridPos().y())
+				{ // last is below secondlast.
 					last->setLink(PlaySquare::UpDown);
 				}
 				else
-				{ // last is above secondlast
+				{ // last is above secondlast.
 					last->setLink(PlaySquare::DownUp);
 				}
 			}
 		}
 		
-		// Sets the ends
+		// Sets the ends.
 		secondlast->unsetStrokeEnd();
 		last->setStrokeEnd();
 	}
@@ -602,9 +633,9 @@ void PlayArea::updateStrokeLinks()
 
 int PlayArea::getAlignment(Square* s1, Square* s2)
 {
-	if(s1->getGridPos().x() == s2->getGridPos().x())
+	if (s1->getGridPos().x() == s2->getGridPos().x())
 		return COLUMN_ALIGNED;
-	else if(s1->getGridPos().y() == s2->getGridPos().y())
+	else if (s1->getGridPos().y() == s2->getGridPos().y())
 		return ROW_ALIGNED;
 	
 	return NOT_ALIGNED;
@@ -632,35 +663,41 @@ void PlayArea::editModeSetDimensions()
 {
 	bool ok;
 	QString dims = QInputDialog::getText(tr("Dimensions"),
-						 tr("Enter the desired dimensions for your puzzle [width]x[height] (eg: 10x5)"),
+						 tr("Enter the desired "\
+						    "dimensions for your "\
+						    "puzzle [width]x[height]"\
+						    " (eg: 10x5)"),
 						 QLineEdit::Normal,
 						 QString::null, &ok, this );
-	// Cancel pressed
-	if(!ok)
+	// Cancel pressed.
+	if (!ok)
 		return;
 	
 	QStringList ql = QStringList::split(QChar('x'), dims);
-	// There has to be exactly two dimensions
-	if(ql.count() != 2)
+	// There has to be exactly two dimensions.
+	if (ql.count() != 2)
 	{
 		QMessageBox::warning(this, tr("Invalid dimensions"),
-							 tr("The format of the dimensions must be [width]x[height] (eg: 10x5)"));
+				     tr("The format of the dimensions must "\
+					"be [width]x[height] (eg: 10x5)"));
 		return;
 	}
 	
 	QRegExp rx("[0-9]{1,2}");
 	int pos = 0;
 	QRegExpValidator v( rx, 0 );
-	if ( v.validate( ql[0], pos ) && v.validate( ql[1], pos ) )
+	if (v.validate( ql[0], pos ) && v.validate( ql[1], pos ))
 	{
 		int width =  ql[0].toInt();
 		int height = ql[1].toInt();
-		loadPuzzle(new Puzzle(width, height, QPoint(0, 0), QPoint(0, 0), Square::Black));
+		loadPuzzle(new Puzzle(width, height, QPoint(0, 0),
+				      QPoint(0, 0), Square::Black));
 	}
 	else
 	{
 		QMessageBox::warning(this, tr("Invalid dimensions"),
-					tr("The dimensions you provided are invalid"));
+				     tr("The dimensions you provided are "\
+				        "invalid"));
 		return;
 	}
 }
@@ -670,9 +707,9 @@ void PlayArea::printStroke()
 {
 	std::vector<PlaySquare*>::const_iterator i;
 	printf("Stroke: ");
-	for(i = m_vStroke.begin(); i!=m_vStroke.end(); i++)
+	for (i = m_vStroke.begin(); i!=m_vStroke.end(); i++)
 		printf("%d:[%d, %d]; ", (*i)->getStrokePosition(),
-			(*i)->getGridPos().x(),
-			(*i)->getGridPos().y());
+					(*i)->getGridPos().x(),
+					(*i)->getGridPos().y());
 	printf("\n");
 }
