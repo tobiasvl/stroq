@@ -66,7 +66,7 @@ public:
 	Puzzle(Puzzle* srcpuzzle);
 
 	/**
-	 * Builds a puzzle made up of PlaySquares that represent the same Puzzle
+	 * Builds a puzzle made of PlaySquares that represent the same Puzzle
 	 * as the given parameter. This is used to copy a Puzzle loaded from a code
 	 * to a displayable Puzzle.
 	 *
@@ -75,6 +75,11 @@ public:
 	 */
 	Puzzle(Puzzle* srcpuzzle, QCanvas* canvas);
 
+	/**
+	 * Builds a puzzle made of PlaySquares given a code. See previous method.
+	 */
+	Puzzle::Puzzle(QString code, QCanvas *canvas);
+	
 	/**
 	 * Class destructor
 	 */

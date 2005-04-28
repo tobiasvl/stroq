@@ -25,11 +25,7 @@
 #ifndef ABOUTDIALOG_H
 #define ABOUTDIALOG_H
 
-#include <qcanvas.h>
-
 #include "aboutdialogbase.h"
-
-class QCanvasView;
 
 class AboutDialog : public AboutDialogBase
 {
@@ -38,9 +34,6 @@ class AboutDialog : public AboutDialogBase
 public:
 	AboutDialog(QWidget *parent = 0, const char *name = 0,
 				bool modal = true, WFlags fl = 0);
-	
-	QCanvas *aboutCanvas;
-	QCanvasView *aboutCanvasView;
 };
 
 #endif

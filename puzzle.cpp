@@ -166,6 +166,33 @@ Puzzle::Puzzle(Puzzle* originalPuzzle, QCanvas *canvas)
 	}
 }
 
+Puzzle::Puzzle(QString code, QCanvas *canvas)
+{
+	Puzzle *originalPuzzle = new Puzzle(code);
+	PlaySquare *origSquare;
+	
+	m_iWidth = originalPuzzle->getWidth();
+	m_iHeight = originalPuzzle->getHeight();
+	m_qpSolutionStart = originalPuzzle->getSolutionStart();
+	m_qpSolutionEnd = originalPuzzle->getSolutionEnd();
+	
+	allocate();
+	
+	// Copies the squares or playsquares, depending
+	for(int column = 0; column < originalPuzzle->getWidth() + 2; column++)
+	{
+		for(int row = 0; row < originalPuzzle->getHeight() + 2; row++)
+		{
+			origSquare = (PlaySquare*)originalPuzzle->getSquareAt(column, row);
+			setSquare(new PlaySquare(canvas,
+						 origSquare->getGridPos(),
+						 origSquare->getState()));
+		}
+	}
+	
+	delete originalPuzzle;
+}
+
 void Puzzle::allocate(Square::States filler /* = Square::Border*/ )
 {
 	// Allocate the bidimensional array, including the Squares on the borders

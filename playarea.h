@@ -172,7 +172,8 @@ private:
 	Puzzle* m_ppPlayPuzzle; //!< The "playing" puzzle on which the
 				//!< user acts.
 	std::vector<PlaySquare*> m_vStroke; //!< the current stroke
-	
+
+	QCanvas* m_cCanvas;	
 	static const  int NOT_ALIGNED = 0; //!< no alignment
 	static const  int ROW_ALIGNED = 1; //!< horizontal alignment
 	static const  int COLUMN_ALIGNED = 2; //!< column alignment

@@ -27,6 +27,8 @@
 
 #include <qcanvas.h>
 
+#include "puzzle.h"
+
 #include "selectpuzzledialogbase.h"
 
 class QCanvasView;
@@ -40,7 +42,8 @@ public:
 	static QString m_qsPuzzles[];
 	SelectPuzzleDialog(QWidget *parent = 0, const char *name = 0,
 			   bool modal = true, WFlags fl = 0);
-
+	~SelectPuzzleDialog();
+	
 	QCanvas *puzzlePreviewCanvas;
 	QCanvasView *puzzlePreviewCanvasView;
 	QLabel *descriptionLabel;
@@ -90,6 +93,7 @@ private:
 	QString m_qsSelectedCode; /**< The code that was selected (if any) */
 	QPixmap m_qpmCheckmark;
 	QPixmap m_qpmNoCheckmark;
+	Puzzle *m_ppPreviewPuzzle;
 };
 
 #endif

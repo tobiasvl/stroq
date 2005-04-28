@@ -23,13 +23,22 @@
  */
 
 #include <qcanvas.h>
+#include <qpushbutton.h>
+#include <qlabel.h>
+#include <qlayout.h>
+#include <qpixmap.h>
 
+#include "stroqconst.h"
 #include "aboutdialog.h"
+
+#include "images/aboutimage.xpm"
 
 AboutDialog::AboutDialog(QWidget *parent, const char *name, bool modal, WFlags fl)
 			: AboutDialogBase(parent, name, modal, fl)
 {
-				aboutCanvasView = new QCanvasView(aboutFrame);
-				aboutCanvas = new QCanvas(aboutCanvasView->width(),
-										  aboutCanvasView->height());
+	m_plAboutLabel->setPixmap(QPixmap((const char**) aboutimage_xpm));
+	setCaption(tr("About StroQ "));
+	m_pbOK->setText(tr("OK"));
+	
+	connect(m_pbOK, SIGNAL(clicked()), this, SLOT(accept()));
 }

@@ -67,9 +67,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::about()
 {
-	QString v = "<center><h2>StroQ</h2>" +
-		    VERSION + "<p>Luc Vo Van</p></center>";
-	QMessageBox::about(this, tr("About"), tr(v));
+	AboutDialog *ad = new AboutDialog(this);
+	ad->exec();
 }
 
 void MainWindow::aboutQt()

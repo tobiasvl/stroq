@@ -51,13 +51,14 @@ PlayArea::PlayArea(QCanvas *c, QWidget* parent,  const char* name, WFlags f)
 	m_psHighlightedSquare = NULL;
 	m_bButtonPressed = false;
 	m_bEditMode = false;
+	m_cCanvas = c;
 	
 	// The background image.
 	if(!m_qpmBackground)
 	{
 		m_qpmBackground = new QPixmap("images/background.png");
-		canvas()->setBackgroundPixmap(*m_qpmBackground);
-		canvas()->update();
+		m_cCanvas->setBackgroundPixmap(*m_qpmBackground);
+		m_cCanvas->update();
 	}
 }
 
@@ -86,7 +87,7 @@ void PlayArea::contentsMousePressEvent(QMouseEvent* e)
 			// Pick the Square that was under the click and
 			// select it.
 			QPoint p = inverseWorldMatrix().map(e->pos());
-			QCanvasItemList l=canvas()->collisions(p);
+			QCanvasItemList l=m_cCanvas->collisions(p);
 			QCanvasItemList::Iterator it;
 			for (it=l.begin(); it!=l.end(); ++it)
 			{
@@ -111,7 +112,7 @@ void PlayArea::contentsMousePressEvent(QMouseEvent* e)
 	{
 		// We just toggle white to black and vice versa.
 		QPoint p = inverseWorldMatrix().map(e->pos());
-		QCanvasItemList l=canvas()->collisions(p);
+		QCanvasItemList l=m_cCanvas->collisions(p);
 		QCanvasItemList::Iterator it;
 		for (it=l.begin(); it!=l.end(); ++it)
 		{
@@ -134,7 +135,7 @@ void PlayArea::contentsMouseMoveEvent(QMouseEvent* e)
 	{
 		// Pick the Square that was under the cursor and highlight it.
 		QPoint p = inverseWorldMatrix().map(e->pos());
-		QCanvasItemList l=canvas()->collisions(p);
+		QCanvasItemList l=m_cCanvas->collisions(p);
 		if(l.size() > 0) {
 			QCanvasItemList::Iterator it;
 			for (it=l.begin(); it!=l.end(); ++it)
@@ -166,24 +167,31 @@ void PlayArea::contentsMouseMoveEvent(QMouseEvent* e)
 	}
 	else
 	{
+	/*
+	 *  What would be nice here would be to be allowed to toggle the tiles
+	 *  LIVE when holding the mouse button and in edit move. The problem
+	 *  implementing that is that we have to store when we leave the
+	 *  square, we can't just toggle on every move event :
+	 */
+	
 		// Edit mode.
-		if(m_bButtonPressed)
-		{
-			// We just toggle white to black and vice versa.
-			QPoint p = inverseWorldMatrix().map(e->pos());
-			QCanvasItemList l=canvas()->collisions(p);
-			QCanvasItemList::Iterator it;
-			for (it=l.begin(); it!=l.end(); ++it)
-			{
-				// We check the cast of it into a PlaySquare.
-				if ( dynamic_cast<PlaySquare*>(*it) != NULL )
-				{
-					((PlaySquare*)(*it))->toggle();
-					emit puzzleChanged(m_ppPlayPuzzle,
-							   sizeHint());
-				}
-			}
-		}
+// 		if(m_bButtonPressed)
+// 		{
+// 			// We just toggle white to black and vice versa.
+// 			QPoint p = inverseWorldMatrix().map(e->pos());
+// 			QCanvasItemList l=m_cCanvas->collisions(p);
+// 			QCanvasItemList::Iterator it;
+// 			for (it=l.begin(); it!=l.end(); ++it)
+// 			{
+// 				// We check the cast of it into a PlaySquare.
+// 				if ( dynamic_cast<PlaySquare*>(*it) != NULL )
+// 				{
+// 					((PlaySquare*)(*it))->toggle();
+// 					emit puzzleChanged(m_ppPlayPuzzle,
+// 							   sizeHint());
+// 				}
+// 			}
+// 		}
 	}
 }
 
@@ -200,7 +208,7 @@ void PlayArea::contentsMouseDoubleClickEvent(QMouseEvent* e)
 	if (!m_bEditMode)
 	{
 		QPoint p = inverseWorldMatrix().map(e->pos());
-		QCanvasItemList l=canvas()->collisions(p);
+		QCanvasItemList l=m_cCanvas->collisions(p);
 		QCanvasItemList::Iterator it;
 		for (it=l.begin(); it!=l.end(); ++it)
 		{
@@ -380,7 +388,7 @@ void PlayArea::loadPuzzle(Puzzle *puzzle) {
 	}
 	
 	m_ppOriginalPuzzle = puzzle;
-	canvas()->resize((puzzle->getWidth() + 2) * DEFAULT_SIDE,
+	m_cCanvas->resize((puzzle->getWidth() + 2) * DEFAULT_SIDE,
 			 (puzzle->getHeight() + 2) * DEFAULT_SIDE);
 	emit puzzleChanged(m_ppOriginalPuzzle, sizeHint());
 	resetGrid();
@@ -394,13 +402,15 @@ void PlayArea::resetGrid() {
 
 	// Copies qvlOriginalPuzzle into qvlPlayPuzzle replacing all Squares
 	// by PlaySquares.
+	setCanvas(0);
 	if (m_ppPlayPuzzle)
 		delete m_ppPlayPuzzle;
 	
-	m_ppPlayPuzzle = new Puzzle(m_ppOriginalPuzzle, canvas());
+	m_ppPlayPuzzle = new Puzzle(m_ppOriginalPuzzle, m_cCanvas);
 	viewport()->setMouseTracking(true);
 
-	canvas()->update();
+	m_cCanvas->update();
+	setCanvas(m_cCanvas);
 }
 
 
@@ -438,7 +448,9 @@ void PlayArea::toggleStroke()
 		else
 			win = false;
 	}
-	canvas()->update();
+	
+	m_cCanvas->setAllChanged();
+	m_cCanvas->update();
 	
 	if (win)
 	{
@@ -458,7 +470,7 @@ void PlayArea::toggleStroke()
 					 tr("The run was unsuccessful," \
 					    " reset it to try again!"),
 					 QMessageBox::Ok);
-	canvas()->update();
+	m_cCanvas->update();
 }
 
 
@@ -657,6 +669,8 @@ void PlayArea::invertPuzzle()
 {
 	m_ppOriginalPuzzle->invert();
 	m_ppPlayPuzzle->invert();
+	m_cCanvas->setAllChanged();
+	m_cCanvas->update();
 }
 
 void PlayArea::editModeSetDimensions()

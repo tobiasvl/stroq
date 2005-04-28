@@ -30,26 +30,72 @@
 #include <qpixmap.h>
 #include <qsettings.h>
 #include <qmessagebox.h>
-#define PUZZLECOUNT 22
+#include <qwmatrix.h>
 
 #include "selectpuzzledialog.h"
+#include "stroqconst.h"
 
 #include "images/checkmark.xpm"
 
 QString SelectPuzzleDialog::m_qsPuzzles[] = {
+	// 00 - 09
 	"AONAAAKNGLFKI", "AOPAAANOPHLINGC",
 	"AOPAAANOPHLINGK", "BBGAAAACDFKNGDHJMM",
 	"APNAAAIPAGCMBIO", "AOEAAADDMM",
 	"APGAAADAOCIIGBI", "APNAAAMDLHGMJJC",
 	"APLAAABAHBPA", "APEAAAIGBEJO",
 	
+	// 10 - 19
 	"AOEAAAGJJG", "APMAAAIDFGKMB",
 	"APGAAAFFFKKKFFF", "AOLAAAHGNM",
 	"AONAAAILJEOII", "AONAAAPAFMBPA",
 	"AONAAACFFFFCA", "APLAAADINIOA",
 	"ANOAAAFHDKI", "AOEAAADFKM",
 	
+	// 20 - 29
 	"BCCAAAADIPAGACADNPNPFPBM", "APPAAAMBBKDPMPJBDDA",
+	"BCCAAAAAMBODGDOAGAMNJNPM", "BCCAAAADMHNFMAGMAOBPHPDM",
+	"BCBEAAABPLGOLPHFJI", "BCCAAAABPJAJAJPKAEJBMAII",
+	"BCCAAAACADOPOOCCDCACACPI", "BCBEAAAADNKJDFPEAE",
+	"BCBEAAADMDBIHJNICA", "BCCAAAADADABABABIFMNPJEA",
+	
+	// 30 - 39
+	"BBOAAAABPCCFEIJBCKEEPI", "BCBEAAABALJNGLJNAI",
+	"APLAAALKKKOI", "AOEAAABIBI",
+	"AONAAAHFFNFHA", "APPAAAHNAGONFLLAFPA",
+	"APGAAALFCIGBEKN", "BCAMAAACJFPKJE",
+	"AONAAAFGNEENI", "AONAAAHGOLLHA",
+	
+	// 40 - 49
+	"BBGAAAABNLNLJIOGDI", "BCCAAAADAOEEBBAAPCPGPGAE",
+	"BCCAAAADLPJPIPLPLMDCAHAM", "BCCAAAADBOKPLPBOAKICACAI",
+	"BCCAAAADLLKLLIOBLJPMHMPM", "APPAAAICHAOEBNLGPGI",
+	"BCBEAAADAOJEJAAKGE", "APPAAAICKFEBAAEPKAI",
+	"BCCAAAABMAMBMAODOAOBPBHM", "BCCAAAAAPBAJAKJGAFPIJBJI",
+	
+	// 50 - 59
+	"BCBEAAAAPAPDIPKPIM", "BCBEAAADJNAJAIGAGA",
+	"BCBEAAACPFGJPLJPJM", "BCBEAAAAGCPHNPIPKM",
+	"BCBEAAAAGDHKPHJOJE", "BCBEAAACPEGCPHPLAM",
+	"BCBEAAACONFHPLBLBM", "BCBEAAADDEAEMAMEMA",
+	"BCBEAAADIGKEAEMIMI", "BCBEAAAAGBAIGDPHBM",
+	
+	// 60-69
+	"BCCAAAADJPAPAPAOAGBECDJM", "BCCAAAADHGCCIKAAHMFEHOAA",
+	"BCCAAAADJPAPJKAAJPIPKOCE", "BCCAAAAAEBMDEDMFOEPMPJJM",
+	"APGAAAIFOFBOHKB", "BCCAAAABPLAPGNDJJLGPANPI",
+	"BCCAAAADJPNPNPOPHPLPLPJM", "BCCAAAADAOAFAJAIGAPCAEGA",
+	"APPAAAECPNALPECPNAI", "BCCAAAAAHEMJPDHKPKPLPJPA",
+	
+	// 70-79
+	"BCCAAAACIBECKBFAKIFECIBE", "BBKAAAABOIEMIFOMNOIE",
+	"BCCAAAACJEJDGMJAJDGMJCJE", "BCCAAAACJEPDANGJGLAMPCJE",
+	"BCCAAAAAPBPLAPGPGPANPIPA", "BCCAAAAAPAJDGOJGJHGMJAPA",
+	"APPAAAGNKOAKKIDKNLA", "APPAAACINLBIIMGNIKA",
+	"BCCAAAABAKJFGIJAJBGKJFAI", "BCCAAAABAKGEJBAJAIJCGFAI",
+	0,
+	
+	"", "",
 	"", "",
 	"", "",
 	"", "",
@@ -60,27 +106,32 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"", "",
 	"", "",
 	"", "",
+	0
 	};
 
 SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
                                        bool modal, WFlags fl)
 	: SelectPuzzleDialogBase(parent, name, modal, fl)
 {
+	m_ppPreviewPuzzle = NULL;
+	
 	m_qpmCheckmark = QPixmap((const char**) checkmark_xpm);
 	m_qpmNoCheckmark = QPixmap(12, 12);
 	m_qpmNoCheckmark.fill(Qt::white);
 		
 	QBoxLayout *vl = new QVBoxLayout(previewFrame);
 	puzzlePreviewCanvasView = new QCanvasView(previewFrame);
-	puzzlePreviewCanvas = new QCanvas(puzzlePreviewCanvasView->width(),
-					  puzzlePreviewCanvasView->height());
+	puzzlePreviewCanvas = new QCanvas(MAX_SIDE*DEFAULT_SIDE, MAX_SIDE*DEFAULT_SIDE);
+	puzzlePreviewCanvas->setDoubleBuffering(true);
+	
+	puzzlePreviewCanvasView->setCanvas(puzzlePreviewCanvas);
+	
 	descriptionLabel = new QLabel("descriptionLabel", previewFrame);
 	vl->addWidget(puzzlePreviewCanvasView);
 	vl->addWidget(descriptionLabel);
 	
 	// Loads the settings so that we can set wether or not puzzles have
 	// already been solved.
-	
 	loadPuzzleList();
 	
 	connect(codesListBox, SIGNAL(highlighted(const QString &)),
@@ -97,6 +148,12 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	
 }
 
+SelectPuzzleDialog::~SelectPuzzleDialog()
+{
+	if (m_ppPreviewPuzzle)
+		delete m_ppPreviewPuzzle;
+}
+
 QString SelectPuzzleDialog::getPuzzleCode()
 {
 	return m_qsSelectedCode;
@@ -105,6 +162,33 @@ QString SelectPuzzleDialog::getPuzzleCode()
 void SelectPuzzleDialog::previewPuzzle(const QString &puzzlecode)
 {
 	descriptionLabel->setText(puzzlecode);
+	
+	// Don't display the canvas while we delete the old puzzle
+	// and load the new one
+	puzzlePreviewCanvasView->setCanvas(0);
+	
+	if (m_ppPreviewPuzzle)
+		delete m_ppPreviewPuzzle;
+	
+	// Load the puzzle into a temporary variable
+	Puzzle *tmpPuzzle = new Puzzle(puzzlecode);
+	// Set the transformation matrix so that it is centers the
+	// puzzle preview in puzzlePreviewCanvasView
+	QWMatrix m;
+	m.scale(0.5, 0.5); // Zoom out by 2
+	m.translate(puzzlePreviewCanvasView->visibleWidth()
+		- ((DEFAULT_SIDE * (tmpPuzzle->getWidth() + 2))) / 2,
+		puzzlePreviewCanvasView->visibleHeight()
+		- ((DEFAULT_SIDE * (tmpPuzzle->getHeight() + 2))) / 2);
+	puzzlePreviewCanvasView->setWorldMatrix(m);
+	
+	// Load the puzzle in the canvasview
+	m_ppPreviewPuzzle = new Puzzle(tmpPuzzle, puzzlePreviewCanvas);
+	
+	// Delete the temporary variable
+	delete tmpPuzzle;
+	
+	puzzlePreviewCanvasView->setCanvas(puzzlePreviewCanvas);
 }
 
 void SelectPuzzleDialog::selectPuzzle()
@@ -120,6 +204,7 @@ void SelectPuzzleDialog::selectPuzzle(const QString &puzzlecode)
 
 void SelectPuzzleDialog::loadPuzzleList()
 {
+	int i = 0;
 	QSettings settings;
 	settings.setPath("thelemmings.net", "StroQ");
 	
@@ -127,7 +212,7 @@ void SelectPuzzleDialog::loadPuzzleList()
 	codesListBox->clear();
 	codesListBox->setSelectionMode(QListBox::Single);
 	
-	for(int i = 0; i<PUZZLECOUNT; i++)
+	while(m_qsPuzzles[i])
 	{
 		// If entry exists, the puzzle was already solved.
 		if(settings.readBoolEntry("/puzzles/" + m_qsPuzzles[i]))
@@ -136,6 +221,8 @@ void SelectPuzzleDialog::loadPuzzleList()
 		else
 			new QListBoxPixmap(codesListBox, m_qpmNoCheckmark,
 					   m_qsPuzzles[i]);
+		
+		i++;
 	}
 	codesListBox->setCurrentItem(0);
 	codesListBox->sort(true);
@@ -143,6 +230,8 @@ void SelectPuzzleDialog::loadPuzzleList()
 
 void SelectPuzzleDialog::resetSave()
 {
+	int i = 0;
+	
 	// If the user pressed Yes, clear the content of the settings file.
 	if(QMessageBox::question(
 				this,
@@ -152,10 +241,11 @@ void SelectPuzzleDialog::resetSave()
 	{
 		QSettings* settings = new QSettings();
 		settings->setPath("thelemmings.net", "StroQ");
-		for(int i = 0; i<PUZZLECOUNT; i++)
+		while(m_qsPuzzles[i])
 		{
 			// If entry exists, the puzzle was already solved.
 			settings->removeEntry("/puzzles/" + m_qsPuzzles[i]);
+			i++;
 		}
 		// Writes the settings to disk (or wherever).
 		delete settings;
