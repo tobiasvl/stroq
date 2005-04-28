@@ -118,34 +118,38 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	m_qpmCheckmark = QPixmap((const char**) checkmark_xpm);
 	m_qpmNoCheckmark = QPixmap(12, 12);
 	m_qpmNoCheckmark.fill(Qt::white);
-		
+
 	QBoxLayout *vl = new QVBoxLayout(previewFrame);
 	puzzlePreviewCanvasView = new QCanvasView(previewFrame);
-	puzzlePreviewCanvas = new QCanvas(MAX_SIDE*DEFAULT_SIDE, MAX_SIDE*DEFAULT_SIDE);
+	puzzlePreviewCanvasView->setVScrollBarMode(QScrollView::AlwaysOff);
+	puzzlePreviewCanvasView->setHScrollBarMode(QScrollView::AlwaysOff);
+	puzzlePreviewCanvas = new QCanvas(MAX_SIDE*DEFAULT_SIDE,
+					  MAX_SIDE*DEFAULT_SIDE);
 	puzzlePreviewCanvas->setDoubleBuffering(true);
-	
+
 	puzzlePreviewCanvasView->setCanvas(puzzlePreviewCanvas);
-	
+
 	descriptionLabel = new QLabel("descriptionLabel", previewFrame);
 	vl->addWidget(puzzlePreviewCanvasView);
 	vl->addWidget(descriptionLabel);
-	
+
 	// Loads the settings so that we can set wether or not puzzles have
 	// already been solved.
 	loadPuzzleList();
-	
+
 	connect(codesListBox, SIGNAL(highlighted(const QString &)),
 		this, SLOT(previewPuzzle(const QString &)));
 	connect(m_pbReset, SIGNAL(clicked()), this, SLOT(resetSave()));
 	connect(this, SIGNAL(reloadPuzzleList()),
 		this, SLOT(loadPuzzleList()));
-	
+
 	// Selects a puzzle when double clicking on the list
 	// or clicking OK.
 	connect(codesListBox, SIGNAL(selected(const QString &)),
 		this, SLOT(selectPuzzle(const QString &)));
 	connect(m_pbOK, SIGNAL(clicked()),  this, SLOT(selectPuzzle()));
-	
+
+	//previewPuzzle(codesListBox->currentText());
 }
 
 SelectPuzzleDialog::~SelectPuzzleDialog()
@@ -164,28 +168,28 @@ void SelectPuzzleDialog::previewPuzzle(const QString &puzzlecode)
 	descriptionLabel->setText(puzzlecode);
 	
 	// Don't display the canvas while we delete the old puzzle
-	// and load the new one
+	// and load the new one.
 	puzzlePreviewCanvasView->setCanvas(0);
 	
 	if (m_ppPreviewPuzzle)
 		delete m_ppPreviewPuzzle;
 	
-	// Load the puzzle into a temporary variable
+	// Load the puzzle into a temporary variable.
 	Puzzle *tmpPuzzle = new Puzzle(puzzlecode);
-	// Set the transformation matrix so that it is centers the
-	// puzzle preview in puzzlePreviewCanvasView
+	// Set the transformation matrix so that it centers the
+	// puzzle preview in puzzlePreviewCanvasView.
 	QWMatrix m;
-	m.scale(0.5, 0.5); // Zoom out by 2
+	m.scale(0.5, 0.5); // Zoom out by 2.
 	m.translate(puzzlePreviewCanvasView->visibleWidth()
 		- ((DEFAULT_SIDE * (tmpPuzzle->getWidth() + 2))) / 2,
 		puzzlePreviewCanvasView->visibleHeight()
 		- ((DEFAULT_SIDE * (tmpPuzzle->getHeight() + 2))) / 2);
 	puzzlePreviewCanvasView->setWorldMatrix(m);
 	
-	// Load the puzzle in the canvasview
+	// Load the puzzle in the canvasview.
 	m_ppPreviewPuzzle = new Puzzle(tmpPuzzle, puzzlePreviewCanvas);
 	
-	// Delete the temporary variable
+	// Delete the temporary variable.
 	delete tmpPuzzle;
 	
 	puzzlePreviewCanvasView->setCanvas(puzzlePreviewCanvas);
