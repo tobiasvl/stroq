@@ -40,6 +40,7 @@
 #include <qnetworkprotocol.h>
 
 #include "stroqconst.h"
+#include "aboutdialog.h"
 #include "selectpuzzledialog.h"
 #include "mainwindow.h"
 #include "playarea.h"

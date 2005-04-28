@@ -1,0 +1,50 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>AboutDialogBase</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>AboutDialogBase</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>599</width>
+            <height>309</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>aboutDialogBase</string>
+    </property>
+    <property name="modal">
+        <bool>true</bool>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QFrame" row="0" column="0">
+            <property name="name">
+                <cstring>aboutFrame</cstring>
+            </property>
+            <property name="frameShape">
+                <enum>StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Raised</enum>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="1" column="0">
+            <property name="name">
+                <cstring>m_pbOK</cstring>
+            </property>
+            <property name="text">
+                <string>m_pbOK</string>
+            </property>
+            <property name="default">
+                <bool>true</bool>
+            </property>
+        </widget>
+    </grid>
+</widget>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

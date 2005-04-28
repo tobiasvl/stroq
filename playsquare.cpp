@@ -153,8 +153,7 @@ void PlaySquare::toggle()
 void PlaySquare::drawShape(QPainter &painter)
 {
 	QBrush brush;
-	/* painter.fillRect((int)x(), (int)y(), width(), height(),
-					 painter.backgroundColor()); */
+	QColor pathcolor(240, 122, 28, QColor::Rgb) ;
 	
 	// The highlight
 	if(m_bHighlighted)
@@ -171,7 +170,6 @@ void PlaySquare::drawShape(QPainter &painter)
 	*/
 	
 	// The actual square
-
 	switch(m_sState)
 	{
 		case White:
@@ -210,7 +208,7 @@ void PlaySquare::drawShape(QPainter &painter)
 						 (int)y() + 5*DEFAULT_BORDER,
 						 width() - 10*DEFAULT_BORDER,
 						 height() - 10*DEFAULT_BORDER,
-						 QBrush(Qt::yellow));
+						 QBrush(pathcolor));
 	}
 	// Link
 	else if(m_lLink != PlaySquare::None)
@@ -223,26 +221,26 @@ void PlaySquare::drawShape(QPainter &painter)
 				// Vertical line
 				painter.fillRect((int)x() + width()/2 - DEFAULT_BORDER, (int)y(),
 						         2*DEFAULT_BORDER, height(),
-  						         QBrush(Qt::yellow));
+  						         QBrush(pathcolor));
 				break;
 			case LeftRight:
 			case RightLeft:
 				// Horizontal line
 				painter.fillRect((int)x(), (int)y() + height()/2 - DEFAULT_BORDER,
 								 width(), 2*DEFAULT_BORDER,
-								 QBrush(Qt::yellow));
+								 QBrush(pathcolor));
 				break;
 			case LeftUp:
 			case UpLeft:
 				// Left to middle
 				painter.fillRect((int)x(), (int)y() + height()/2 - DEFAULT_BORDER,
 								 width()/2 + DEFAULT_BORDER,  2*DEFAULT_BORDER,
-								 QBrush(Qt::yellow));
+								 QBrush(pathcolor));
 				// Middle to up
 				painter.fillRect((int)x() + width() /2 - DEFAULT_BORDER,
 								 (int)y(),
 								 2*DEFAULT_BORDER,  height()/2 + DEFAULT_BORDER,
-								 QBrush(Qt::yellow));				
+								 QBrush(pathcolor));				
 				break;
 			case RightUp:
 			case UpRight:
@@ -250,25 +248,25 @@ void PlaySquare::drawShape(QPainter &painter)
 				painter.fillRect((int)x() + width()/2 - DEFAULT_BORDER,
 								 (int)y() + height()/2 - DEFAULT_BORDER,
 								 width(),  2*DEFAULT_BORDER,
-								 QBrush(Qt::yellow));
+								 QBrush(pathcolor));
 				// Middle to up
 				painter.fillRect((int)x() + width() /2 - DEFAULT_BORDER,
 								 (int)y(),
 								 2*DEFAULT_BORDER,  height()/2 + DEFAULT_BORDER,
-								 QBrush(Qt::yellow));	
+								 QBrush(pathcolor));	
 				break;
 			case LeftDown:
 			case DownLeft:
 				// Left to middle
 				painter.fillRect((int)x(), (int)y() + height()/2 - DEFAULT_BORDER,
 								 width()/2 + DEFAULT_BORDER,  2*DEFAULT_BORDER,
-								 QBrush(Qt::yellow));
+								 QBrush(pathcolor));
 				// Middle to down
 				painter.fillRect((int)x() + width() /2 - DEFAULT_BORDER,
 								 (int)y() + width() /2 - DEFAULT_BORDER,
 								 2*DEFAULT_BORDER,
 								 height(),
-								 QBrush(Qt::yellow));
+								 QBrush(pathcolor));
 				break;
 			case RightDown:
 			case DownRight:
@@ -276,13 +274,13 @@ void PlaySquare::drawShape(QPainter &painter)
 				painter.fillRect((int)x() + width()/2 - DEFAULT_BORDER,
 								 (int)y() + height()/2 - DEFAULT_BORDER,
 								 width(),  2*DEFAULT_BORDER,
-								 QBrush(Qt::yellow));
+								 QBrush(pathcolor));
 				// Middle to down
 				painter.fillRect((int)x() + width() /2 - DEFAULT_BORDER,
 								 (int)y() + width() /2 - DEFAULT_BORDER,
 								 2*DEFAULT_BORDER,
 								 height(),
-								 QBrush(Qt::yellow));
+								 QBrush(pathcolor));
 				break;
 			case None:
 				break;
