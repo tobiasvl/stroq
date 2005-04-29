@@ -52,13 +52,14 @@ Description    :   A Puzzle contains dimensions, Squares, hint positions
  * 5) The next 2*bitwidth bits are the row and height of the end of a solution
  *    to the puzzle (hint 2). This is of course the end of the solution hinted
  *    in the previous step
- * 6) The next width*height bits are the content of the puzzle, 1 for black squares
- *    0 for whites
+ * 6) The next width*height bits are the content of the puzzle, 1 for black
+ *    squares 0 for whites
  * 7) The remaining bits are ignored as the puzzle code is right padded with 0s
  *    until it is a factor of 8.
  *
  * In brief:
- *  [bitwidth][width*][height*][row sol1*][col sol1*][row sol2*][col sol2*][content]
+ *  [bitwidth][width*][height*][row sol1*][col sol1*][row sol2*][col sol2*]
+ *         ... [content]
  *  parameters noted with a * use 'bitwidth' bits.
  */
 Puzzle::Puzzle(QString code)

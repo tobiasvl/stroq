@@ -193,7 +193,8 @@ void SelectPuzzleDialog::previewPuzzle(int i)
 	if(solutionLength != -1)
 	{
 		// Puzzle has been solved in the past
-		labelText = QString(" #%1  Dimensions: %2x%3  Best stroke: <font color=\"red\"><b>%4</b></font>")
+		labelText = QString(" #%1  Dimensions: %2x%3  Best stroke: "
+							"<font color=\"red\"><b>%4</b></font>")
 			.arg(i)
 			.arg(m_ppPreviewPuzzle->getWidth())
 			.arg(m_ppPreviewPuzzle->getHeight())
@@ -201,7 +202,8 @@ void SelectPuzzleDialog::previewPuzzle(int i)
 	}
 	else
 	{
-		labelText = QString(" #%1  Dimensions: %2x%3  <font color=\"red\"><b>Not solved yet!</b></font>")
+		labelText = QString(" #%1  Dimensions: %2x%3  <font color=\"red\">"
+							"<b>Not solved yet!</b></font>")
 			.arg(i)
 			.arg(m_ppPreviewPuzzle->getWidth())
 			.arg(m_ppPreviewPuzzle->getHeight());

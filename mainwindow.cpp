@@ -122,6 +122,7 @@ void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 	
 	// Changes the window's size
 	sizeHint.setHeight(sizeHint.height() + menuBar()->height());
+	setMaximumSize(sizeHint);
 	resize(sizeHint);
 }
 
@@ -139,7 +140,8 @@ void MainWindow::enterPuzzleCode()
 			playArea->loadPuzzle(new Puzzle(code));
 		else
 		{
-			QString errmsg = QString("%1 is not a valid StroQ puzzle code") .arg(code);
+			QString errmsg = QString("%1 is not a valid StroQ puzzle code")
+									.arg(code);
 			QMessageBox::warning(this, tr("Code input error"),
 			errmsg,
 			QMessageBox::Ok, 0, 0);

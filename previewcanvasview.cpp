@@ -27,7 +27,8 @@
 
 #include "previewcanvasview.h"
 
-PreviewCanvasView::PreviewCanvasView(QWidget * parent, const char * name, WFlags f)
+PreviewCanvasView::PreviewCanvasView(QWidget * parent,
+									 const char * name, WFlags f)
 	 : QCanvasView(parent, name, f)
 {
 }
