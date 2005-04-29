@@ -52,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 	// Screws up on fluxbox??
 	// statusBar()->setSizeGripEnabled(false);
 	m_sCurrentCode = tr("(No puzzle loaded)");
+	m_bFirstDisplay = true;
 
 	createGameArea();
 	createActions();
@@ -80,9 +81,7 @@ void MainWindow::selectPuzzle()
 {
 	SelectPuzzleDialog *spd = new SelectPuzzleDialog(this);
 	if(spd->exec() == QDialog::Accepted)
-	{
 		playArea->loadPuzzle(new Puzzle(spd->getPuzzleCode()));
-	}
 }
 
 void MainWindow::toggleEditMode()
@@ -90,7 +89,6 @@ void MainWindow::toggleEditMode()
 	playArea->toggleEditMode();
 	newEditPuzzleAct->setEnabled(playArea->getEditMode());
 	invertPuzzleAct->setEnabled(playArea->getEditMode());
-	copyPuzzleCodeAct->setEnabled(playArea->getEditMode());
 	
 	if(playArea->getEditMode())
 		setCaption("StroQ: Edit mode");
@@ -124,6 +122,7 @@ void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 	
 	// Changes the window's size
 	sizeHint.setHeight(sizeHint.height() + menuBar()->height());
+	resize(sizeHint);
 }
 
 void MainWindow::enterPuzzleCode()
@@ -133,9 +132,19 @@ void MainWindow::enterPuzzleCode()
 					     "Enter the puzzle code:",
 					     QLineEdit::Normal,
 					     QString::null, &ok, this );
+	code = code.upper();
 	if ( ok && !code.isEmpty() )
 	{
-		playArea->loadPuzzle(new Puzzle(code));
+		if(Puzzle::isCodeValid(code))
+			playArea->loadPuzzle(new Puzzle(code));
+		else
+		{
+			QString errmsg = QString("%1 is not a valid StroQ puzzle code") .arg(code);
+			QMessageBox::warning(this, tr("Code input error"),
+			errmsg,
+			QMessageBox::Ok, 0, 0);
+		}
+
 	}
 }
 
@@ -143,10 +152,15 @@ void MainWindow::enterPuzzleCode()
 
 void MainWindow::downloadPuzzleOfTheDay()
 {
+	QMessageBox::warning(this, tr("Not implemented"),
+			tr("This functionality is not yet implemented"),
+			QMessageBox::Ok, 0, 0);
+	/*
 	qInitNetworkProtocols();
 	QUrlOperator op(POTD_URL);
 	op.get();
 	m_baReceivedData = new QByteArray();
+	*/
 }
 
 void MainWindow::downloadPuzzleOfTheDayData(const QByteArray &data,
@@ -253,16 +267,15 @@ void MainWindow::createMenus()
 	playMenu = new QPopupMenu(this);
 	resetPuzzleAct->addTo(playMenu);
 	runPuzzleAct->addTo(playMenu);
+	copyPuzzleCodeAct->addTo(playMenu);
 	
 	editMenu = new QPopupMenu(this);
 	editPuzzleAct->addTo(editMenu);
 	newEditPuzzleAct->addTo(editMenu);
 	invertPuzzleAct->addTo(editMenu);
-	copyPuzzleCodeAct->addTo(editMenu);
 	
 	newEditPuzzleAct->setEnabled(false);
 	invertPuzzleAct->setEnabled(false);
-	copyPuzzleCodeAct->setEnabled(false);
 	
 	menuBar()->insertItem(tr("&Puzzle"), puzzleMenu); // 0
 	menuBar()->insertItem(tr("&Play"), playMenu);     // 1
@@ -284,8 +297,18 @@ void MainWindow::createGameArea()
 
 void MainWindow::loadFirstPuzzle()
 {
-	playArea->loadPuzzle(new Puzzle("AOEAAAFFFF"));
+	playArea->loadPuzzle(new Puzzle("AONAAAKNGLFKI"));
 	playArea->show();
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+	if(m_bFirstDisplay)
+	{
+		m_bFirstDisplay = false;
+		resize(event->size().width(),
+			event->size().height() + menuBar()->height());
+	}
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

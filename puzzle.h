@@ -74,7 +74,7 @@ public:
 	 * @param canvas QCanvas on which to display the resulting puzzle
 	 */
 	Puzzle(Puzzle* srcpuzzle, QCanvas* canvas);
-
+	
 	/**
 	 * Builds a puzzle made of PlaySquares given a code. See previous method.
 	 */
@@ -84,6 +84,14 @@ public:
 	 * Class destructor
 	 */
 	~Puzzle();
+	
+	/**
+	 * Returns true if the given code is valid, false otherwise
+	 *
+	 * @param code the code to check
+	 */
+	static bool isCodeValid(QString code);
+
 	
 	/**
 	 * Sets a Square on the Puzzle. The Square contains the coordinates for
@@ -162,7 +170,7 @@ private:
 	 *
 	 * @param number number to print out
 	 */
-	void printbin(int number);
+	static void printbin(int number);
 	
 	/**
 	 * Concatenates the binary representation of a number to a QString
@@ -170,7 +178,7 @@ private:
 	 * @param dest the QString to which to concatenate
 	 * @param number the number to calculate the binary value of
 	 */
-	void getBin(QString& dest, int number);
+	static void getBin(QString& dest, int number);
 	
 	/**
  	 * Concatenates the binary representation of a number to a QString and pads
@@ -182,7 +190,7 @@ private:
 	 * @param number the number to calculate the binary value of
 	 * @param length length up to which to pad with 0s (0s added at the end)
 	 */
-	void getBin(QString& dest, int number, unsigned int length);
+	static void getBin(QString& dest, int number, unsigned int length);
 	
 	/**
 	 * Returns the integer value of a given QString made up of 0s and 1s
@@ -192,7 +200,7 @@ private:
 	 * @param binstring Binary string to evaluate
 	 * @return the integer value of binstring
 	 */
-	int evalBin(QString binstring);
+	static unsigned int evalBin(QString binstring);
 	
 	/**
 	 * DEBUG: Prints out the specs of the puzzle to standard output

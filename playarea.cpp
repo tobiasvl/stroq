@@ -202,10 +202,9 @@ void PlayArea::contentsMouseReleaseEvent (QMouseEvent* e)
 		m_bButtonPressed = false;
 }
 
-
 void PlayArea::contentsMouseDoubleClickEvent(QMouseEvent* e)
 {
-	if (!m_bEditMode)
+	if (!m_bEditMode && e->button() == 1)
 	{
 		QPoint p = inverseWorldMatrix().map(e->pos());
 		QCanvasItemList l=m_cCanvas->collisions(p);
@@ -390,7 +389,7 @@ void PlayArea::loadPuzzle(Puzzle *puzzle) {
 	m_ppOriginalPuzzle = puzzle;
 	m_cCanvas->resize((puzzle->getWidth() + 2) * DEFAULT_SIDE,
 			 (puzzle->getHeight() + 2) * DEFAULT_SIDE);
-	emit puzzleChanged(m_ppOriginalPuzzle, sizeHint());
+	emit puzzleChanged(m_ppOriginalPuzzle, m_cCanvas->size());
 	resetGrid();
 }
 
@@ -439,13 +438,7 @@ void PlayArea::toggleStroke()
 		
 		// Row cleared, one color was absent, the other color filled
 		// the row.
-		if (countwhite == 0 || countblack == 0)
-		{
-			for (col = 1; col <= m_ppOriginalPuzzle->getWidth();
-			     col++)
-	       m_ppPlayPuzzle->getSquareAt(col,row)->setState(Square::Border);
-		}
-		else
+		if (!(countwhite == 0 || countblack == 0))
 			win = false;
 	}
 	
@@ -455,7 +448,8 @@ void PlayArea::toggleStroke()
 	if (win)
 	{
 		QMessageBox::information(this, tr("Congratulations"),
-					 tr("You solved this puzzle!"),
+					 QString(tr("You solved this puzzle with a %1 strokes!")
+					  .arg((int) m_vStroke.size())),
 					 QMessageBox::Ok);
 		
 		// Store the success in the settings.
@@ -463,7 +457,16 @@ void PlayArea::toggleStroke()
 		settings.setPath("thelemmings.net", "StroQ");
 		QString settingkey = "/puzzles/" +
 				     m_ppOriginalPuzzle->getCode();
-		settings.writeEntry(settingkey, true);
+		
+		// Save the length of the solution, if this one is shorter
+		int solutionLength = settings.readNumEntry(settingkey, -1);
+		printf("%d\n", solutionLength);
+		if(solutionLength == -1
+		||
+		    (int) m_vStroke.size() < solutionLength)
+		{
+			settings.writeEntry(settingkey, (int) m_vStroke.size());
+		}
 	}
 	else
 		QMessageBox::information(this, tr("Sorry"),

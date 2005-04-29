@@ -37,7 +37,14 @@ AboutDialog::AboutDialog(QWidget *parent, const char *name, bool modal, WFlags f
 			: AboutDialogBase(parent, name, modal, fl)
 {
 	m_plAboutIcon->setPixmap(QPixmap((const char**) aboutimage_xpm));
-	QString aboutString = "StroQ" + VERSION + tr("<br/>");
+	QString aboutString = "<b>StroQ " + VERSION + "</b><br/><br/>" +
+				"StroQ - A Polarium/Chokkan Hitofude Clone<br/><br/>" +
+				"Copyright (C) 2005 Luc Vo Van<br/>" +
+				"This program is free software; you can redistribute it and/or modify " +
+				"it under the terms of the GNU General Public License as published by " +
+				"the Free Software Foundation; either version 2 of the License, or " +
+				"any later version.<br/>";
+
 	m_plAboutText->setTextFormat(Qt::RichText);
 	m_plAboutText->setText(aboutString);
 	setCaption(tr("About StroQ "));

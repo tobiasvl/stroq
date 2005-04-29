@@ -16,27 +16,33 @@
  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  Boston, MA 02111-1307, USA.
  
- Class          :   --
+ Class          :   PreviewCanvasView
  Author         :   Luc Vo Van
- Original Date  :   19.05.2005
- Description    :   This file contains global constants
+ Original Date  :   29.05.2005
+ Description    :   The preview canvasview that centers the preview
  
  */
+ 
+#ifndef PREVIEWCANVASVIEW_H
+#define PREVIEWCANVASVIEW_H
+ 
+#include <qcanvas.h>
+ 
+class QCanvasView;
+ 
+class PreviewCanvasView : public QCanvasView
+{
+	Q_OBJECT
+	
+public:
+	PreviewCanvasView(QWidget * parent = 0, const char * name = 0, WFlags f = 0);
 
-#ifndef STROQCONST_H
-#define STROQCONST_H
-  
-  const QString VERSION = "0.2"; /**< StroQ's version string */
+signals:
+	void shown();
+	
+protected:
+	void showEvent(QShowEvent *);
 
-  /**
-   * URL to the puzzle of the day
-   */
-  const QString POTD_URL = "http://stroq.sourceforge.net/potd";
-
-  const unsigned int MAX_SIDE = 63;	 /**< Maximum size number of squares on the */
-				 /**< side of a Puzzle (max squares is */
-				 /**< pow(MAX_SIDE, 2) */
-  const unsigned int DEFAULT_SIDE = 50;  /**< Default size of a square, in pixels */
-  const unsigned int DEFAULT_BORDER = 2; /**< Default border for each square in pixels */
+};
 
 #endif

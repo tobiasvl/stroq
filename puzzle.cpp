@@ -66,23 +66,27 @@ Puzzle::Puzzle(QString code)
 	QString ucode = code.upper();
 	QString bincode = "";
 	unsigned int offset = 0;
+
 	for(unsigned int i = 0; i < ucode.length(); i++)
 		getBin(bincode, ucode[i].unicode()-65, 4);
 	
+	// Reads the bitwidth, first 6 bits
 	unsigned int bitwidth = evalBin(bincode.left(6));
 	offset += 6;
 	
+	// Reads the dimensions
 	m_iWidth  = evalBin(bincode.mid(offset, bitwidth));
 	offset += bitwidth;
 	m_iHeight = evalBin(bincode.mid(offset, bitwidth));
 	offset += bitwidth;
 	allocate();
 	
+	// Reads the solution hints
 	m_qpSolutionStart = QPoint(
 					evalBin(bincode.mid(offset, bitwidth)),
 					evalBin(bincode.mid(offset + bitwidth, bitwidth)));
 	offset += 2* bitwidth;
-	m_qpSolutionStart = QPoint(
+	m_qpSolutionEnd = QPoint(
 					evalBin(bincode.mid(offset, bitwidth)),
 					evalBin(bincode.mid(offset + bitwidth, bitwidth)));
 	offset += 2* bitwidth;
@@ -238,6 +242,49 @@ Puzzle::~Puzzle()
 	delete m_pArray;
 }
 
+bool Puzzle::isCodeValid(QString code)
+{
+	QString ucode = code.upper();
+	QString bincode = "";
+	unsigned int offset = 0, width, height;
+
+	for(unsigned int i = 0; i < ucode.length(); i++)
+		getBin(bincode, ucode[i].unicode()-65, 4);
+	
+	unsigned int bitwidth = evalBin(bincode.left(6));
+	offset += 6;
+	
+	width  = evalBin(bincode.mid(offset, bitwidth));
+	if(width > MAX_SIDE)
+		return false;
+	offset += bitwidth;
+	
+	height = evalBin(bincode.mid(offset, bitwidth));
+	if(height > MAX_SIDE)
+		return false;
+	offset += bitwidth;
+	
+	// SolStart within the boundaries of the puzzle
+	if(evalBin(bincode.mid(offset, bitwidth)) > width)
+		return false;
+	if(evalBin(bincode.mid(offset + bitwidth, bitwidth)) > height)
+		return false;
+	offset += 2* bitwidth;
+	
+	// SolEnd within the boundaries of the puzzle
+	if(evalBin(bincode.mid(offset, bitwidth)) > width)
+		return false;
+	if(evalBin(bincode.mid(offset + bitwidth, bitwidth)) > height)
+		return false;
+	offset += 2* bitwidth;
+
+	// Checks if there is enough square data following the header
+	if(bincode.length() - offset < (height*width))
+		return false;
+		
+	// Everything seems to be fine
+	return true;
+}
 
 void Puzzle::setSquare(Square* square)
 {
@@ -393,7 +440,7 @@ void Puzzle::getBin(QString& res, int n, unsigned int length)
 	res = res + tmp.rightJustify(length, QChar('0'));
 }
 
-int Puzzle::evalBin(QString toeval)
+unsigned int Puzzle::evalBin(QString toeval)
 {
 	int res = 0;
 	for(unsigned int i = 0; i<toeval.length(); i++)

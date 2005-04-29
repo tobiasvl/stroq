@@ -30,6 +30,7 @@
 #include "puzzle.h"
 
 #include "selectpuzzledialogbase.h"
+#include "previewcanvasview.h"
 
 class QCanvasView;
 class QLabel;
@@ -45,7 +46,7 @@ public:
 	~SelectPuzzleDialog();
 	
 	QCanvas *puzzlePreviewCanvas;
-	QCanvasView *puzzlePreviewCanvasView;
+	PreviewCanvasView *puzzlePreviewCanvasView;
 	QLabel *descriptionLabel;
 
 	QString getPuzzleCode();
@@ -62,7 +63,12 @@ public slots:
 	*
 	* @param puzzlecode Code of the puzzle to preview
 	*/
-	void previewPuzzle(const QString &puzzlecode);
+	void previewPuzzle(int);
+	
+	/**
+	 *
+	 */
+	 void calibratePreviewCanvasView();
 	
 	/**
 	* Selects a puzzle using the currently selected puzzle
@@ -76,7 +82,7 @@ public slots:
 	*
 	* @param puzzlecode Code of the puzzle to select
 	*/
-	void selectPuzzle(const QString &puzzlecode);
+	void selectPuzzle(int selectedIndex);
 	
 	/**
 	 * Loads the puzzle list into the dialog (with checkmarks

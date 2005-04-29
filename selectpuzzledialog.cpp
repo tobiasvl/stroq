@@ -93,13 +93,14 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCCAAAAAPBPLAPGPGPANPIPA", "BCCAAAAAPAJDGOJGJHGMJAPA",
 	"APPAAAGNKOAKKIDKNLA", "APPAAACINLBIIMGNIKA",
 	"BCCAAAABAKJFGIJAJBGKJFAI", "BCCAAAABAKGEJBAJAIJCGFAI",
-	0,
 	
-	"", "",
-	"", "",
-	"", "",
-	"", "",
-	"", "",
+	// 80-89
+	"APPAAAICHBBCAEEHCAI", "BBOAAAACANNLLHGEMBJDAE",
+	"BBOAAAACANNKLBGEMBJDAE", "APPAAADIFDBMBOOCAOA",
+	"APPAAAGNCGAMBEEFAEA", "APPAAAOPKOOLOJDNPBI",
+	"APPAAABAFBBEBEEFAEA", "APPAAALLKPLMBOPAHLI",
+	"APPAAAOPAGPMBPLAHLI", "APPAAADMIHOCAPIIEPA",
+	0,
 	
 	"", "",
 	"", "",
@@ -120,7 +121,7 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	m_qpmNoCheckmark.fill(Qt::white);
 
 	QBoxLayout *vl = new QVBoxLayout(previewFrame);
-	puzzlePreviewCanvasView = new QCanvasView(previewFrame);
+	puzzlePreviewCanvasView = new PreviewCanvasView(previewFrame);
 	puzzlePreviewCanvasView->setVScrollBarMode(QScrollView::AlwaysOff);
 	puzzlePreviewCanvasView->setHScrollBarMode(QScrollView::AlwaysOff);
 	puzzlePreviewCanvas = new QCanvas(MAX_SIDE*DEFAULT_SIDE,
@@ -130,26 +131,27 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	puzzlePreviewCanvasView->setCanvas(puzzlePreviewCanvas);
 
 	descriptionLabel = new QLabel("descriptionLabel", previewFrame);
+	descriptionLabel->setTextFormat(Qt::RichText);
 	vl->addWidget(puzzlePreviewCanvasView);
 	vl->addWidget(descriptionLabel);
 
-	// Loads the settings so that we can set wether or not puzzles have
-	// already been solved.
-	loadPuzzleList();
-
-	connect(codesListBox, SIGNAL(highlighted(const QString &)),
-		this, SLOT(previewPuzzle(const QString &)));
+	connect(codesListBox, SIGNAL(highlighted(int)),
+		this, SLOT(previewPuzzle(int)));
 	connect(m_pbReset, SIGNAL(clicked()), this, SLOT(resetSave()));
 	connect(this, SIGNAL(reloadPuzzleList()),
 		this, SLOT(loadPuzzleList()));
 
 	// Selects a puzzle when double clicking on the list
 	// or clicking OK.
-	connect(codesListBox, SIGNAL(selected(const QString &)),
-		this, SLOT(selectPuzzle(const QString &)));
+	connect(codesListBox, SIGNAL(selected(int)),
+		this, SLOT(selectPuzzle(int)));
 	connect(m_pbOK, SIGNAL(clicked()),  this, SLOT(selectPuzzle()));
+	
+	connect(puzzlePreviewCanvasView, SIGNAL(shown()), this, SLOT(calibratePreviewCanvasView()));
 
-	//previewPuzzle(codesListBox->currentText());
+	// Loads the settings so that we can set wether or not puzzles have
+	// already been solved.
+	loadPuzzleList();
 }
 
 SelectPuzzleDialog::~SelectPuzzleDialog()
@@ -163,10 +165,14 @@ QString SelectPuzzleDialog::getPuzzleCode()
 	return m_qsSelectedCode;
 }
 
-void SelectPuzzleDialog::previewPuzzle(const QString &puzzlecode)
+void SelectPuzzleDialog::previewPuzzle(int i)
 {
-	descriptionLabel->setText(puzzlecode);
-	
+	QString puzzlecode = m_qsPuzzles[i];
+	QString labelText;
+	QSettings settings;
+	settings.setPath("thelemmings.net", "StroQ");
+	int solutionLength;
+
 	// Don't display the canvas while we delete the old puzzle
 	// and load the new one.
 	puzzlePreviewCanvasView->setCanvas(0);
@@ -176,18 +182,32 @@ void SelectPuzzleDialog::previewPuzzle(const QString &puzzlecode)
 	
 	// Load the puzzle into a temporary variable.
 	Puzzle *tmpPuzzle = new Puzzle(puzzlecode);
-	// Set the transformation matrix so that it centers the
-	// puzzle preview in puzzlePreviewCanvasView.
-	QWMatrix m;
-	m.scale(0.5, 0.5); // Zoom out by 2.
-	m.translate(puzzlePreviewCanvasView->visibleWidth()
-		- ((DEFAULT_SIDE * (tmpPuzzle->getWidth() + 2))) / 2,
-		puzzlePreviewCanvasView->visibleHeight()
-		- ((DEFAULT_SIDE * (tmpPuzzle->getHeight() + 2))) / 2);
-	puzzlePreviewCanvasView->setWorldMatrix(m);
 	
 	// Load the puzzle in the canvasview.
 	m_ppPreviewPuzzle = new Puzzle(tmpPuzzle, puzzlePreviewCanvas);
+	
+	calibratePreviewCanvasView();
+	
+	// Sets the label
+	solutionLength = settings.readNumEntry("/puzzles/" + puzzlecode, -1);
+	if(solutionLength != -1)
+	{
+		// Puzzle has been solved in the past
+		labelText = QString(" #%1  Dimensions: %2x%3  Best stroke: <font color=\"red\"><b>%4</b></font>")
+			.arg(i)
+			.arg(m_ppPreviewPuzzle->getWidth())
+			.arg(m_ppPreviewPuzzle->getHeight())
+			.arg(solutionLength);
+	}
+	else
+	{
+		labelText = QString(" #%1  Dimensions: %2x%3  <font color=\"red\"><b>Not solved yet!</b></font>")
+			.arg(i)
+			.arg(m_ppPreviewPuzzle->getWidth())
+			.arg(m_ppPreviewPuzzle->getHeight());
+	}
+	descriptionLabel->setText(labelText);
+
 	
 	// Delete the temporary variable.
 	delete tmpPuzzle;
@@ -195,14 +215,28 @@ void SelectPuzzleDialog::previewPuzzle(const QString &puzzlecode)
 	puzzlePreviewCanvasView->setCanvas(puzzlePreviewCanvas);
 }
 
-void SelectPuzzleDialog::selectPuzzle()
+void SelectPuzzleDialog::calibratePreviewCanvasView()
 {
-	selectPuzzle(codesListBox->currentText());
+	// Set the transformation matrix so that it centers the
+	// puzzle preview in puzzlePreviewCanvasView.
+	QWMatrix m;
+	m.scale(0.5, 0.5); // Zoom out by 2.
+	m.translate(puzzlePreviewCanvasView->visibleWidth()
+		- ((DEFAULT_SIDE * (m_ppPreviewPuzzle->getWidth() + 2))) / 2,
+		puzzlePreviewCanvasView->visibleHeight()
+		- ((DEFAULT_SIDE * (m_ppPreviewPuzzle->getHeight() + 2))) / 2);
+	puzzlePreviewCanvasView->setWorldMatrix(m);
+
 }
 
-void SelectPuzzleDialog::selectPuzzle(const QString &puzzlecode)
+void SelectPuzzleDialog::selectPuzzle()
 {
-	m_qsSelectedCode = puzzlecode;
+	selectPuzzle(codesListBox->currentItem());
+}
+
+void SelectPuzzleDialog::selectPuzzle(int selectedIndex)
+{
+	m_qsSelectedCode = m_qsPuzzles[selectedIndex];
 	accept();
 }
 
@@ -219,17 +253,18 @@ void SelectPuzzleDialog::loadPuzzleList()
 	while(m_qsPuzzles[i])
 	{
 		// If entry exists, the puzzle was already solved.
-		if(settings.readBoolEntry("/puzzles/" + m_qsPuzzles[i]))
+		if(settings.readNumEntry("/puzzles/" + m_qsPuzzles[i]))
+		{
 			new QListBoxPixmap(codesListBox, m_qpmCheckmark,
-			 		   m_qsPuzzles[i]);
+					   QString::number(i));
+		}
 		else
 			new QListBoxPixmap(codesListBox, m_qpmNoCheckmark,
-					   m_qsPuzzles[i]);
+					   QString::number(i));
 		
 		i++;
 	}
 	codesListBox->setCurrentItem(0);
-	codesListBox->sort(true);
 }
 
 void SelectPuzzleDialog::resetSave()

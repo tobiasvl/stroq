@@ -49,6 +49,7 @@ class MainWindow : public QMainWindow
   ~MainWindow();
 
  protected:
+  void resizeEvent(QResizeEvent *);
   void closeEvent(QCloseEvent *event);
   
  public slots:
@@ -143,12 +144,12 @@ class MainWindow : public QMainWindow
   QPopupMenu *playMenu;
   QAction *resetPuzzleAct;
   QAction *runPuzzleAct;
+  QAction *copyPuzzleCodeAct;
   
   // Edit menu
   QPopupMenu *editMenu;
   QAction *newEditPuzzleAct;
   QAction *invertPuzzleAct;
-  QAction *copyPuzzleCodeAct;
   
   // Game area
   QCanvas *mainCanvas;
@@ -158,7 +159,8 @@ class MainWindow : public QMainWindow
   QByteArray *m_baReceivedData;
   
   QString m_sCurrentCode;
-
+  
+  bool m_bFirstDisplay; /**< used to resize the window properly */
 };
 
 #endif
