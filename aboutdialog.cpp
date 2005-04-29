@@ -36,7 +36,10 @@
 AboutDialog::AboutDialog(QWidget *parent, const char *name, bool modal, WFlags fl)
 			: AboutDialogBase(parent, name, modal, fl)
 {
-	m_plAboutLabel->setPixmap(QPixmap((const char**) aboutimage_xpm));
+	m_plAboutIcon->setPixmap(QPixmap((const char**) aboutimage_xpm));
+	QString aboutString = "StroQ" + VERSION + tr("<br/>");
+	m_plAboutText->setTextFormat(Qt::RichText);
+	m_plAboutText->setText(aboutString);
 	setCaption(tr("About StroQ "));
 	m_pbOK->setText(tr("OK"));
 	

@@ -76,6 +76,9 @@ mouse. StroQ runs under Windows, Linux/*BSD and Mac OSX.
      in the near future. Sorry about that.
        
 5. Thanks and Credits
+     Contribution by Ahmad Ait Mouss (code), XiaoGuang Li for some of the
+     graphics.
+
      I would like to thank everyone from #tukif for their trollesque support
      as well as my colleagues for making me realize that playing small games
      can definitely be fun. Thanks to Trolltech for making Qt freely available
