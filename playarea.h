@@ -57,7 +57,7 @@ public:
 protected:
 	void contentsMousePressEvent(QMouseEvent*);
 	void contentsMouseMoveEvent(QMouseEvent*);
-	void contentsMouseReleaseEvent (QMouseEvent*);
+	void contentsMouseReleaseEvent(QMouseEvent*);
 	void contentsMouseDoubleClickEvent(QMouseEvent*);
 
 signals:

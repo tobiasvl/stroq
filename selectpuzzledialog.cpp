@@ -24,6 +24,7 @@
 
 #include <qcanvas.h>
 #include <qlayout.h>
+#include <qhbox.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qlistbox.h>
@@ -130,10 +131,18 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 
 	puzzlePreviewCanvasView->setCanvas(puzzlePreviewCanvas);
 
-	descriptionLabel = new QLabel("descriptionLabel", previewFrame);
-	descriptionLabel->setTextFormat(Qt::RichText);
+	descriptionBox = new QHBox(previewFrame);
+	indexLabel = new QLabel("indexLabel", descriptionBox);
+	indexLabel->setTextFormat(Qt::RichText);
+	indexLabel->setAlignment(Qt::AlignLeft);
+	sizeLabel = new QLabel("sizeLabel", descriptionBox);
+	sizeLabel->setTextFormat(Qt::RichText);
+	sizeLabel->setAlignment(Qt::AlignHCenter);
+	bestStrokeLabel = new QLabel("bestStrokeLabel", descriptionBox);
+	bestStrokeLabel->setTextFormat(Qt::RichText);
+	bestStrokeLabel->setAlignment(Qt::AlignRight);
 	vl->addWidget(puzzlePreviewCanvasView);
-	vl->addWidget(descriptionLabel);
+	vl->addWidget(descriptionBox);
 
 	connect(codesListBox, SIGNAL(highlighted(int)),
 		this, SLOT(previewPuzzle(int)));
@@ -147,7 +156,8 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 		this, SLOT(selectPuzzle(int)));
 	connect(m_pbOK, SIGNAL(clicked()),  this, SLOT(selectPuzzle()));
 	
-	connect(puzzlePreviewCanvasView, SIGNAL(shown()), this, SLOT(calibratePreviewCanvasView()));
+	connect(puzzlePreviewCanvasView, SIGNAL(shown()),
+		this, SLOT(calibratePreviewCanvasView()));
 
 	// Loads the settings so that we can set wether or not puzzles have
 	// already been solved.
@@ -187,29 +197,22 @@ void SelectPuzzleDialog::previewPuzzle(int i)
 	m_ppPreviewPuzzle = new Puzzle(tmpPuzzle, puzzlePreviewCanvas);
 	
 	calibratePreviewCanvasView();
-	
-	// Sets the label
-	solutionLength = settings.readNumEntry("/puzzles/" + puzzlecode, -1);
-	if(solutionLength != -1)
-	{
-		// Puzzle has been solved in the past
-		labelText = QString(" #%1  Dimensions: %2x%3  Best stroke: "
-							"<font color=\"red\"><b>%4</b></font>")
-			.arg(i)
-			.arg(m_ppPreviewPuzzle->getWidth())
-			.arg(m_ppPreviewPuzzle->getHeight())
-			.arg(solutionLength);
-	}
-	else
-	{
-		labelText = QString(" #%1  Dimensions: %2x%3  <font color=\"red\">"
-							"<b>Not solved yet!</b></font>")
-			.arg(i)
-			.arg(m_ppPreviewPuzzle->getWidth())
-			.arg(m_ppPreviewPuzzle->getHeight());
-	}
-	descriptionLabel->setText(labelText);
 
+	// Sets the description labels.
+	indexLabel->setText(QString("Puzzle number: %1").arg(i));
+	sizeLabel->setText(QString("Dimensions: %1x%2")
+			   .arg(m_ppPreviewPuzzle->getWidth())
+			   .arg(m_ppPreviewPuzzle->getHeight()));
+	solutionLength = settings.readNumEntry("/puzzles/" + puzzlecode, -1);
+	if (solutionLength != -1)
+		bestStrokeLabel->setText(
+			QString("Shortest Stroke: <font color=\"red\"><b>"\
+				"%1</b></font>")
+			.arg(solutionLength));
+	else
+		bestStrokeLabel->setText(
+			QString("<font color=\"red\"><b>Not solved yet!"
+				"</b></font>"));
 	
 	// Delete the temporary variable.
 	delete tmpPuzzle;

@@ -122,7 +122,7 @@ void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 	
 	// Changes the window's size
 	sizeHint.setHeight(sizeHint.height() + menuBar()->height());
-	setMaximumSize(sizeHint);
+	//setMaximumSize(sizeHint);
 	resize(sizeHint);
 }
 

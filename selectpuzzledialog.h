@@ -34,6 +34,7 @@
 
 class QCanvasView;
 class QLabel;
+class QHBox;
 
 class SelectPuzzleDialog : public SelectPuzzleDialogBase
 {
@@ -47,7 +48,10 @@ public:
 	
 	QCanvas *puzzlePreviewCanvas;
 	PreviewCanvasView *puzzlePreviewCanvasView;
-	QLabel *descriptionLabel;
+	QHBox *descriptionBox;
+	QLabel *indexLabel;
+	QLabel *sizeLabel;
+	QLabel *bestStrokeLabel;
 
 	QString getPuzzleCode();
 

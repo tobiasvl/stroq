@@ -387,8 +387,10 @@ void PlayArea::loadPuzzle(Puzzle *puzzle) {
 	}
 	
 	m_ppOriginalPuzzle = puzzle;
-	m_cCanvas->resize((puzzle->getWidth() + 2) * DEFAULT_SIDE + DEFAULT_BORDER,
-			 (puzzle->getHeight() + 2) * DEFAULT_SIDE + DEFAULT_BORDER);
+	m_cCanvas->resize((puzzle->getWidth() + 2) * DEFAULT_SIDE +\
+		                                    DEFAULT_BORDER,
+			  (puzzle->getHeight() + 2) * DEFAULT_SIDE +\
+						      DEFAULT_BORDER);
 	emit puzzleChanged(m_ppOriginalPuzzle, m_cCanvas->size());
 	resetGrid();
 }
