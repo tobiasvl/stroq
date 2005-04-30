@@ -354,6 +354,8 @@ void PlayArea::selectPlaySquare(PlaySquare *playSquare)
 				(*i)->unsetLink();
 			// Resizes the stroke to go only up to playSquare.
 			m_vStroke.resize(playSquare->getStrokePosition());
+			canvas()->setAllChanged();
+			canvas()->update();
 		}
 		// If playSquare's position is not a valid neighbour, don't
 		// do a thing.
@@ -485,6 +487,8 @@ void PlayArea::clearStroke()
 		(*i)->unsetLink();
 	
 	m_vStroke.clear();
+	canvas()->setAllChanged();
+	canvas()->update();
 }
 
 
