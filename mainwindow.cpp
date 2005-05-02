@@ -269,6 +269,7 @@ void MainWindow::createMenus()
 	playMenu = new QPopupMenu(this);
 	resetPuzzleAct->addTo(playMenu);
 	runPuzzleAct->addTo(playMenu);
+	playMenu->insertSeparator();
 	copyPuzzleCodeAct->addTo(playMenu);
 	
 	editMenu = new QPopupMenu(this);

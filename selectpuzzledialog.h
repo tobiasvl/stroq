@@ -50,8 +50,13 @@ public:
 	PreviewCanvasView *puzzlePreviewCanvasView;
 	QHBox *descriptionBox;
 	QLabel *indexLabel;
+	QLabel *indexLabelValue;
+	QLabel *authorLabel;
+	QLabel *authorLabelValue;
 	QLabel *sizeLabel;
+	QLabel *sizeLabelValue;
 	QLabel *bestStrokeLabel;
+	QLabel *bestStrokeLabelValue;
 
 	QString getPuzzleCode();
 

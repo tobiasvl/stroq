@@ -38,69 +38,115 @@
 
 #include "images/checkmark.xpm"
 
+/*
 QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	// 00 - 09
-	"AONAAAKNGLFKI", "AOPAAANOPHLINGC",
-	"AOPAAANOPHLINGK", "BBGAAAACDFKNGDHJMM",
-	"APNAAAIPAGCMBIO", "AOEAAADDMM",
-	"APGAAADAOCIIGBI", "APNAAAMDLHGMJJC",
-	"APLAAABAHBPA", "APEAAAIGBEJO",
+	"AONAAAKNGLFKI", "Nintendo/Mitchell",
+	"AOPAAANOPHLINGC", "Nintendo/Mitchell",
+	"AOPAAANOPHLINGK", "Nintendo/Mitchell",
+	"BBGAAAACDFKNGDHJMM", "Nintendo/Mitchell",
+	"APNAAAIPAGCMBIO", "Nintendo/Mitchell",
+	"AOEAAADDMM", "Nintendo/Mitchell",
+	"APGAAADAOCIIGBI", "Nintendo/Mitchell",
+	"APNAAAMDLHGMJJC", "Nintendo/Mitchell",
+	"APLAAABAHBPA", "Nintendo/Mitchell",
+	"APEAAAIGBEJO", "Nintendo/Mitchell",
 	
 	// 10 - 19
-	"AOEAAAGJJG", "APMAAAIDFGKMB",
-	"APGAAAFFFKKKFFF", "AOLAAAHGNM",
-	"AONAAAILJEOII", "AONAAAPAFMBPA",
-	"AONAAACFFFFCA", "APLAAADINIOA",
-	"ANOAAAFHDKI", "AOEAAADFKM",
+	"AOEAAAGJJG", "Nintendo/Mitchell",
+	"APMAAAIDFGKMB", "Nintendo/Mitchell",
+	"APGAAAFFFKKKFFF", "Nintendo/Mitchell",
+	"AOLAAAHGNM", "Nintendo/Mitchell",
+	"AONAAAILJEOII", "Nintendo/Mitchell",
+	"AONAAAPAFMBPA", "Nintendo/Mitchell",
+	"AONAAACFFFFCA", "Nintendo/Mitchell",
+	"APLAAADINIOA", "Nintendo/Mitchell",
+	"ANOAAAFHDKI", "Nintendo/Mitchell",
+	"AOEAAADFKM", "Nintendo/Mitchell",
 	
 	// 20 - 29
-	"BCCAAAADIPAGACADNPNPFPBM", "APPAAAMBBKDPMPJBDDA",
-	"BCCAAAAAMBODGDOAGAMNJNPM", "BCCAAAADMHNFMAGMAOBPHPDM",
-	"BCBEAAABPLGOLPHFJI", "BCCAAAABPJAJAJPKAEJBMAII",
-	"BCCAAAACADOPOOCCDCACACPI", "BCBEAAAADNKJDFPEAE",
-	"BCBEAAADMDBIHJNICA", "BCCAAAADADABABABIFMNPJEA",
+	"BCCAAAADIPAGACADNPNPFPBM", "Nintendo/Mitchell",
+	"APPAAAMBBKDPMPJBDDA", "Nintendo/Mitchell",
+	"BCCAAAAAMBODGDOAGAMNJNPM", "Nintendo/Mitchell",
+	"BCCAAAADMHNFMAGMAOBPHPDM", "Nintendo/Mitchell",
+	"BCBEAAABPLGOLPHFJI", "Nintendo/Mitchell",
+	"BCCAAAABPJAJAJPKAEJBMAII", "Nintendo/Mitchell",
+	"BCCAAAACADOPOOCCDCACACPI", "Nintendo/Mitchell",
+	"BCBEAAAADNKJDFPEAE", "Nintendo/Mitchell",
+	"BCBEAAADMDBIHJNICA", "Nintendo/Mitchell",
+	"BCCAAAADADABABABIFMNPJEA", "Nintendo/Mitchell",
 	
 	// 30 - 39
-	"BBOAAAABPCCFEIJBCKEEPI", "BCBEAAABALJNGLJNAI",
-	"APLAAALKKKOI", "AOEAAABIBI",
-	"AONAAAHFFNFHA", "APPAAAHNAGONFLLAFPA",
-	"APGAAALFCIGBEKN", "BCAMAAACJFPKJE",
-	"AONAAAFGNEENI", "AONAAAHGOLLHA",
+	"BBOAAAABPCCFEIJBCKEEPI", "Nintendo/Mitchell",
+	"BCBEAAABALJNGLJNAI", "Nintendo/Mitchell",
+	"APLAAALKKKOI", "Nintendo/Mitchell",
+	"AOEAAABIBI", "Nintendo/Mitchell",
+	"AONAAAHFFNFHA", "Nintendo/Mitchell",
+	"APPAAAHNAGONFLLAFPA", "Nintendo/Mitchell",
+	"APGAAALFCIGBEKN", "Nintendo/Mitchell",
+	"BCAMAAACJFPKJE", "Nintendo/Mitchell",
+	"AONAAAFGNEENI", "Nintendo/Mitchell",
+	"AONAAAHGOLLHA", "Nintendo/Mitchell",
 	
 	// 40 - 49
-	"BBGAAAABNLNLJIOGDI", "BCCAAAADAOEEBBAAPCPGPGAE",
-	"BCCAAAADLPJPIPLPLMDCAHAM", "BCCAAAADBOKPLPBOAKICACAI",
-	"BCCAAAADLLKLLIOBLJPMHMPM", "APPAAAICHAOEBNLGPGI",
-	"BCBEAAADAOJEJAAKGE", "APPAAAICKFEBAAEPKAI",
-	"BCCAAAABMAMBMAODOAOBPBHM", "BCCAAAAAPBAJAKJGAFPIJBJI",
+	"BBGAAAABNLNLJIOGDI", "Nintendo/Mitchell",
+	"BCCAAAADAOEEBBAAPCPGPGAE", "Nintendo/Mitchell",
+	"BCCAAAADLPJPIPLPLMDCAHAM", "Nintendo/Mitchell",
+	"BCCAAAADBOKPLPBOAKICACAI", "Nintendo/Mitchell",
+	"BCCAAAADLLKLLIOBLJPMHMPM", "Nintendo/Mitchell",
+	"APPAAAICHAOEBNLGPGI", "Nintendo/Mitchell",
+	"BCBEAAADAOJEJAAKGE", "Nintendo/Mitchell",
+	"APPAAAICKFEBAAEPKAI", "Nintendo/Mitchell",
+	"BCCAAAABMAMBMAODOAOBPBHM", "Nintendo/Mitchell",
+	"BCCAAAAAPBAJAKJGAFPIJBJI", "Nintendo/Mitchell",
 	
 	// 50 - 59
-	"BCBEAAAAPAPDIPKPIM", "BCBEAAADJNAJAIGAGA",
-	"BCBEAAACPFGJPLJPJM", "BCBEAAAAGCPHNPIPKM",
-	"BCBEAAAAGDHKPHJOJE", "BCBEAAACPEGCPHPLAM",
-	"BCBEAAACONFHPLBLBM", "BCBEAAADDEAEMAMEMA",
-	"BCBEAAADIGKEAEMIMI", "BCBEAAAAGBAIGDPHBM",
+	"BCBEAAAAPAPDIPKPIM", "Nintendo/Mitchell",
+	"BCBEAAADJNAJAIGAGA", "Nintendo/Mitchell",
+	"BCBEAAACPFGJPLJPJM", "Nintendo/Mitchell",
+	"BCBEAAAAGCPHNPIPKM", "Nintendo/Mitchell",
+	"BCBEAAAAGDHKPHJOJE", "Nintendo/Mitchell",
+	"BCBEAAACPEGCPHPLAM", "Nintendo/Mitchell",
+	"BCBEAAACONFHPLBLBM", "Nintendo/Mitchell",
+	"BCBEAAADDEAEMAMEMA", "Nintendo/Mitchell",
+	"BCBEAAADIGKEAEMIMI", "Nintendo/Mitchell",
+	"BCBEAAAAGBAIGDPHBM", "Nintendo/Mitchell",
 	
 	// 60-69
-	"BCCAAAADJPAPAPAOAGBECDJM", "BCCAAAADHGCCIKAAHMFEHOAA",
-	"BCCAAAADJPAPJKAAJPIPKOCE", "BCCAAAAAEBMDEDMFOEPMPJJM",
-	"APGAAAIFOFBOHKB", "BCCAAAABPLAPGNDJJLGPANPI",
-	"BCCAAAADJPNPNPOPHPLPLPJM", "BCCAAAADAOAFAJAIGAPCAEGA",
-	"APPAAAECPNALPECPNAI", "BCCAAAAAHEMJPDHKPKPLPJPA",
+	"BCCAAAADJPAPAPAOAGBECDJM", "Nintendo/Mitchell",
+	"BCCAAAADHGCCIKAAHMFEHOAA", "Nintendo/Mitchell",
+	"BCCAAAADJPAPJKAAJPIPKOCE", "Nintendo/Mitchell",
+	"BCCAAAAAEBMDEDMFOEPMPJJM", "Nintendo/Mitchell",
+	"APGAAAIFOFBOHKB", "Nintendo/Mitchell",
+	"BCCAAAABPLAPGNDJJLGPANPI", "Nintendo/Mitchell",
+	"BCCAAAADJPNPNPOPHPLPLPJM", "Nintendo/Mitchell",
+	"BCCAAAADAOAFAJAIGAPCAEGA", "Nintendo/Mitchell",
+	"APPAAAECPNALPECPNAI", "Nintendo/Mitchell",
+	"BCCAAAAAHEMJPDHKPKPLPJPA", "Nintendo/Mitchell",
 	
 	// 70-79
-	"BCCAAAACIBECKBFAKIFECIBE", "BBKAAAABOIEMIFOMNOIE",
-	"BCCAAAACJEJDGMJAJDGMJCJE", "BCCAAAACJEPDANGJGLAMPCJE",
-	"BCCAAAAAPBPLAPGPGPANPIPA", "BCCAAAAAPAJDGOJGJHGMJAPA",
-	"APPAAAGNKOAKKIDKNLA", "APPAAACINLBIIMGNIKA",
-	"BCCAAAABAKJFGIJAJBGKJFAI", "BCCAAAABAKGEJBAJAIJCGFAI",
+	"BCCAAAACIBECKBFAKIFECIBE", "Nintendo/Mitchell",
+	"BBKAAAABOIEMIFOMNOIE", "Nintendo/Mitchell",
+	"BCCAAAACJEJDGMJAJDGMJCJE", "Nintendo/Mitchell",
+	"BCCAAAACJEPDANGJGLAMPCJE", "Nintendo/Mitchell",
+	"BCCAAAAAPBPLAPGPGPANPIPA", "Nintendo/Mitchell",
+	"BCCAAAAAPAJDGOJGJHGMJAPA", "Nintendo/Mitchell",
+	"APPAAAGNKOAKKIDKNLA", "Nintendo/Mitchell",
+	"APPAAACINLBIIMGNIKA", "Nintendo/Mitchell",
+	"BCCAAAABAKJFGIJAJBGKJFAI", "Nintendo/Mitchell",
+	"BCCAAAABAKGEJBAJAIJCGFAI", "Nintendo/Mitchell",
 	
 	// 80-89
-	"APPAAAICHBBCAEEHCAI", "BBOAAAACANNLLHGEMBJDAE",
-	"BBOAAAACANNKLBGEMBJDAE", "APPAAADIFDBMBOOCAOA",
-	"APPAAAGNCGAMBEEFAEA", "APPAAAOPKOOLOJDNPBI",
-	"APPAAABAFBBEBEEFAEA", "APPAAALLKPLMBOPAHLI",
-	"APPAAAOPAGPMBPLAHLI", "APPAAADMIHOCAPIIEPA",
+	"APPAAAICHBBCAEEHCAI", "Nintendo/Mitchell",
+	"BBOAAAACANNLLHGEMBJDAE", "Nintendo/Mitchell",
+	"BBOAAAACANNKLBGEMBJDAE", "Nintendo/Mitchell",
+	"APPAAADIFDBMBOOCAOA", "Nintendo/Mitchell",
+	"APPAAAGNCGAMBEEFAEA", "Nintendo/Mitchell",
+	"APPAAAOPKOOLOJDNPBI", "Nintendo/Mitchell",
+	"APPAAABAFBBEBEEFAEA", "Nintendo/Mitchell",
+	"APPAAALLKPLMBOPAHLI", "Nintendo/Mitchell",
+	"APPAAAOPAGPMBPLAHLI", "Nintendo/Mitchell",
+	"APPAAADMIHOCAPIIEPA", "Nintendo/Mitchell",
 	0,
 	
 	"", "",
@@ -110,7 +156,41 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"", "",
 	0
 	};
+*/
 
+QString SelectPuzzleDialog::m_qsPuzzles[] = {
+	// Herb007's
+	"BCCAAAACLGLHIHLGLGLADEDE", "Herb007",
+	"BBKAAAACODLCFJGMPKCM", "Herb007",
+	"BCCAAAAAAMDMPPPIAMDIODIA", "Herb007",
+	"BCCAAAADMDIDAHMHIHBOHMPM", "Herb007",
+	"BCCAAAAADADADAHAOBODMPIM", "Herb007",
+	"BCCAAAADPLIHIPHODODPHPHM", "Herb007",
+	"BCBAAAACKOOLDDLI", "Herb007",
+	"BCCAAAADFLJDOOAHBNADOMAM", "Herb007",
+	"BCBIAAABPJANOJCJDNPA", "Herb007",
+	"BBOAAAADBODOPNPFODMHIM", "Herb007",
+	"APOAAAGNAEKBEJCFA", "Herb007",
+	"BCCAAAADAOBMDMBMJJMHODPA", "Herb007",
+	"BCCAAAACPFGKJFPIPBPKGHJM", "Herb007",
+	"BCBEAAAAHPEIHBKPKA", "Herb007",
+	"BCBMAAADJNAJGJGJAIJCGE", "Herb007",
+	"BBKAAAADIBOOKDOBOOKI", "Herb007",
+	"BCBMAAABJLGPANGJGKJGPE", "Herb007",
+	"BCCAAAADMAAFMAAMMABMEADM", "Herb007",
+	"BCCAAAACAFPJGLCPEPGNPKAE", "Herb007",
+	"BBGAAAAAJOBKPMFPGM", "Herb007",
+	"BCBMAAABKCKPLNAPNPFEFI", "Herb007",
+	"BCBEAAAAJBPJGJPIJA", "Herb007",
+	"BBGAAAADFDHNHNHMKM", "Herb007",
+	"BCCAAAAAPDMPDMPPPDNPDMPA", "Herb007",
+	"BCCAAAACJGPFJKPHJNPKJHJM", "Herb007",
+	"APOAAAMGNLBMJIDIM", "Herb007",
+	"BCBIAAACGGGFJKPEPDAM", "Herb007",
+	0
+};
+	
+	
 SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
                                        bool modal, WFlags fl)
 	: SelectPuzzleDialogBase(parent, name, modal, fl)
@@ -135,12 +215,36 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	indexLabel = new QLabel("indexLabel", descriptionBox);
 	indexLabel->setTextFormat(Qt::RichText);
 	indexLabel->setAlignment(Qt::AlignLeft);
+	indexLabel->setText(tr("Puzzle:"));
+	indexLabelValue = new QLabel("indexLabelValue", descriptionBox);
+	indexLabelValue->setTextFormat(Qt::RichText);
+	indexLabelValue->setAlignment(Qt::AlignLeft);
+	
+	authorLabel = new QLabel("indexLabel", descriptionBox);
+	authorLabel->setTextFormat(Qt::RichText);
+	authorLabel->setAlignment(Qt::AlignLeft);
+	authorLabel->setText(tr("Author:"));
+	authorLabelValue = new QLabel("indexLabelValue", descriptionBox);
+	authorLabelValue->setTextFormat(Qt::RichText);
+	authorLabelValue->setAlignment(Qt::AlignLeft);
+
 	sizeLabel = new QLabel("sizeLabel", descriptionBox);
 	sizeLabel->setTextFormat(Qt::RichText);
 	sizeLabel->setAlignment(Qt::AlignHCenter);
+	sizeLabel->setText(tr("Dimensions:"));
+	sizeLabelValue = new QLabel("sizeLabelValue", descriptionBox);
+	sizeLabelValue->setTextFormat(Qt::RichText);
+	sizeLabelValue->setAlignment(Qt::AlignHCenter);
+
+	
 	bestStrokeLabel = new QLabel("bestStrokeLabel", descriptionBox);
 	bestStrokeLabel->setTextFormat(Qt::RichText);
 	bestStrokeLabel->setAlignment(Qt::AlignRight);
+	bestStrokeLabel->setText(tr("Best stroke:"));
+	bestStrokeLabelValue = new QLabel("bestStrokeLabelValue", descriptionBox);
+	bestStrokeLabelValue->setTextFormat(Qt::RichText);
+	bestStrokeLabelValue->setAlignment(Qt::AlignRight);
+
 	vl->addWidget(puzzlePreviewCanvasView);
 	vl->addWidget(descriptionBox);
 
@@ -177,7 +281,7 @@ QString SelectPuzzleDialog::getPuzzleCode()
 
 void SelectPuzzleDialog::previewPuzzle(int i)
 {
-	QString puzzlecode = m_qsPuzzles[i];
+	QString puzzlecode = m_qsPuzzles[2*i];
 	QString labelText;
 	QSettings settings;
 	settings.setPath("thelemmings.net", "StroQ");
@@ -199,20 +303,19 @@ void SelectPuzzleDialog::previewPuzzle(int i)
 	calibratePreviewCanvasView();
 
 	// Sets the description labels.
-	indexLabel->setText(QString("Puzzle number: %1").arg(i));
-	sizeLabel->setText(QString("Dimensions: %1x%2")
+	indexLabelValue->setText(QString("%1").arg(i));
+	authorLabelValue->setText(m_qsPuzzles[(2*i)+1]);
+	sizeLabelValue->setText(QString("%1x%2")
 			   .arg(m_ppPreviewPuzzle->getWidth())
 			   .arg(m_ppPreviewPuzzle->getHeight()));
 	solutionLength = settings.readNumEntry("/puzzles/" + puzzlecode, -1);
 	if (solutionLength != -1)
-		bestStrokeLabel->setText(
-			QString("Shortest Stroke: <font color=\"red\"><b>"\
-				"%1</b></font>")
+		bestStrokeLabelValue->setText(
+			QString("<font color=\"red\"><b>%1</b></font>")
 			.arg(solutionLength));
 	else
-		bestStrokeLabel->setText(
-			QString("<font color=\"red\"><b>Not solved yet!"
-				"</b></font>"));
+		bestStrokeLabelValue->setText(
+			QString("<font color=\"red\"><b>Unsolved</b></font>"));
 	
 	// Delete the temporary variable.
 	delete tmpPuzzle;
@@ -241,7 +344,7 @@ void SelectPuzzleDialog::selectPuzzle()
 
 void SelectPuzzleDialog::selectPuzzle(int selectedIndex)
 {
-	m_qsSelectedCode = m_qsPuzzles[selectedIndex];
+	m_qsSelectedCode = m_qsPuzzles[2*selectedIndex];
 	accept();
 }
 
@@ -261,13 +364,13 @@ void SelectPuzzleDialog::loadPuzzleList()
 		if(settings.readNumEntry("/puzzles/" + m_qsPuzzles[i]))
 		{
 			new QListBoxPixmap(codesListBox, m_qpmCheckmark,
-					   QString::number(i));
+					   QString::number(i/2));
 		}
 		else
 			new QListBoxPixmap(codesListBox, m_qpmNoCheckmark,
-					   QString::number(i));
+					   QString::number(i/2));
 		
-		i++;
+		i+=2;
 	}
 	codesListBox->setCurrentItem(0);
 }
@@ -288,7 +391,7 @@ void SelectPuzzleDialog::resetSave()
 		while(m_qsPuzzles[i])
 		{
 			// If entry exists, the puzzle was already solved.
-			settings->removeEntry("/puzzles/" + m_qsPuzzles[i]);
+			settings->removeEntry("/puzzles/" + m_qsPuzzles[2*i]);
 			i++;
 		}
 		// Writes the settings to disk (or wherever).

@@ -140,7 +140,7 @@ Puzzle::Puzzle(Puzzle* originalPuzzle)
 	{
 		for(int column = 0; column < originalPuzzle->getWidth() + 2; column++)
 		{
-			origSquare = originalPuzzle->getSquareAt(row, column);
+			origSquare = originalPuzzle->getSquareAt(column, row);
 			setSquare(new Square(origSquare->getGridPos(),
 						 origSquare->getState()));
 		}
@@ -335,7 +335,7 @@ void Puzzle::invert()
 	{
 		for(int column = 1; column <= getWidth(); column++)
 		{
-			getSquareAt(row, column)->toggle();
+			getSquareAt(column, row)->toggle();
 		}
 	}
 }
