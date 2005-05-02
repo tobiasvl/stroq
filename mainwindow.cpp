@@ -47,7 +47,7 @@
 #include "square.h"
 
 MainWindow::MainWindow(QWidget *parent, const char *name)
-	: QMainWindow(parent, name)
+	: QMainWindow(parent, name, Qt::WStyle_NoBorder)
 {
 	// Screws up on fluxbox??
 	// statusBar()->setSizeGripEnabled(false);
@@ -62,8 +62,6 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 
 MainWindow::~MainWindow()
 {
-	delete playArea;
-	delete mainCanvas;
 }
 
 void MainWindow::about()
@@ -115,14 +113,13 @@ void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 	QString caption = "StroQ";
 	m_sCurrentCode = puzzle->getCode();
 	
-	if(playArea->getEditMode())
+	if (playArea->getEditMode())
 		caption += " : Edit";
 	caption += ": " + m_sCurrentCode;
 	setCaption(caption);
 	
 	// Changes the window's size
 	sizeHint.setHeight(sizeHint.height() + menuBar()->height());
-	//setMaximumSize(sizeHint);
 	resize(sizeHint);
 }
 
@@ -136,17 +133,15 @@ void MainWindow::enterPuzzleCode()
 	code = code.upper();
 	if ( ok && !code.isEmpty() )
 	{
-		if(Puzzle::isCodeValid(code))
+		if (Puzzle::isCodeValid(code))
 			playArea->loadPuzzle(new Puzzle(code));
 		else
 		{
-			QString errmsg = QString("%1 is not a valid StroQ puzzle code")
-									.arg(code);
+			QString errmsg = QString("%1 is not a valid StroQ "\
+						 "puzzle code").arg(code);
 			QMessageBox::warning(this, tr("Code input error"),
-			errmsg,
-			QMessageBox::Ok, 0, 0);
+					     errmsg, QMessageBox::Ok, 0, 0);
 		}
-
 	}
 }
 
@@ -290,7 +285,7 @@ void MainWindow::createGameArea()
 {
 	mainCanvas = new QCanvas(width(), height());
 	mainCanvas->setDoubleBuffering(true);
-	playArea = new PlayArea(mainCanvas, this, tr("playGrid"), 0);
+	playArea = new PlayArea(mainCanvas, this, "playGrid", 0);
 	playArea->setVScrollBarMode(QScrollView::AlwaysOff);
 	playArea->setHScrollBarMode(QScrollView::AlwaysOff);
 	setCentralWidget(playArea);
@@ -306,7 +301,7 @@ void MainWindow::loadFirstPuzzle()
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-	if(m_bFirstDisplay)
+	if (m_bFirstDisplay)
 	{
 		m_bFirstDisplay = false;
 		resize(event->size().width(),
