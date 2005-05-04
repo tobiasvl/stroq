@@ -31,6 +31,7 @@ Description    :   A Puzzle contains dimensions, Squares, hint positions
 #include <qcanvas.h>
 
 #include <stdlib.h>
+#include <math.h>
 
 #include "stroqconst.h"
 #include "puzzle.h"
@@ -69,7 +70,9 @@ Puzzle::Puzzle(QString code)
 	unsigned int offset = 0;
 
 	for(unsigned int i = 0; i < ucode.length(); i++)
-		getBin(bincode, ucode[i].unicode()-65, 4);
+	{
+		getBin(bincode, ucode.at(i).unicode()-65, 4);
+	}
 	
 	// Reads the bitwidth, first 6 bits
 	unsigned int bitwidth = evalBin(bincode.left(6));
@@ -103,7 +106,7 @@ Puzzle::Puzzle(QString code)
 	{
 		for(int column = 1; column < getWidth() + 1; column++)
 		{
-			if(bincode[offset] == QChar('1'))
+			if(bincode.at(offset) == QChar('1'))
 				setSquare(new Square(QPoint(column, row), Square::Black));
 			else
 				setSquare(new Square(QPoint(column, row), Square::White));
@@ -250,7 +253,7 @@ bool Puzzle::isCodeValid(QString code)
 	unsigned int offset = 0, width, height;
 
 	for(unsigned int i = 0; i < ucode.length(); i++)
-		getBin(bincode, ucode[i].unicode()-65, 4);
+		getBin(bincode, ucode.at(i).unicode()-65, 4);
 	
 	unsigned int bitwidth = evalBin(bincode.left(6));
 	offset += 6;
@@ -446,7 +449,7 @@ unsigned int Puzzle::evalBin(QString toeval)
 	int res = 0;
 	for(unsigned int i = 0; i<toeval.length(); i++)
 	{
-		if(toeval[toeval.length()-i-1] == QChar('1'))
+		if(toeval.at(toeval.length()-i-1) == QChar('1'))
 			res += (int) pow(2, i);
 	}
 	return res;
