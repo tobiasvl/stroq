@@ -82,7 +82,7 @@ void PlayArea::contentsMousePressEvent(QMouseEvent* e)
 	// We're in PLAY mode.
 	if(!m_bEditMode)
 	{
-		if(e->button() == 1)
+		if (e->button() == 1)
 		{
 			// Pick the Square that was under the click and
 			// select it.
@@ -92,14 +92,14 @@ void PlayArea::contentsMousePressEvent(QMouseEvent* e)
 			for (it=l.begin(); it!=l.end(); ++it)
 			{
 				// We check the cast of it into a PlaySquare.
-				if ( dynamic_cast<PlaySquare*>(*it) != NULL )
+				if (dynamic_cast<PlaySquare*>(*it) != NULL)
 				{
 					selectPlaySquares((PlaySquare*)(*it));
 				}
 			}
 			m_bButtonPressed = true;
 		}
-		else if(e->button() == 2)
+		else if (e->button() == 2)
 		{
 			// Unlinks all the squares in the stroke and clears
 			// the stroke when the right mouse button is clicked.
@@ -117,7 +117,7 @@ void PlayArea::contentsMousePressEvent(QMouseEvent* e)
 		for (it=l.begin(); it!=l.end(); ++it)
 		{
 			// We check the cast of it into a PlaySquare.
-			if ( dynamic_cast<PlaySquare*>(*it) != NULL )
+			if (dynamic_cast<PlaySquare*>(*it) != NULL)
 			{
 				((PlaySquare*)(*it))->toggle();
 				emit puzzleChanged(m_ppPlayPuzzle,
@@ -131,12 +131,12 @@ void PlayArea::contentsMousePressEvent(QMouseEvent* e)
 
 void PlayArea::contentsMouseMoveEvent(QMouseEvent* e)
 {
-	if(!m_bEditMode)
+	if (!m_bEditMode)
 	{
 		// Pick the Square that was under the cursor and highlight it.
 		QPoint p = inverseWorldMatrix().map(e->pos());
 		QCanvasItemList l=m_cCanvas->collisions(p);
-		if(l.size() > 0) {
+		if (l.size() > 0) {
 			QCanvasItemList::Iterator it;
 			for (it=l.begin(); it!=l.end(); ++it)
 			{
@@ -158,7 +158,7 @@ void PlayArea::contentsMouseMoveEvent(QMouseEvent* e)
 		{
 			// No square under the cursor, dehilight the last
 			// hovered cursor.
-			if(m_psHighlightedSquare)
+			if (m_psHighlightedSquare)
 			{
 				m_psHighlightedSquare->setHighlight(false);
 				m_psHighlightedSquare = NULL;
@@ -252,7 +252,7 @@ void PlayArea::selectPlaySquares(PlaySquare *playSquare)
 	}
 	
 	PlaySquare* last = m_vStroke[m_vStroke.size()-1];
-	if(getAlignment(playSquare, last) == ROW_ALIGNED)
+	if (getAlignment(playSquare, last) == ROW_ALIGNED)
 	{
 		// Check if any already linked PlaySquares are in the way.
 		i = last->getGridPos().x();

@@ -35,9 +35,10 @@
 #include <qcanvas.h>
 #include <qapplication.h>
 #include <qclipboard.h>
-#include <qnetwork.h>
-#include <qurloperator.h>
-#include <qnetworkprotocol.h>
+#include <qcstring.h>
+#include <qbuffer.h>
+#include <qtextstream.h>
+#include <qhttp.h>
 
 #include "stroqconst.h"
 #include "aboutdialog.h"
@@ -62,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 
 MainWindow::~MainWindow()
 {
+	delete potdBuffer;
 }
 
 void MainWindow::about()
@@ -131,7 +133,7 @@ void MainWindow::enterPuzzleCode()
 					     QLineEdit::Normal,
 					     QString::null, &ok, this );
 	code = code.upper();
-	if ( ok && !code.isEmpty() )
+	if (ok && !code.isEmpty())
 	{
 		if (Puzzle::isCodeValid(code))
 			playArea->loadPuzzle(new Puzzle(code));
@@ -149,25 +151,32 @@ void MainWindow::enterPuzzleCode()
 
 void MainWindow::downloadPuzzleOfTheDay()
 {
-	QMessageBox::warning(this, tr("Not implemented"),
-			tr("This functionality is not yet implemented"),
-			QMessageBox::Ok, 0, 0);
-	/*
-	qInitNetworkProtocols();
-	QUrlOperator op(POTD_URL);
-	op.get();
-	m_baReceivedData = new QByteArray();
-	*/
+	potdBuffer = new QBuffer(QByteArray());
+	potdBuffer->open(IO_ReadWrite);
+	potdHttp.setHost(POTD_HOST);
+	potdHttp.get(POTD_FILE, potdBuffer);
 }
 
-void MainWindow::downloadPuzzleOfTheDayData(const QByteArray &data,
-					    QNetworkOperation * op)
+void MainWindow::downloadPuzzleOfTheDayFinished(bool error)
 {
-}
-
-void MainWindow::downloadPuzzleOfTheDayFinished()
-{
-	// Done receiving, load the puzzle
+	potdBuffer->close();
+	if (error)
+	{
+		QMessageBox::warning(this, tr("Puzzle of the day"),
+				     tr("Error while fetching the puzzle "\
+				     	"of the day:\n%1")
+				     .arg(potdHttp.errorString()));
+	}
+	else
+	{
+		// Read the puzzle from the buffer and load it.
+		potdBuffer->open(IO_ReadOnly);
+		QTextStream ts(potdBuffer);
+		QString potd = ts.readLine();
+		playArea->loadPuzzle(new Puzzle(potd));
+		potdBuffer->close();
+	}
+	potdHttp.abort();
 }
 
 void MainWindow::quit()
@@ -246,6 +255,9 @@ void MainWindow::createActions()
 	
 	connect(playArea, SIGNAL(puzzleChanged(Puzzle*, QSize)),
 		this, SLOT(puzzleChanged(Puzzle*, QSize)));
+
+	connect(&potdHttp, SIGNAL(done(bool)),
+		this, SLOT(downloadPuzzleOfTheDayFinished(bool)));
 }
 
 void MainWindow::createMenus()

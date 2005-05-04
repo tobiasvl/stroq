@@ -26,17 +26,23 @@
 #ifndef STROQCONST_H
 #define STROQCONST_H
   
-  const QString VERSION = "0.2"; /**< StroQ's version string */
+	const QString VERSION = "0.2"; /**< StroQ's version string */
 
-  /**
-   * URL to the puzzle of the day
-   */
-  const QString POTD_URL = "http://stroq.sourceforge.net/potd";
-
-  const unsigned int MAX_SIDE = 63;	 /**< Maximum size number of squares on the */
-				 /**< side of a Puzzle (max squares is */
-				 /**< pow(MAX_SIDE, 2) */
-  const unsigned int DEFAULT_SIDE = 50;  /**< Default size of a square, in pixels */
-  const unsigned int DEFAULT_BORDER = 2; /**< Default border for each square in pixels */
+	/**
+	* URL to the puzzle of the day
+	*/
+	const QString POTD_HOST = "stroq.sourceforge.net";
+	const QString POTD_FILE = "/potd";
+	
+	const unsigned int MAX_SIDE = 63; /**< Maximum size number of
+					       squares on the side of a
+					       Puzzle (max squares is
+					       pow(MAX_SIDE, 2) */
+					       
+	const unsigned int DEFAULT_SIDE = 50;  /**< Default size of a square,
+						    in pixels */
+						    
+	const unsigned int DEFAULT_BORDER = 2; /**< Default border for each
+						    square in pixels */
 
 #endif
