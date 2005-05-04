@@ -140,8 +140,8 @@ private:
 	* @param s1 the first square.
 	* @param s2 the second square.
 	* @return NOT_ALIGNED if s1 and s2 are not aligned.
-		ROW_ALIGNED if s1 and s2 are on the same row.
-		COLUMN_ALIGNED if s1 and s2 are on the same column.
+		  ROW_ALIGNED if s1 and s2 are on the same row.
+		  COLUMN_ALIGNED if s1 and s2 are on the same column.
 	*/
 	static int getAlignment(Square* s1, Square* s2);
 	
@@ -163,17 +163,19 @@ private:
 	void printStroke();
 	
 	bool m_bButtonPressed; /**< true if mouse button 1 is pressed, false
-								otherwise */
+				    otherwise */
 	bool m_bEditMode; /**< true if in edit mode, false otherwise */
-	PlaySquare* m_psHighlightedSquare; //!<  The last highlighted square,
-			//!< in order to dehilight it when focus changes
-	Puzzle* m_ppOriginalPuzzle; //!< The original loaded puzzle,
-				//!< containing Squares (and not PlaySquares)
-	Puzzle* m_ppPlayPuzzle; //!< The "playing" puzzle on which the
-				//!< user acts.
+	PlaySquare* m_psHighlightedSquare; /**<  The last highlighted square,
+						 in order to dehilight
+						 it when focus changes. */
+	Puzzle* m_ppOriginalPuzzle; /**< The original loaded puzzle,
+				         containing Squares (and
+					 notPlaySquares). */
+	Puzzle* m_ppPlayPuzzle; /**< The "playing" puzzle on which the
+				     user acts. */
 	std::vector<PlaySquare*> m_vStroke; //!< the current stroke
 
-	QCanvas* m_cCanvas;	
+	QCanvas* m_cCanvas;
 	static const  int NOT_ALIGNED = 0; //!< no alignment
 	static const  int ROW_ALIGNED = 1; //!< horizontal alignment
 	static const  int COLUMN_ALIGNED = 2; //!< column alignment

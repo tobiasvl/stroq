@@ -58,8 +58,8 @@ public:
 	
 	/**
 	 * Builds a Puzzle by making an exact copy of the given puzzle. Even
-	 * the Squares present in the given Puzzle are copied, so that changing
-	 * the resulting Puzzle will NOT modify the original one.
+	 * the Squares present in the given Puzzle are copied, so that
+	 * changing the resulting Puzzle will NOT modify the original one.
 	 *
 	 * @param srcpuzzle Puzzle to copy from
 	 */
@@ -67,8 +67,8 @@ public:
 
 	/**
 	 * Builds a puzzle made of PlaySquares that represent the same Puzzle
-	 * as the given parameter. This is used to copy a Puzzle loaded from a code
-	 * to a displayable Puzzle.
+	 * as the given parameter. This is used to copy a Puzzle loaded from a
+	 * code to a displayable Puzzle.
 	 *
 	 * @param srcpuzzle Puzzle to copy from
 	 * @param canvas QCanvas on which to display the resulting puzzle
@@ -76,7 +76,8 @@ public:
 	Puzzle(Puzzle* srcpuzzle, QCanvas* canvas);
 	
 	/**
-	 * Builds a puzzle made of PlaySquares given a code. See previous method.
+	 * Builds a puzzle made of PlaySquares given a code. See previous
+	 * method.
 	 */
 	Puzzle::Puzzle(QString code, QCanvas *canvas);
 	
@@ -94,9 +95,11 @@ public:
 
 	
 	/**
-	 * Sets a Square on the Puzzle. The Square contains the coordinates for
-	 * which it will be stored. The previous square at that position is deleted. 
-	 * Caller should pass the Square object and not delete it. (Pass and forget)
+	 * Sets a Square on the Puzzle. The Square contains the coordinates
+	 * for which it will be stored. The previous square at that position
+	 * is deleted.
+	 * Caller should pass the Square object and not delete it. (Pass and
+	 * forget)
 	 *
 	 * @param square Square to set
 	 */
@@ -166,7 +169,8 @@ private:
 	void allocate(Square::States state = Square::Border);
 
 	/**
-	 * DEBUG: Prints out the given integer in binary base to standard output
+	 * DEBUG: Prints out the given integer in binary base to standard
+	 *        output.
 	 *
 	 * @param number number to print out
 	 */
@@ -181,21 +185,22 @@ private:
 	static void getBin(QString& dest, int number);
 	
 	/**
- 	 * Concatenates the binary representation of a number to a QString and pads
-	 * the rest of the string with 0's until the destination QString has the
-	 * given length
+ 	 * Concatenates the binary representation of a number to a QString and
+	 * pads the rest of the string with 0's until the destination QString
+	 * has the given length.
 	 * @see getBin()
 	 *
 	 * @param dest the QString to which to concatenate
 	 * @param number the number to calculate the binary value of
-	 * @param length length up to which to pad with 0s (0s added at the end)
+	 * @param length length up to which to pad with 0s (0s added at the
+	 *               end)
 	 */
 	static void getBin(QString& dest, int number, unsigned int length);
 	
 	/**
 	 * Returns the integer value of a given QString made up of 0s and 1s
-	 * The given QString has to be made up of 0s and 1s, no error checking is
-	 * currently performed.
+	 * The given QString has to be made up of 0s and 1s, no error checking
+	 * is currently performed.
 	 *
 	 * @param binstring Binary string to evaluate
 	 * @return the integer value of binstring
@@ -209,10 +214,10 @@ private:
 	
 	int m_iWidth;    /**< Number of columns */
 	int m_iHeight;   /**< Number of rows */
-	QPoint m_qpSolutionStart; /**< Coordinate of the start of a solution */
-	QPoint m_qpSolutionEnd;   /**< Coordinate of the end of a solution */
-	Square*** m_pArray;  /**< The bidimensional array where the Square*s */
-						 /**< are stored */
+	QPoint m_qpSolutionStart; //!< Coordinate of the start of a solution
+	QPoint m_qpSolutionEnd;   //!< Coordinate of the end of a solution
+	Square*** m_pArray;  /**< The bidimensional array where the Squares
+				  are stored. */
 };
 
 #endif

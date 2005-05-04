@@ -35,6 +35,8 @@
 #include <qsettings.h>
 #include <qfile.h>
 #include <vector>
+#include <iostream>
+#include <qstringlist.h>
 
 #include "playarea.h"
 #include "playsquare.h"
@@ -452,8 +454,9 @@ void PlayArea::toggleStroke()
 	if (win)
 	{
 		QMessageBox::information(this, tr("Congratulations"),
-					 QString(tr("You solved this puzzle with a %1 strokes!")
-					  .arg((int) m_vStroke.size())),
+					 QString(tr("You solved this puzzle "\
+						    "with a %1 strokes!")
+					 .arg((int) m_vStroke.size())),
 					 QMessageBox::Ok);
 		
 		// Store the success in the settings.
@@ -462,14 +465,32 @@ void PlayArea::toggleStroke()
 		QString settingkey = "/puzzles/" +
 				     m_ppOriginalPuzzle->getCode();
 		
-		// Save the length of the solution, if this one is shorter
+		// Save the length of the solution, if this one is shorter.
 		int solutionLength = settings.readNumEntry(settingkey, -1);
-		if(solutionLength == -1
-		||
-		    (int) m_vStroke.size() < solutionLength)
+		if (solutionLength == -1
+		   || (int) m_vStroke.size() < solutionLength)
 		{
-			settings.writeEntry(settingkey, (int) m_vStroke.size());
+			settings.writeEntry(settingkey,(int)m_vStroke.size());
 		}
+
+		// Find the next puzzle.
+		QString nextPuzzle;
+		QStringList puzzles = settings.entryList("/puzzles");
+		std::cout << puzzles.join("\n") << std::endl;
+
+		QStringList::Iterator it;
+		for (it = puzzles.begin() ; it != puzzles.end() ; ++it)
+		{
+			if ((*it) == m_ppOriginalPuzzle->getCode())
+			{
+				nextPuzzle = *(++it);
+				break;
+			}
+		}
+
+		// Load it.
+		if (!nextPuzzle.isEmpty())
+			loadPuzzle(new Puzzle(nextPuzzle));
 	}
 	else
 		QMessageBox::information(this, tr("Sorry"),
