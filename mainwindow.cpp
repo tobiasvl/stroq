@@ -47,7 +47,7 @@
 #include "square.h"
 
 MainWindow::MainWindow(QWidget *parent, const char *name)
-	: QMainWindow(parent, name, Qt::WStyle_NoBorder)
+	: QMainWindow(parent, name, 0)
 {
 	// Screws up on fluxbox??
 	// statusBar()->setSizeGripEnabled(false);

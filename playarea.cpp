@@ -103,7 +103,7 @@ void PlayArea::contentsMousePressEvent(QMouseEvent* e)
 		{
 			// Unlinks all the squares in the stroke and clears
 			// the stroke when the right mouse button is clicked.
-			emit clearStroke();
+			resetGrid();
 		}
 	}
 	
