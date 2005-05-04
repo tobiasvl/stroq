@@ -55,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 	m_sCurrentCode = tr("(No puzzle loaded)");
 	m_bFirstDisplay = true;
 
+	potdBuffer = NULL;
+	
 	createGameArea();
 	createActions();
 	createMenus();
@@ -63,7 +65,8 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 
 MainWindow::~MainWindow()
 {
-	delete potdBuffer;
+	if(potdBuffer)
+		delete potdBuffer;
 }
 
 void MainWindow::about()
@@ -121,7 +124,9 @@ void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 	setCaption(caption);
 	
 	// Changes the window's size
-	sizeHint.setHeight(sizeHint.height() + menuBar()->height());
+	sizeHint.setHeight(sizeHint.height()
+			 + menuBar()->height()
+			 + m_sbStatusBar->height());
 	resize(sizeHint);
 }
 
@@ -291,6 +296,25 @@ void MainWindow::createMenus()
 	menuBar()->insertItem(tr("&Play"), playMenu);     // 1
 	menuBar()->insertItem(tr("&Edit"), editMenu);     // 2
 	menuBar()->insertItem(tr("&About"), aboutMenu);   // 3
+	
+	// Creates the game toolbar
+	// [puzzle number][current stroke length][best known stroke]
+	// [status(play/win/lose)][Next puzzle button]
+
+	m_sbStatusBar = new QStatusBar(this, "Play toolbar");
+	m_sbStatusBar->setSizeGripEnabled(false);
+	m_lPuzzleNumber = new QLabel(m_sbStatusBar, "Puzzle number");
+	m_lPuzzleNumber->setText(tr("Puzzle #"));
+	m_sbStatusBar->addWidget(m_lPuzzleNumber, 0, true) ;
+	m_lCurrentStrokeLength = new QLabel(m_sbStatusBar, "Current stroke length");
+	m_lCurrentStrokeLength->setText(tr("Current stroke: "));
+	m_sbStatusBar->addWidget(m_lCurrentStrokeLength, 0, true);
+	m_lStatus = new QLabel(m_sbStatusBar, "Status");
+	m_lStatus->setText(tr("Status"));
+	m_sbStatusBar->addWidget(m_lStatus, 0, true);
+	m_bNextPuzzle = new QToolButton(m_sbStatusBar, "Next puzzle");
+	m_bNextPuzzle->setTextLabel(tr("Next puzzle"), true);
+	m_sbStatusBar->addWidget(m_bNextPuzzle, 0, true);
 }
 
 void MainWindow::createGameArea()
@@ -317,7 +341,8 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 	{
 		m_bFirstDisplay = false;
 		resize(event->size().width(),
-			event->size().height() + menuBar()->height());
+			event->size().height()
+			+ menuBar()->height());
 	}
 }
 

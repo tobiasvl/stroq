@@ -28,6 +28,7 @@
 
 #include <qmainwindow.h>
 #include <qcanvas.h>
+#include <qtoolbutton.h>
 #include <qhttp.h>
 
 #include "playarea.h"
@@ -150,6 +151,13 @@ private:
 	// Game area
 	QCanvas *mainCanvas;
 	PlayArea *playArea;
+
+	// Game Toolbar
+	QStatusBar *m_sbStatusBar;
+        QLabel *m_lPuzzleNumber;
+        QLabel *m_lCurrentStrokeLength;
+        QLabel *m_lStatus;
+        QToolButton *m_bNextPuzzle;                                   
 	
 	// Networking stuff
 	QByteArray *m_baReceivedData;
