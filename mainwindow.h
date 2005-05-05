@@ -153,11 +153,10 @@ private:
 	PlayArea *playArea;
 
 	// Game Toolbar
-	QStatusBar *m_sbStatusBar;
-        QLabel *m_lPuzzleNumber;
-        QLabel *m_lCurrentStrokeLength;
-        QLabel *m_lStatus;
-        QToolButton *m_bNextPuzzle;                                   
+    QLabel *m_lPuzzleNumber;
+    QLabel *m_lCurrentStrokeLength;
+    QLabel *m_lStatus;
+    QToolButton *m_bNextPuzzle;                                   
 	
 	// Networking stuff
 	QByteArray *m_baReceivedData;

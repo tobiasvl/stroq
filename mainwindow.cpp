@@ -126,7 +126,7 @@ void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 	// Changes the window's size
 	sizeHint.setHeight(sizeHint.height()
 			 + menuBar()->height()
-			 + m_sbStatusBar->height());
+			 + statusBar()->height());
 	resize(sizeHint);
 }
 
@@ -301,20 +301,19 @@ void MainWindow::createMenus()
 	// [puzzle number][current stroke length][best known stroke]
 	// [status(play/win/lose)][Next puzzle button]
 
-	m_sbStatusBar = new QStatusBar(this, "Play toolbar");
-	m_sbStatusBar->setSizeGripEnabled(false);
-	m_lPuzzleNumber = new QLabel(m_sbStatusBar, "Puzzle number");
-	m_lPuzzleNumber->setText(tr("Puzzle #"));
-	m_sbStatusBar->addWidget(m_lPuzzleNumber, 0, true) ;
-	m_lCurrentStrokeLength = new QLabel(m_sbStatusBar, "Current stroke length");
+	statusBar()->setSizeGripEnabled(false);
+	m_lPuzzleNumber = new QLabel(statusBar(), "Puzzle number");
+	m_lPuzzleNumber->setText(tr("Puzzle <font color=\"red\">#</font>"));
+	statusBar()->addWidget(m_lPuzzleNumber, 0, true) ;
+	m_lCurrentStrokeLength = new QLabel(statusBar(), "Current stroke length");
 	m_lCurrentStrokeLength->setText(tr("Current stroke: "));
-	m_sbStatusBar->addWidget(m_lCurrentStrokeLength, 0, true);
-	m_lStatus = new QLabel(m_sbStatusBar, "Status");
+	statusBar()->addWidget(m_lCurrentStrokeLength, 0, true);
+	m_lStatus = new QLabel(statusBar(), "Status");
 	m_lStatus->setText(tr("Status"));
-	m_sbStatusBar->addWidget(m_lStatus, 0, true);
-	m_bNextPuzzle = new QToolButton(m_sbStatusBar, "Next puzzle");
+	statusBar()->addWidget(m_lStatus, 0, true);
+	m_bNextPuzzle = new QToolButton(statusBar(), "Next puzzle");
 	m_bNextPuzzle->setTextLabel(tr("Next puzzle"), true);
-	m_sbStatusBar->addWidget(m_bNextPuzzle, 0, true);
+	statusBar()->addWidget(m_bNextPuzzle, 0, true);
 }
 
 void MainWindow::createGameArea()

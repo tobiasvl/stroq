@@ -84,6 +84,13 @@ void PlayArea::contentsMousePressEvent(QMouseEvent* e)
 	// We're in PLAY mode.
 	if(!m_bEditMode)
 	{
+		// If we were in gameover state, this click will reset the puzzle
+		if(m_bGameOver)
+		{
+			resetGrid();
+			m_bGameOver = false;
+		}
+		
 		if (e->button() == 1)
 		{
 			// Pick the Square that was under the click and
@@ -403,6 +410,7 @@ void PlayArea::loadPuzzle(Puzzle *puzzle) {
 void PlayArea::resetGrid() {
 	emit clearStroke();
 	m_psHighlightedSquare = NULL;
+	m_bGameOver = false;
 	viewport()->setMouseTracking(false);
 
 	// Copies qvlOriginalPuzzle into qvlPlayPuzzle replacing all Squares
@@ -497,6 +505,8 @@ void PlayArea::toggleStroke()
 					 tr("The run was unsuccessful," \
 					    " reset it to try again!"),
 					 QMessageBox::Ok);
+
+	m_bGameOver = true;
 	m_cCanvas->update();
 }
 

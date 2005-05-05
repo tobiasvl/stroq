@@ -165,6 +165,9 @@ private:
 	bool m_bButtonPressed; /**< true if mouse button 1 is pressed, false
 				    otherwise */
 	bool m_bEditMode; /**< true if in edit mode, false otherwise */
+	
+	bool m_bGameOver; /**< true if in gameover state, next click reinits */
+	
 	PlaySquare* m_psHighlightedSquare; /**<  The last highlighted square,
 						 in order to dehilight
 						 it when focus changes. */
