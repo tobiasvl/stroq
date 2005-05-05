@@ -82,9 +82,9 @@ void MainWindow::aboutQt()
 
 void MainWindow::selectPuzzle()
 {
-	SelectPuzzleDialog *spd = new SelectPuzzleDialog(this);
-	if(spd->exec() == QDialog::Accepted)
-		playArea->loadPuzzle(new Puzzle(spd->getPuzzleCode()));
+	SelectPuzzleDialog spd(this);
+	if(spd.exec() == QDialog::Accepted)
+		playArea->loadPuzzle(new Puzzle(spd.getPuzzleCode()));
 }
 
 void MainWindow::toggleEditMode()

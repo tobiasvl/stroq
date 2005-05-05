@@ -201,6 +201,8 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	m_qpmNoCheckmark = QPixmap(12, 12);
 	m_qpmNoCheckmark.fill(Qt::white);
 
+	codesListBox->setSelectionMode(QListBox::Single);
+
 	QBoxLayout *vl = new QVBoxLayout(previewFrame);
 	puzzlePreviewCanvasView = new PreviewCanvasView(previewFrame);
 	puzzlePreviewCanvasView->setVScrollBarMode(QScrollView::AlwaysOff);
@@ -286,7 +288,8 @@ void SelectPuzzleDialog::previewPuzzle(int i)
 	QString labelText;
 	QSettings settings;
 	settings.setPath("thelemmings.net", "StroQ");
-	int solutionLength;
+	QStringList puzzles = settings.entryList("/puzzles");
+	int solutionLength = 0;
 
 	// Don't display the canvas while we delete the old puzzle
 	// and load the new one.
@@ -306,11 +309,17 @@ void SelectPuzzleDialog::previewPuzzle(int i)
 	// Sets the description labels.
 	indexLabelValue->setText(QString("%1").arg(i));
 	authorLabelValue->setText(m_qsPuzzles[(2*i)+1]);
+
 	sizeLabelValue->setText(QString("%1x%2")
 			   .arg(m_ppPreviewPuzzle->getWidth())
 			   .arg(m_ppPreviewPuzzle->getHeight()));
-	solutionLength = settings.readNumEntry("/puzzles/" + puzzlecode, -1);
-	if (solutionLength != -1)
+	
+	QStringList::Iterator it;
+	for (it = puzzles.begin() ; it != puzzles.end() ; ++it)
+		if (puzzlecode == QStringList::split('-', (*it))[1])
+			solutionLength = settings.readNumEntry("/puzzles/" +
+					 (*it), 0);
+	if (solutionLength != 0)
 		bestStrokeLabelValue->setText(
 			QString("<font color=\"red\"><b>%1</b></font>")
 			.arg(solutionLength));
@@ -355,44 +364,54 @@ void SelectPuzzleDialog::loadPuzzleList()
 	QSettings settings;
 	settings.setPath("thelemmings.net", "StroQ");
 	
-	// Prepares the puzzle code list.
-	codesListBox->clear();
-	codesListBox->setSelectionMode(QListBox::Single);
-	
 	// Get a list of the puzzles in the settings.
 	QStringList puzzles = settings.entryList("/puzzles");
+
 	if (puzzles.isEmpty())
 	{
-		// There's no puzzle in the settings. Add them.
+		// There are no puzzles in the settings. Add them.
 		while (m_qsPuzzles[i])
 		{
 			// A stroke length of 0 means the puzzle was not
 			// solved yet.
-			settings.writeEntry("/puzzles/" + m_qsPuzzles[i], 0);
+			QString number = "";
+			if (i/2 < 10) number = "00";
+			else if (i/2 < 100) number = "0";
+			QString key = "/puzzles/" + number +
+				      QString::number(i/2) +
+				      "-" + m_qsPuzzles[i];
+			settings.writeEntry(key, 0);
 			i += 2;
 		}
 		// Now reload the list of puzzles.
 		puzzles = settings.entryList("/puzzles");
 	}
 
-	// Add the puzzles to the listbox.
-	for (i = 0 ; i < puzzles.count() ; i++)
-		new QListBoxPixmap(codesListBox, m_qpmCheckmark,
-				   QString::number(i));
+	// Prepares the puzzle code listbox.
+	codesListBox->clear();
+
+	// Add the puzzles to the listbox
+	QStringList::Iterator it;
+	for (it = puzzles.begin(), i = 0 ; it != puzzles.end() ; ++it, ++i)
+	{
+		QStringList parts = QStringList::split('-', *it);
+		if (settings.readNumEntry("/puzzles/" + (*it)) > 0)
+			new QListBoxPixmap(codesListBox, m_qpmCheckmark,
+					   parts[0]);
+		else
+			new QListBoxPixmap(codesListBox, m_qpmNoCheckmark,
+					   parts[0]);
+	}
 
 	codesListBox->setCurrentItem(0);
 }
 
 void SelectPuzzleDialog::resetSave()
 {
-	int i = 0;
-	
 	// If the user pressed Yes, clear the content of the settings file.
-	if(QMessageBox::question(
-				this,
-				tr("StroQ - Reset confirmation"),
-				tr("Set all puzzles to unsolved state?"),
-				tr("&Yes"), tr("&No")) == 0)
+	if (QMessageBox::question(this, tr("StroQ - Reset confirmation"),
+				  tr("Set all puzzles to unsolved state?"),
+				  tr("&Yes"), tr("&No")) == 0)
 	{
 		QSettings settings;
 		settings.setPath("thelemmings.net", "StroQ");
@@ -400,12 +419,14 @@ void SelectPuzzleDialog::resetSave()
 		// Get a list of the puzzles in the settings.
 		QStringList puzzles = settings.entryList("/puzzles");
 
-		// Remove all the entries. Will be populated again when
+		// Remove all entries. Will be populated again when
 		// next reloading the list.
 		QStringList::Iterator it;
 		for (it = puzzles.begin() ; it != puzzles.end() ; ++it)
 			settings.removeEntry("/puzzles/" + (*it));
 
+		codesListBox->clear();
+		
 		emit reloadPuzzleList();
 	}
 }
