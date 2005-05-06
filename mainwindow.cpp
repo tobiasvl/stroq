@@ -364,7 +364,7 @@ void MainWindow::loadNextPuzzle()
 	{
 		setPuzzleNumber(getPuzzleNumber() + 1);
 		playArea->loadPuzzle(new Puzzle(
-					SelectPuzzleDialog::getPuzzleCode(getPuzzleNumber()*2)));
+					SelectPuzzleDialog::getPuzzleCode(getPuzzleNumber())));
 
 	}
 }
