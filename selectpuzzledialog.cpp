@@ -159,6 +159,8 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 */
 
 QString SelectPuzzleDialog::m_qsPuzzles[] = {
+	"AKIACI", "Lemming",
+	"AONAAANNFFFNI", "Lemming",
 	"BCCAAAACLGLHIHLGLGLADEDE", "Herb007",
 	"BBKAAAACODLCFJGMPKCM", "Herb007",
 	"BCCAAAAAAMDMPPPIAMDIODIA", "Herb007",
@@ -214,6 +216,7 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCCAAAACKOFIJNEDDFIDEBHA","LLCoolDave",
 	"BCCAAAACCGCCCBPPPGIAICIA","klasoen",
 	"BCBMAAADKPKPKPKOPKPLAE","menmanelf",
+	"AKIACI", "Lemming",
 	0
 };
 	
@@ -312,6 +315,11 @@ QString SelectPuzzleDialog::getPuzzleCode()
 	return m_qsSelectedCode;
 }
 
+int SelectPuzzleDialog::getPuzzleNumber()
+{
+	return m_iSelectedIndex;
+}
+
 void SelectPuzzleDialog::previewPuzzle(int i)
 {
 	QString puzzlecode = m_qsPuzzles[2*i];
@@ -385,6 +393,7 @@ void SelectPuzzleDialog::selectPuzzle()
 void SelectPuzzleDialog::selectPuzzle(int selectedIndex)
 {
 	m_qsSelectedCode = m_qsPuzzles[2*selectedIndex];
+	m_iSelectedIndex = selectedIndex;
 	accept();
 }
 
@@ -394,69 +403,63 @@ void SelectPuzzleDialog::loadPuzzleList()
 	QSettings settings;
 	settings.setPath("thelemmings.net", "StroQ");
 	
-	// Get a list of the puzzles in the settings.
-	QStringList puzzles = settings.entryList("/puzzles");
-
-	if (puzzles.isEmpty())
-	{
-		// There are no puzzles in the settings. Add them.
-		while (m_qsPuzzles[i])
-		{
-			// A stroke length of 0 means the puzzle was not
-			// solved yet.
-			QString number = "";
-			if (i/2 < 10) number = "00";
-			else if (i/2 < 100) number = "0";
-			QString key = "/puzzles/" + number +
-				      QString::number(i/2) +
-				      "-" + m_qsPuzzles[i];
-			settings.writeEntry(key, 0);
-			i += 2;
-		}
-		// Now reload the list of puzzles.
-		puzzles = settings.entryList("/puzzles");
-	}
-
-	// Prepares the puzzle code listbox.
+	// Prepares the puzzle code list.
 	codesListBox->clear();
-
-	// Add the puzzles to the listbox
-	QStringList::Iterator it;
-	for (it = puzzles.begin(), i = 0 ; it != puzzles.end() ; ++it, ++i)
+	codesListBox->setSelectionMode(QListBox::Single);
+	
+	while(m_qsPuzzles[i])
 	{
-		QStringList parts = QStringList::split('-', *it);
-		if (settings.readNumEntry("/puzzles/" + (*it)) > 0)
+		// If entry exists, the puzzle was already solved.
+		if(settings.readNumEntry("/puzzles/" + m_qsPuzzles[i]))
+		{
 			new QListBoxPixmap(codesListBox, m_qpmCheckmark,
-					   QString::number(i));
+							   QString::number(i/2));
+		}
 		else
 			new QListBoxPixmap(codesListBox, m_qpmNoCheckmark,
-					   QString::number(i));
+							   QString::number(i/2));
+		
+		i+=2;
 	}
-
 	codesListBox->setCurrentItem(0);
 }
 
 void SelectPuzzleDialog::resetSave()
 {
 	// If the user pressed Yes, clear the content of the settings file.
-	if (QMessageBox::question(this, tr("StroQ - Reset confirmation"),
-				  tr("Set all puzzles to unsolved state?"),
-				  tr("&Yes"), tr("&No")) == 0)
+	if(QMessageBox::question(
+							 this,
+							 tr("StroQ - Reset confirmation"),
+							 tr("Set all puzzles to unsolved state?"),
+							 tr("&Yes"), tr("&No")) == 0)
 	{
 		QSettings settings;
 		settings.setPath("thelemmings.net", "StroQ");
-
+		
 		// Get a list of the puzzles in the settings.
 		QStringList puzzles = settings.entryList("/puzzles");
-
-		// Remove all entries. Will be populated again when
+		
+		// Remove all the entries. Will be populated again when
 		// next reloading the list.
 		QStringList::Iterator it;
 		for (it = puzzles.begin() ; it != puzzles.end() ; ++it)
 			settings.removeEntry("/puzzles/" + (*it));
-
-		codesListBox->clear();
 		
 		emit reloadPuzzleList();
 	}
+}
+
+QString SelectPuzzleDialog::getPuzzleCode(int puzzlenumber)
+{
+	QString res;
+
+	try {
+		res = m_qsPuzzles[puzzlenumber*2];
+	}
+	catch(int)
+	{
+		res = "";
+	}
+	
+	return res;
 }

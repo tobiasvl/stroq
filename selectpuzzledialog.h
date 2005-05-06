@@ -41,7 +41,6 @@ class SelectPuzzleDialog : public SelectPuzzleDialogBase
 	Q_OBJECT
 
 public:
-	static QString m_qsPuzzles[];
 	SelectPuzzleDialog(QWidget *parent = 0, const char *name = 0,
 			   bool modal = true, WFlags fl = 0);
 	~SelectPuzzleDialog();
@@ -58,7 +57,15 @@ public:
 	QLabel *bestStrokeLabel;
 	QLabel *bestStrokeLabelValue;
 
+	/**
+	 * Returns the code of the puzzle which's number is given
+	 * @param puzzlenumber Number of the puzzle to get the code for
+	 */
+	static QString getPuzzleCode(int puzzlenumber);
+	
+	// The following two methods are used to get the results of the dialog
 	QString getPuzzleCode();
+	int SelectPuzzleDialog::getPuzzleNumber();
 
 signals:
 	/**
@@ -84,7 +91,6 @@ public slots:
 	* in the QListBox
 	*/
 	void selectPuzzle();
-
 	
 	/**
 	* Selects a puzzle given its code
@@ -106,9 +112,14 @@ public slots:
 
 private:
 	QString m_qsSelectedCode; /**< The code that was selected (if any) */
+	int m_iSelectedIndex; /**< The selected puzzle number */
+	
 	QPixmap m_qpmCheckmark;
 	QPixmap m_qpmNoCheckmark;
 	Puzzle *m_ppPreviewPuzzle;
+
+	static QString m_qsPuzzles[];
+
 };
 
 #endif

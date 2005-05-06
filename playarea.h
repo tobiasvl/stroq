@@ -69,6 +69,12 @@ signals:
 	*             display the whole puzzle at once.
 	*/
 	void puzzleChanged(Puzzle* puzzle, QSize size);
+	
+	/**
+	 * Emitted when we need to load the next puzzle. Happens when the user
+	 * solves the current puzzle.
+	 */
+	void loadNextPuzzle();
   
 public slots:
 	/**
@@ -179,6 +185,7 @@ private:
 	std::vector<PlaySquare*> m_vStroke; //!< the current stroke
 
 	QCanvas* m_cCanvas;
+
 	static const  int NOT_ALIGNED = 0; //!< no alignment
 	static const  int ROW_ALIGNED = 1; //!< horizontal alignment
 	static const  int COLUMN_ALIGNED = 2; //!< column alignment

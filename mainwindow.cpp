@@ -84,7 +84,10 @@ void MainWindow::selectPuzzle()
 {
 	SelectPuzzleDialog spd(this);
 	if(spd.exec() == QDialog::Accepted)
+	{
 		playArea->loadPuzzle(new Puzzle(spd.getPuzzleCode()));
+		setPuzzleNumber(spd.getPuzzleNumber());
+	}
 }
 
 void MainWindow::toggleEditMode()
@@ -141,7 +144,10 @@ void MainWindow::enterPuzzleCode()
 	if (ok && !code.isEmpty())
 	{
 		if (Puzzle::isCodeValid(code))
+		{
 			playArea->loadPuzzle(new Puzzle(code));
+			setPuzzleNumber(-1);
+		}
 		else
 		{
 			QString errmsg = QString("%1 is not a valid StroQ "\
@@ -179,6 +185,7 @@ void MainWindow::downloadPuzzleOfTheDayFinished(bool error)
 		QTextStream ts(potdBuffer);
 		QString potd = ts.readLine();
 		playArea->loadPuzzle(new Puzzle(potd));
+		setPuzzleNumber(-2);
 		potdBuffer->close();
 	}
 	potdHttp.abort();
@@ -263,6 +270,9 @@ void MainWindow::createActions()
 
 	connect(&potdHttp, SIGNAL(done(bool)),
 		this, SLOT(downloadPuzzleOfTheDayFinished(bool)));
+	
+	
+	connect(playArea, SIGNAL(loadNextPuzzle()), this, SLOT(loadNextPuzzle()));
 }
 
 void MainWindow::createMenus()
@@ -330,7 +340,8 @@ void MainWindow::createGameArea()
 
 void MainWindow::loadFirstPuzzle()
 {
-	playArea->loadPuzzle(new Puzzle("AONAAAKNGLFKI"));
+	playArea->loadPuzzle(new Puzzle(SelectPuzzleDialog::getPuzzleCode(0)));
+	setPuzzleNumber(0);
 	playArea->show();
 }
 
@@ -343,6 +354,36 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 			event->size().height()
 			+ menuBar()->height());
 	}
+}
+
+void MainWindow::loadNextPuzzle()
+{
+	// If we currently have a stock puzzle loaded, we go to the next puzzle
+	// Otherwise we don't do anything
+	if(getPuzzleNumber() >= 0)
+	{
+		setPuzzleNumber(getPuzzleNumber() + 1);
+		playArea->loadPuzzle(new Puzzle(
+					SelectPuzzleDialog::getPuzzleCode(getPuzzleNumber()*2)));
+
+	}
+}
+
+int MainWindow::getPuzzleNumber()
+{
+	return m_iPuzzleNumber;
+}
+
+void MainWindow::setPuzzleNumber(int puzzlenumber)
+{
+	m_iPuzzleNumber = puzzlenumber;
+	
+	if(puzzlenumber == -1)
+		m_lPuzzleNumber->setText("Custom");
+	else if (puzzlenumber == -2)
+		m_lPuzzleNumber->setText("POTD");
+	else
+		m_lPuzzleNumber->setText("#" + QString::number(m_iPuzzleNumber));
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

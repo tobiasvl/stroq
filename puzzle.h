@@ -155,6 +155,23 @@ public:
 	 */
 	QString getCode();
 	
+	
+	/**
+	 * Returns this puzzle's number if this puzzle is a stock puzzle. Returns
+	 * -1 otherwise
+	 *
+	 * @return the puzzle's number if puzzle is a stock puzzle, -1 otherwise.
+	 */
+	int getPuzzleNumber();
+	
+	
+	/**
+	 * Sets the puzzle number value of a puzzle
+	 *
+	 * @param puzzlenumber Number to give this puzzle
+	 */
+	void setPuzzleNumber(int puzzlenumber);
+	
 	/**
 	 * Inverts white and black squares
 	 */
@@ -206,6 +223,7 @@ private:
 	 * @return the integer value of binstring
 	 */
 	static unsigned int evalBin(QString binstring);
+	
 	
 	/**
 	 * DEBUG: Prints out the specs of the puzzle to standard output

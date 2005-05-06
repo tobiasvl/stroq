@@ -68,7 +68,7 @@ Puzzle::Puzzle(QString code)
 	QString ucode = code.upper();
 	QString bincode = "";
 	unsigned int offset = 0;
-
+	
 	for(unsigned int i = 0; i < ucode.length(); i++)
 	{
 		getBin(bincode, ucode.at(i).unicode()-65, 4);
@@ -130,7 +130,7 @@ Puzzle::Puzzle(int width, int height, QPoint solStart, QPoint solEnd,
 Puzzle::Puzzle(Puzzle* originalPuzzle)
 {
 	Square *origSquare;
-	
+
 	m_iWidth = originalPuzzle->getWidth();
 	m_iHeight = originalPuzzle->getHeight();
 	m_qpSolutionStart = originalPuzzle->getSolutionStart();

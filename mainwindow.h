@@ -52,12 +52,17 @@ public:
 
 public slots:
 	/**
-	* Emitted when the puzzle is changed, usually after a call to
+	* Called when the puzzle is changed, usually after a call to
 	* PlayArea.loadPuzzle()
 	* @param puzzle The puzzle that was just loaded
 	* @param canvasSize Size of the canvas used to display the puzzle
 	*/
 	void puzzleChanged(Puzzle* puzzle, QSize canvasSize);
+
+	/**
+	 * Called when the player is moving to the next puzzle
+	 */
+    void loadNextPuzzle();
 
 protected:
 	void resizeEvent(QResizeEvent *);
@@ -113,6 +118,18 @@ private slots:
 	*/
 	void downloadPuzzleOfTheDayFinished(bool error);
 	 
+	/**
+	 * Sets the number of the current puzzle
+	 * @param puzzlenumber Number of the puzzle currently loaded
+	 */
+	void setPuzzleNumber(int puzzlenumber);
+	
+	/**
+ 	 * Returns the number of the current puzzle
+	 * @return the number of the current puzzle
+	 */
+	int getPuzzleNumber();
+	
 private:
 	void createActions();
 	void createMenus();
@@ -157,11 +174,10 @@ private:
     QLabel *m_lCurrentStrokeLength;
     QLabel *m_lStatus;
     QToolButton *m_bNextPuzzle;                                   
-	
-	// Networking stuff
-	QByteArray *m_baReceivedData;
-	
+		
 	QString m_sCurrentCode;
+	
+	int m_iPuzzleNumber;
 	
 	bool m_bFirstDisplay; /**< used to resize the window properly */
 

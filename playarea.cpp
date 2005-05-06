@@ -466,41 +466,21 @@ void PlayArea::toggleStroke()
 						    "with a %1 strokes!")
 					 .arg((int) m_vStroke.size())),
 					 QMessageBox::Ok);
-		
+		// Store the success in the settings.
 		QSettings settings;
 		settings.setPath("thelemmings.net", "StroQ");
-		QStringList puzzles = settings.entryList("/puzzles");
-		QString nextPuzzle;
-
-		QStringList::Iterator it;
-		// Look for the current puzzle in the settings.
-		for (it = puzzles.begin() ; (it != puzzles.end()) ||
-		                            nextPuzzle.isEmpty() ; ++it)
+		QString settingkey = "/puzzles/" +
+			m_ppOriginalPuzzle->getCode();
+		
+		// Save the length of the solution, if this one is shorter.
+		int solutionLength = settings.readNumEntry(settingkey, -1);
+		if (solutionLength == -1
+			|| (int) m_vStroke.size() < solutionLength)
 		{
-			QString currentPuzzle = QStringList::split('-',
-								   *it)[1];
-			if (currentPuzzle == m_ppOriginalPuzzle->getCode())
-			{
-				// We found it.
-				// Save the score if it is shorter.
-				int solutionLength =
-					settings.readNumEntry("/puzzles/" +
-							      (*it), 0);
-				if (solutionLength == 0
-				   || (int)m_vStroke.size() < solutionLength)
-					settings.writeEntry("/puzzles/" +
-							    (*it),
-						      (int)m_vStroke.size());
-
-				// Select the next puzzle.
-				nextPuzzle = QStringList::split('-',
-								*(++it))[1];
-				break;
-			}
+			settings.writeEntry(settingkey,(int)m_vStroke.size());
 		}
-
-		// Load the next puzzle.
-		loadPuzzle(new Puzzle(nextPuzzle));
+		
+		emit loadNextPuzzle();
 	}
 	else
 		QMessageBox::information(this, tr("Sorry"),
@@ -756,7 +736,6 @@ void PlayArea::editModeSetDimensions()
 		return;
 	}
 }
-
 
 void PlayArea::printStroke()
 {
