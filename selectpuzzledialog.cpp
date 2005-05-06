@@ -159,7 +159,6 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 */
 
 QString SelectPuzzleDialog::m_qsPuzzles[] = {
-	// Herb007's
 	"BCCAAAACLGLHIHLGLGLADEDE", "Herb007",
 	"BBKAAAACODLCFJGMPKCM", "Herb007",
 	"BCCAAAAAAMDMPPPIAMDIODIA", "Herb007",
@@ -187,6 +186,34 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCCAAAACJGPFJKPHJNPKJHJM", "Herb007",
 	"APOAAAMGNLBMJIDIM", "Herb007",
 	"BCBIAAACGGGFJKPEPDAM", "Herb007",
+	"BBGAAAADEFJBPABONE","Avalanche",
+	"BCCAAAACAHPHPHPHPHOPNPDM","originalcracker",
+	"BCCAAAADOECECHOGHOECECHM","originalcracker",
+	"BCCAAAACPMAOPOAPOPOPOOAM","originalcracker",
+	"AOOAAAOPDLAKME","originalcracker",
+	"AONAAAHIECBDI","originalcracker",
+	"BCCAAAABGBADOBCBCBCBCBCA","originalcracker",
+	"BCCAAAABPNPNPNPMHNHNHNBM","originalcracker",
+	"BCCAAAACPOPOAOPOPOPPHPIM","originalcracker",
+	"BCCAAAABABABABPBABABABAA","originalcracker",
+	"BCCAAAADPIAHPICECAEAIBAA","originalcracker",
+	"BCCAAAABPPMFBBGPGMBDJBPM","TS2Master",
+	"BCBEAAADAKPFECPKAE","TS2Master",
+	"BCCAAAAAPAJALAIABANAJAPA","skarmachild5000",
+	"BCBMAAADGOGGGFPIPCPGAE","skarmachild5000",
+	"BCCAAAADOMBLAFABAFAFDOFM","skarmachild5000",
+	"BCCAAAABPJPJPJPJPIGBAIGA","skarmachild5000",
+	"BCCAAAAAGBAIGCDGIEGBAIGA","nonexistinghero",
+	"BCCAAAABPMPEHMDMBMANAEAE","pikaafro",
+	"BCCAAAACPFGKPHNPJPAPGPAM","pikaafro",
+	"BCCAAAACAFJJAIGAGBAJJKAE","skarmachild5000",
+	"BCCAAAAAOAOAKAEDPIEAKBLA","skarmachild5000",
+	"BCCAAAADAPIPMPOPHPDPBPAM","skarmachild5000",
+	"BCCAAAABPPMFBBGPGMBDJBPM","skarmachild5000",
+	"BCCAAAAAEBDFLEDEHFDFDEEE","skarmachild5000",
+	"BCCAAAACKOFIJNEDDFIDEBHA","LLCoolDave",
+	"BCCAAAACCGCCCBPPPGIAICIA","klasoen",
+	"BCBMAAADKPKPKPKOPKPLAE","menmanelf",
 	0
 };
 	
@@ -217,7 +244,7 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	indexLabel = new QLabel("indexLabel", descriptionBox);
 	indexLabel->setTextFormat(Qt::RichText);
 	indexLabel->setAlignment(Qt::AlignLeft);
-	indexLabel->setText(tr("Puzzle:"));
+	indexLabel->setText(tr("<u>Puzzle</u>:"));
 	indexLabelValue = new QLabel("indexLabelValue", descriptionBox);
 	indexLabelValue->setTextFormat(Qt::RichText);
 	indexLabelValue->setAlignment(Qt::AlignLeft);
@@ -225,7 +252,7 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	authorLabel = new QLabel("indexLabel", descriptionBox);
 	authorLabel->setTextFormat(Qt::RichText);
 	authorLabel->setAlignment(Qt::AlignLeft);
-	authorLabel->setText(tr("Author:"));
+	authorLabel->setText(tr("<u>Author</u>:"));
 	authorLabelValue = new QLabel("indexLabelValue", descriptionBox);
 	authorLabelValue->setTextFormat(Qt::RichText);
 	authorLabelValue->setAlignment(Qt::AlignLeft);
@@ -233,7 +260,7 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	sizeLabel = new QLabel("sizeLabel", descriptionBox);
 	sizeLabel->setTextFormat(Qt::RichText);
 	sizeLabel->setAlignment(Qt::AlignHCenter);
-	sizeLabel->setText(tr("Dimensions:"));
+	sizeLabel->setText(tr("<u>Dimensions</u>:"));
 	sizeLabelValue = new QLabel("sizeLabelValue", descriptionBox);
 	sizeLabelValue->setTextFormat(Qt::RichText);
 	sizeLabelValue->setAlignment(Qt::AlignHCenter);
@@ -242,7 +269,7 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	bestStrokeLabel = new QLabel("bestStrokeLabel", descriptionBox);
 	bestStrokeLabel->setTextFormat(Qt::RichText);
 	bestStrokeLabel->setAlignment(Qt::AlignRight);
-	bestStrokeLabel->setText(tr("Best stroke:"));
+	bestStrokeLabel->setText(tr("<u>Best stroke</u>:"));
 	bestStrokeLabelValue = new QLabel("bestStrokeLabelValue",
 					   descriptionBox);
 	bestStrokeLabelValue->setTextFormat(Qt::RichText);
@@ -266,6 +293,9 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	connect(puzzlePreviewCanvasView, SIGNAL(shown()),
 		this, SLOT(calibratePreviewCanvasView()));
 
+	// Locks the canvasview so that we can't scroll it
+	puzzlePreviewCanvasView->setEnabled(false);
+	
 	// Loads the settings so that we can set wether or not puzzles have
 	// already been solved.
 	loadPuzzleList();
@@ -397,10 +427,10 @@ void SelectPuzzleDialog::loadPuzzleList()
 		QStringList parts = QStringList::split('-', *it);
 		if (settings.readNumEntry("/puzzles/" + (*it)) > 0)
 			new QListBoxPixmap(codesListBox, m_qpmCheckmark,
-					   parts[0]);
+					   QString::number(i));
 		else
 			new QListBoxPixmap(codesListBox, m_qpmNoCheckmark,
-					   parts[0]);
+					   QString::number(i));
 	}
 
 	codesListBox->setCurrentItem(0);
