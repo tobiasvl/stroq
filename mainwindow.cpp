@@ -37,6 +37,7 @@
 #include <qclipboard.h>
 #include <qcstring.h>
 #include <qbuffer.h>
+#include <qsettings.h>
 #include <qtextstream.h>
 #include <qhttp.h>
 
@@ -125,6 +126,12 @@ void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 		caption += " : Edit";
 	caption += ": " + m_sCurrentCode;
 	setCaption(caption);
+	
+	// Loads the best stroke length (if it exists)
+	QSettings settings;
+	settings.setPath("thelemmings.net", "StroQ");
+	m_iBestStrokeLength = settings.readNumEntry("/puzzles/" + puzzle->getCode(),
+												-1);
 	
 	// Changes the window's size
 	sizeHint.setHeight(sizeHint.height()
@@ -271,7 +278,11 @@ void MainWindow::createActions()
 	connect(&potdHttp, SIGNAL(done(bool)),
 		this, SLOT(downloadPuzzleOfTheDayFinished(bool)));
 	
-	
+	// Stroke length
+	connect(playArea, SIGNAL(strokeLengthChanged(int)),
+			this, SLOT(strokeLengthChanged(int)));
+		
+	// Load next puzzle
 	connect(playArea, SIGNAL(loadNextPuzzle()), this, SLOT(loadNextPuzzle()));
 }
 
@@ -316,14 +327,16 @@ void MainWindow::createMenus()
 	m_lPuzzleNumber->setText(tr("Puzzle <font color=\"red\">#</font>"));
 	statusBar()->addWidget(m_lPuzzleNumber, 0, true) ;
 	m_lCurrentStrokeLength = new QLabel(statusBar(), "Current stroke length");
+	m_lCurrentStrokeLength->setTextFormat(Qt::RichText);
 	m_lCurrentStrokeLength->setText(tr("Current stroke: "));
 	statusBar()->addWidget(m_lCurrentStrokeLength, 0, true);
-	m_lStatus = new QLabel(statusBar(), "Status");
-	m_lStatus->setText(tr("Status"));
-	statusBar()->addWidget(m_lStatus, 0, true);
 	m_bNextPuzzle = new QToolButton(statusBar(), "Next puzzle");
 	m_bNextPuzzle->setTextLabel(tr("Next puzzle"), true);
 	statusBar()->addWidget(m_bNextPuzzle, 0, true);
+	
+	// Next button puzzle
+	connect(m_bNextPuzzle, SIGNAL(clicked()), this, SLOT(loadNextPuzzle()));
+
 }
 
 void MainWindow::createGameArea()
@@ -362,10 +375,16 @@ void MainWindow::loadNextPuzzle()
 	// Otherwise we don't do anything
 	if(getPuzzleNumber() >= 0)
 	{
-		setPuzzleNumber(getPuzzleNumber() + 1);
-		playArea->loadPuzzle(new Puzzle(
-					SelectPuzzleDialog::getPuzzleCode(getPuzzleNumber())));
+		QString nextcode =
+		          SelectPuzzleDialog::getPuzzleCode(getPuzzleNumber()+1);
 
+		if(nextcode == "")
+			loadFirstPuzzle();
+		else
+		{
+			setPuzzleNumber(getPuzzleNumber() + 1);
+			playArea->loadPuzzle(new Puzzle(nextcode));
+		}
 	}
 }
 
@@ -385,6 +404,26 @@ void MainWindow::setPuzzleNumber(int puzzlenumber)
 	else
 		m_lPuzzleNumber->setText("#" + QString::number(m_iPuzzleNumber));
 }
+
+void MainWindow::strokeLengthChanged(int length)
+{
+	QString display = "&nbsp;<center>";
+	
+	if(m_iBestStrokeLength == -1 || length <= m_iBestStrokeLength)
+		display = "<font color=\"darkGreen\">";
+	else
+		display = "<font color=\"red\">";
+
+	display += QString::number(length);
+	display += "</font>";
+	
+	display += "/<font color=\"blue\">"
+		+ QString::number(m_iBestStrokeLength)
+		+ "</font></center>&nbsp;";
+	
+	m_lCurrentStrokeLength->setText(display);
+}
+
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {

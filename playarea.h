@@ -71,6 +71,12 @@ signals:
 	void puzzleChanged(Puzzle* puzzle, QSize size);
 	
 	/**
+	 * Emitted when the stroke length changes
+	 * @param length new length of the stroke
+	 */
+	void strokeLengthChanged(int length);
+	
+	/**
 	 * Emitted when we need to load the next puzzle. Happens when the user
 	 * solves the current puzzle.
 	 */

@@ -159,7 +159,7 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 */
 
 QString SelectPuzzleDialog::m_qsPuzzles[] = {
-	"AKIACI", "Lemming",
+	// 00-09
 	"AONAAANNFFFNI", "Lemming",
 	"BCCAAAACLGLHIHLGLGLADEDE", "Herb007",
 	"BBKAAAACODLCFJGMPKCM", "Herb007",
@@ -169,6 +169,8 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCCAAAADPLIHIPHODODPHPHM", "Herb007",
 	"BCBAAAACKOOLDDLI", "Herb007",
 	"BCCAAAADFLJDOOAHBNADOMAM", "Herb007",
+
+	// 10-19
 	"BCBIAAABPJANOJCJDNPA", "Herb007",
 	"BBOAAAADBODOPNPFODMHIM", "Herb007",
 	"APOAAAGNAEKBEJCFA", "Herb007",
@@ -179,6 +181,8 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BBKAAAADIBOOKDOBOOKI", "Herb007",
 	"BCBMAAABJLGPANGJGKJGPE", "Herb007",
 	"BCCAAAADMAAFMAAMMABMEADM", "Herb007",
+	
+	// 20-29
 	"BCCAAAACAFPJGLCPEPGNPKAE", "Herb007",
 	"BBGAAAAAJOBKPMFPGM", "Herb007",
 	"BCBMAAABKCKPLNAPNPFEFI", "Herb007",
@@ -189,6 +193,8 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"APOAAAMGNLBMJIDIM", "Herb007",
 	"BCBIAAACGGGFJKPEPDAM", "Herb007",
 	"BBGAAAADEFJBPABONE","Avalanche",
+
+	// 30-39
 	"BCCAAAACAHPHPHPHPHOPNPDM","originalcracker",
 	"BCCAAAADOECECHOGHOECECHM","originalcracker",
 	"BCCAAAACPMAOPOAPOPOPOOAM","originalcracker",
@@ -199,6 +205,8 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCCAAAACPOPOAOPOPOPPHPIM","originalcracker",
 	"BCCAAAABABABABPBABABABAA","originalcracker",
 	"BCCAAAADPIAHPICECAEAIBAA","originalcracker",
+
+	// 40-49
 	"BCCAAAABPPMFBBGPGMBDJBPM","TS2Master",
 	"BCBEAAADAKPFECPKAE","TS2Master",
 	"BCCAAAAAPAJALAIABANAJAPA","skarmachild5000",
@@ -209,6 +217,8 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCCAAAABPMPEHMDMBMANAEAE","pikaafro",
 	"BCCAAAACPFGKPHNPJPAPGPAM","pikaafro",
 	"BCCAAAACAFJJAIGAGBAJJKAE","skarmachild5000",
+
+	// 50-...
 	"BCCAAAAAOAOAKAEDPIEAKBLA","skarmachild5000",
 	"BCCAAAADAPIPMPOPHPDPBPAM","skarmachild5000",
 	"BCCAAAABPPMFBBGPGMBDJBPM","skarmachild5000",
@@ -216,7 +226,9 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCCAAAACKOFIJNEDDFIDEBHA","LLCoolDave",
 	"BCCAAAACCGCCCBPPPGIAICIA","klasoen",
 	"BCBMAAADKPKPKPKOPKPLAE","menmanelf",
-	"AKIACI", "Lemming",
+	"APPAAAJABAAIBADOPMA","Evan1109",
+	"APOAAADAAFIBBBIHA","Evan1109",
+	"BCCAAAACHGAAMJJLILOCPAOA","Evan1109",
 	0
 };
 	
@@ -451,15 +463,13 @@ void SelectPuzzleDialog::resetSave()
 
 QString SelectPuzzleDialog::getPuzzleCode(int puzzlenumber)
 {
-	QString res;
-
-	try {
-		res = m_qsPuzzles[puzzlenumber*2];
-	}
-	catch(int)
-	{
-		res = "";
-	}
+	// Counts how many puzzles we have in order to do boundaries check
+	int i = 0;
+	while(m_qsPuzzles[i])
+		i++;
 	
-	return res;
+	if(puzzlenumber < (i/2)-1)
+		return m_qsPuzzles[puzzlenumber*2];
+	else
+		return QString("");
 }

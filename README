@@ -48,7 +48,8 @@ mouse. StroQ runs under Windows, Linux/*BSD and Mac OSX.
 3. Installing/Building
      The Qt 3.3.x libraries are required in order to run stroke. Building the
      game from source code requires the Qt development package (dev) as well
-     as GCC (other C++ compilers haven't been tested with StroQ).
+     as GCC. If you are building with Visual Studio, you'll need the Microsoft
+     C++ compiler at least in its version 7.0.
 
      To install from a binary package, just extract the archive which will
      create a StroQ/ directory, and run the StroQ executable within.
@@ -63,8 +64,10 @@ mouse. StroQ runs under Windows, Linux/*BSD and Mac OSX.
          make                       // Starts building the game
          ./StroQ                    // Launches the game
      
-      Windows
-       Not tested yet.
+      Windows/Visual Studio
+       You will need to have Qt 3.x for Windows. As with the Unix build, run
+       qmake -project and qmake. Open the generated .pro file from Visual
+       Studio 2003 and compile.
        
 4. Internet Connectivity
      StroQ has very limited internet support. It can connect to the StroQ
@@ -78,6 +81,13 @@ mouse. StroQ runs under Windows, Linux/*BSD and Mac OSX.
 5. Thanks and Credits
      Contribution by Ahmad Ait Mouss (code), XiaoGuang Li for some of the
      graphics.
+     I would like to thank the puzzle contributors from the Polarium
+     GameFAQs message boards (http://www.gamefaqs.com) including Herb007
+     (al1125), NickJ, Perdevious, Evan1109, Avalanche, OriginalCracker,
+     TS2Master, skarmachild5000, nonexistinghero, pikaafro, klasoen,
+     menmanelf.
+     Puzzles used with permission from the Follarium project
+     (http://www.polarium-puzzles.com/) by jandujar.
 
      I would like to thank everyone from #tukif for their trollesque support
      as well as my colleagues for making me realize that playing small games

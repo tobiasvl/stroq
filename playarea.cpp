@@ -387,6 +387,8 @@ void PlayArea::selectPlaySquare(PlaySquare *playSquare)
 		playSquare->setStrokeEnd();
 	else
 		updateStrokeLinks();
+	
+	emit strokeLengthChanged((int) m_vStroke.size());
 }
 
 
@@ -415,10 +417,10 @@ void PlayArea::resetGrid() {
 
 	// Copies qvlOriginalPuzzle into qvlPlayPuzzle replacing all Squares
 	// by PlaySquares.
-	setCanvas(0);
 	if (m_ppPlayPuzzle)
 		delete m_ppPlayPuzzle;
-	
+
+	setCanvas(0);
 	m_ppPlayPuzzle = new Puzzle(m_ppOriginalPuzzle, m_cCanvas);
 	viewport()->setMouseTracking(true);
 
@@ -500,6 +502,7 @@ void PlayArea::clearStroke()
 		(*i)->unsetLink();
 	
 	m_vStroke.clear();
+	emit strokeLengthChanged(0);
 	canvas()->setAllChanged();
 	canvas()->update();
 }

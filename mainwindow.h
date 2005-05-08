@@ -64,6 +64,12 @@ public slots:
 	 */
     void loadNextPuzzle();
 
+	/**
+	 * Called when the stroke changes its length
+	 * @param length New length of the stroke
+	 */
+	void strokeLengthChanged(int length);
+	
 protected:
 	void resizeEvent(QResizeEvent *);
 	void closeEvent(QCloseEvent *event);
@@ -172,12 +178,12 @@ private:
 	// Game Toolbar
     QLabel *m_lPuzzleNumber;
     QLabel *m_lCurrentStrokeLength;
-    QLabel *m_lStatus;
     QToolButton *m_bNextPuzzle;                                   
 		
 	QString m_sCurrentCode;
 	
 	int m_iPuzzleNumber;
+	int m_iBestStrokeLength;
 	
 	bool m_bFirstDisplay; /**< used to resize the window properly */
 
