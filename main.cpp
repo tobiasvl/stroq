@@ -30,6 +30,7 @@
 
 int main(int argc, char *argv[])
 {
+	/*
 	printf("StroQ version %s\n", VERSION.latin1());
 	printf("Copyright (C) 2005 Luc Vo Van\n");
 	printf("This program is free software; you can redistribute it ");
@@ -51,6 +52,7 @@ int main(int argc, char *argv[])
 	printf("Software\n");
 	printf("Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, ");
 	printf("USA.\n\n");
+	*/
 	
 	QApplication app(argc, argv);
 	MainWindow mwin;

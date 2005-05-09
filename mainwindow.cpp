@@ -325,16 +325,18 @@ void MainWindow::createMenus()
 
 	statusBar()->setSizeGripEnabled(false);
 	m_lPuzzleNumber = new QLabel(statusBar(), "Puzzle number");
-	m_lPuzzleNumber->setText(tr("Puzzle <font color=\"red\">#</font>"));
+	m_lPuzzleNumber->setTextFormat(Qt::RichText);
+	m_lPuzzleNumber->setAlignment(Qt::AlignVCenter + Qt::AlignHCenter);
 	statusBar()->addWidget(m_lPuzzleNumber, 0, true) ;
 
 	m_lCurrentStrokeLength = new QLabel(statusBar(), "Current stroke "\
 							 "length");
 	m_lCurrentStrokeLength->setTextFormat(Qt::RichText);
-	m_lCurrentStrokeLength->setText(tr("Current stroke: "));
+	m_lCurrentStrokeLength->setAlignment(Qt::AlignVCenter + Qt::AlignHCenter);
 	statusBar()->addWidget(m_lCurrentStrokeLength, 0, true);
 	m_bNextPuzzle = new QToolButton(statusBar(), "Next puzzle");
-	m_bNextPuzzle->setTextLabel(tr("Next puzzle"), true);
+	m_bNextPuzzle->setUsesTextLabel(true);
+	m_bNextPuzzle->setTextLabel(tr(">>"), true);
 	statusBar()->addWidget(m_bNextPuzzle, 0, true);
 	
 	// Next button puzzle
@@ -378,13 +380,16 @@ void MainWindow::loadNextPuzzle()
 	// puzzle. Otherwise we do nothing.
 	if(getPuzzleNumber() >= 0)
 	{
+		// Get the next puzzle number (empty if this is the last puzzle)
 		QString nextcode =
 		       SelectPuzzleDialog::getPuzzleCode(getPuzzleNumber()+1);
 
 		if(nextcode == "")
+			// We cycle
 			loadFirstPuzzle();
 		else
 		{
+			// We have a next puzzle
 			setPuzzleNumber(getPuzzleNumber() + 1);
 			playArea->loadPuzzle(new Puzzle(nextcode));
 		}
@@ -411,19 +416,34 @@ void MainWindow::setPuzzleNumber(int puzzlenumber)
 
 void MainWindow::strokeLengthChanged(int length)
 {
-	QString display = "&nbsp;<center>";
+	QString display = "";
 	
 	if(m_iBestStrokeLength == -1 || length <= m_iBestStrokeLength)
 		display = "<font color=\"darkGreen\">";
 	else
 		display = "<font color=\"red\">";
 
-	display += QString::number(length);
+	// Add a 0 in front
+	display += (QString::number(length)).rightJustify(2, '0');
+		
 	display += "</font>";
 	
-	display += "/<font color=\"blue\">"
-		+ QString::number(m_iBestStrokeLength)
-		+ "</font></center>&nbsp;";
+		if(length == -1)
+		display += tr("Unsolved");
+
+	
+	if(m_iBestStrokeLength == -1)
+	{
+		display += "/<font color=\"red\">";
+		display += tr("Unsolved");
+	}
+	else
+	{
+		display += "/<font color=\"blue\">";
+		display += QString::number(m_iBestStrokeLength);
+	}
+	
+	display += "</font>";
 	
 	m_lCurrentStrokeLength->setText(display);
 }
