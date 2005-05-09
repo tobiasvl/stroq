@@ -57,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 	m_bFirstDisplay = true;
 
 	potdBuffer = NULL;
-	
+
 	createGameArea();
 	createActions();
 	createMenus();
@@ -96,7 +96,7 @@ void MainWindow::toggleEditMode()
 	playArea->toggleEditMode();
 	newEditPuzzleAct->setEnabled(playArea->getEditMode());
 	invertPuzzleAct->setEnabled(playArea->getEditMode());
-	
+
 	if(playArea->getEditMode())
 		setCaption("StroQ: Edit mode");
 	else
@@ -112,28 +112,28 @@ void MainWindow::copyPuzzleCode()
 		// In X11, copy to the middle mouse button clipboard as well
 		cb->setText(m_sCurrentCode, QClipboard::Selection);
 	}
-	
+
 	cb->setText(m_sCurrentCode, QClipboard::Clipboard);
 }
 
 void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 {
-	// Changes the window's caption
+	// Changes the window's caption.
 	QString caption = "StroQ";
 	m_sCurrentCode = puzzle->getCode();
-	
+
 	if (playArea->getEditMode())
 		caption += " : Edit";
 	caption += ": " + m_sCurrentCode;
 	setCaption(caption);
 	
-	// Loads the best stroke length (if it exists)
+	// Loads the best stroke length (if it exists).
 	QSettings settings;
 	settings.setPath("thelemmings.net", "StroQ");
-	m_iBestStrokeLength = settings.readNumEntry("/puzzles/" + puzzle->getCode(),
-												-1);
+	m_iBestStrokeLength = settings.readNumEntry("/puzzles/" +
+						    puzzle->getCode(), -1);
 	
-	// Changes the window's size
+	// Changes the window's size.
 	sizeHint.setHeight(sizeHint.height()
 			 + menuBar()->height()
 			 + statusBar()->height());
@@ -280,10 +280,11 @@ void MainWindow::createActions()
 	
 	// Stroke length
 	connect(playArea, SIGNAL(strokeLengthChanged(int)),
-			this, SLOT(strokeLengthChanged(int)));
+		this, SLOT(strokeLengthChanged(int)));
 		
 	// Load next puzzle
-	connect(playArea, SIGNAL(loadNextPuzzle()), this, SLOT(loadNextPuzzle()));
+	connect(playArea, SIGNAL(loadNextPuzzle()),
+		this, SLOT(loadNextPuzzle()));
 }
 
 void MainWindow::createMenus()
@@ -326,7 +327,9 @@ void MainWindow::createMenus()
 	m_lPuzzleNumber = new QLabel(statusBar(), "Puzzle number");
 	m_lPuzzleNumber->setText(tr("Puzzle <font color=\"red\">#</font>"));
 	statusBar()->addWidget(m_lPuzzleNumber, 0, true) ;
-	m_lCurrentStrokeLength = new QLabel(statusBar(), "Current stroke length");
+
+	m_lCurrentStrokeLength = new QLabel(statusBar(), "Current stroke "\
+							 "length");
 	m_lCurrentStrokeLength->setTextFormat(Qt::RichText);
 	m_lCurrentStrokeLength->setText(tr("Current stroke: "));
 	statusBar()->addWidget(m_lCurrentStrokeLength, 0, true);
@@ -371,12 +374,12 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
 void MainWindow::loadNextPuzzle()
 {
-	// If we currently have a stock puzzle loaded, we go to the next puzzle
-	// Otherwise we don't do anything
+	// If we currently have a stock puzzle loaded, we go to the next
+	// puzzle. Otherwise we do nothing.
 	if(getPuzzleNumber() >= 0)
 	{
 		QString nextcode =
-		          SelectPuzzleDialog::getPuzzleCode(getPuzzleNumber()+1);
+		       SelectPuzzleDialog::getPuzzleCode(getPuzzleNumber()+1);
 
 		if(nextcode == "")
 			loadFirstPuzzle();
@@ -402,7 +405,8 @@ void MainWindow::setPuzzleNumber(int puzzlenumber)
 	else if (puzzlenumber == -2)
 		m_lPuzzleNumber->setText("POTD");
 	else
-		m_lPuzzleNumber->setText("#" + QString::number(m_iPuzzleNumber));
+		m_lPuzzleNumber->setText("#" +
+					 QString::number(m_iPuzzleNumber));
 }
 
 void MainWindow::strokeLengthChanged(int length)

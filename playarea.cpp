@@ -35,7 +35,6 @@
 #include <qsettings.h>
 #include <qfile.h>
 #include <vector>
-//#include <qstringlist.h>
 
 #include "playarea.h"
 #include "playsquare.h"

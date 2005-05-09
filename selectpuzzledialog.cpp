@@ -308,7 +308,7 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	connect(puzzlePreviewCanvasView, SIGNAL(shown()),
 		this, SLOT(calibratePreviewCanvasView()));
 
-	// Locks the canvasview so that we can't scroll it
+	// Locks the canvasview so that we can't scroll it.
 	puzzlePreviewCanvasView->setEnabled(false);
 	
 	// Loads the settings so that we can set wether or not puzzles have
@@ -361,8 +361,8 @@ void SelectPuzzleDialog::previewPuzzle(int i)
 	authorLabelValue->setText(m_qsPuzzles[(2*i)+1]);
 
 	sizeLabelValue->setText(QString("%1x%2")
-			   .arg(m_ppPreviewPuzzle->getWidth())
-			   .arg(m_ppPreviewPuzzle->getHeight()));
+				.arg(m_ppPreviewPuzzle->getWidth())
+				.arg(m_ppPreviewPuzzle->getHeight()));
 	
 	QStringList::Iterator it;
 	for (it = puzzles.begin() ; it != puzzles.end() ; ++it)
@@ -425,25 +425,23 @@ void SelectPuzzleDialog::loadPuzzleList()
 		if(settings.readNumEntry("/puzzles/" + m_qsPuzzles[i]))
 		{
 			new QListBoxPixmap(codesListBox, m_qpmCheckmark,
-							   QString::number(i/2));
+					   QString::number(i/2));
 		}
 		else
 			new QListBoxPixmap(codesListBox, m_qpmNoCheckmark,
-							   QString::number(i/2));
-		
+					   QString::number(i/2));
 		i+=2;
 	}
+
 	codesListBox->setCurrentItem(0);
 }
 
 void SelectPuzzleDialog::resetSave()
 {
 	// If the user pressed Yes, clear the content of the settings file.
-	if(QMessageBox::question(
-							 this,
-							 tr("StroQ - Reset confirmation"),
-							 tr("Set all puzzles to unsolved state?"),
-							 tr("&Yes"), tr("&No")) == 0)
+	if(QMessageBox::question(this, tr("StroQ - Reset confirmation"),
+				 tr("Set all puzzles to unsolved state?"),
+				 tr("&Yes"), tr("&No")) == 0)
 	{
 		QSettings settings;
 		settings.setPath("thelemmings.net", "StroQ");
@@ -456,7 +454,7 @@ void SelectPuzzleDialog::resetSave()
 		QStringList::Iterator it;
 		for (it = puzzles.begin() ; it != puzzles.end() ; ++it)
 			settings.removeEntry("/puzzles/" + (*it));
-		
+
 		emit reloadPuzzleList();
 	}
 }
