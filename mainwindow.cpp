@@ -89,6 +89,9 @@ void MainWindow::selectPuzzle()
 		playArea->loadPuzzle(new Puzzle(spd.getPuzzleCode()));
 		setPuzzleNumber(spd.getPuzzleNumber());
 	}
+
+	// Updates the playArea in case the theme has changed
+	playArea->canvas()->update();
 }
 
 void MainWindow::toggleEditMode()
