@@ -757,13 +757,13 @@ void PlayArea::changeTheme(int themenum)
 	switch(themenum)
 	{
 		case 0:
-			m_qpmBackground = new QPixmap(classic_background);
+			m_qpmBackground = new QPixmap();
 			break;
 		case 1:
 			m_qpmBackground = new QPixmap(classicsquare_background);
 			break;
 		case 2:
-			m_qpmBackground = new QPixmap(oceanbarbeq_background);
+			m_qpmBackground = new QPixmap();
 			break;
 
 	}

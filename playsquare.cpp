@@ -299,11 +299,11 @@ void PlaySquare::drawShape(QPainter &painter)
 void PlaySquare::changeTheme(int themenum)
 {
 	// Loads the pixmaps, if necessary
-	if(m_qpmSquares == NULL)
+	if(!m_qpmSquares)
 	{
 		m_qpmSquares = new QPixmap[3];		
 	}
-
+	
 	switch(themenum)
 	{
 		case 0:
