@@ -321,7 +321,7 @@ void MainWindow::createMenus()
 	
 	// Creates the game toolbar
 	// [puzzle number][current stroke length][best known stroke]
-	// [status(play/win/lose)][Next puzzle button]
+	// [Next puzzle button]
 
 	statusBar()->setSizeGripEnabled(false);
 	m_lPuzzleNumber = new QLabel(statusBar(), "Puzzle number");
@@ -335,8 +335,8 @@ void MainWindow::createMenus()
 	m_lCurrentStrokeLength->setAlignment(Qt::AlignVCenter + Qt::AlignHCenter);
 	statusBar()->addWidget(m_lCurrentStrokeLength, 0, true);
 	m_bNextPuzzle = new QToolButton(statusBar(), "Next puzzle");
-	m_bNextPuzzle->setUsesTextLabel(true);
-	m_bNextPuzzle->setTextLabel(tr(">>"), true);
+	
+	m_bNextPuzzle->setUsesTextLabel(false);	
 	statusBar()->addWidget(m_bNextPuzzle, 0, true);
 	
 	// Next button puzzle

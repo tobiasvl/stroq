@@ -28,6 +28,7 @@
 #include <qcanvas.h>
 
 #include "puzzle.h"
+#include "playsquare.h"
 
 #include "selectpuzzledialogbase.h"
 #include "previewcanvasview.h"
@@ -109,6 +110,12 @@ public slots:
 	 * Resets all puzzles to unsolved in the settings file 
 	 */
 	void resetSave();
+	
+	/**
+	 * Changes the current theme
+	 * @param themenum Theme to use
+	 */
+	void changeTheme(int themenum);
 
 private:
 	QString m_qsSelectedCode; /**< The code that was selected (if any) */

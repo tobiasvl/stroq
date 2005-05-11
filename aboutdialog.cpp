@@ -31,7 +31,7 @@
 #include "stroqconst.h"
 #include "aboutdialog.h"
 
-#include "images/aboutimage.xpm"
+#include "images/misc/aboutimage.xpm"
 
 AboutDialog::AboutDialog(QWidget *parent, const char *name,
 						 bool modal, WFlags fl)

@@ -50,6 +50,12 @@ public:
 		DownLeft, DownUp, DownRight         /**< starting from down */
 		};
 
+	enum Theme {
+		ThemeClassic, /**< Classic theme */
+		ThemeClassicSquare, /**< Classic theme with sharp squares */
+		ThemeOceanBarbeQ /**< Cartoon theme with animals */
+	};
+		
 	/**
 	 * Constructs a PlaySquare given a canvas, position, and a State
 	 *
@@ -136,11 +142,18 @@ public:
 	 */
 	void toggle();
 	
+	/**
+	 * Changes the current theme
+	 * @param themenum Theme to use
+	 */
+	static void changeTheme(int themenum);
+	
 private:
 	bool m_bHighlighted;  /**< true if the Square is currently highlighted */
 	PlaySquare::Links m_lLink; /**< The link set on the PlaySquare */
 	int m_iStrokePosition;     /**< position in the stroke */
 	bool m_bStrokeEnd;         /**< wether or not this PlaySquare is an end of the stroke */
+	static Theme m_tCurrentTheme; /**< current theme for pixmaps */
 	static QPixmap *m_qpmSquares;  /**< Square images, in the same order as the Square::States enum */
 };
 

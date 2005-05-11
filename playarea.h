@@ -119,6 +119,12 @@ public slots:
 	*/
 	void invertPuzzle();
 
+	/**
+	 * Changes the current theme
+	 * @param themenum Theme to use
+	 */
+	static void changeTheme(int themenum);
+	
 private:
 	/**
 	* Selects all the PlaySquares between playSquare and the stroke's end

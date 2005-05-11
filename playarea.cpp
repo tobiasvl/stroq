@@ -41,6 +41,10 @@
 #include "puzzle.h"
 #include "stroqconst.h"
 
+#include "images/classic/background.xpm"
+#include "images/classicsquare/background.xpm"
+#include "images/oceanbarbeq/background.xpm"
+
 QPixmap* PlayArea::m_qpmBackground = NULL;
 
 PlayArea::PlayArea(QCanvas *c, QWidget* parent,  const char* name, WFlags f)
@@ -52,14 +56,11 @@ PlayArea::PlayArea(QCanvas *c, QWidget* parent,  const char* name, WFlags f)
 	m_bButtonPressed = false;
 	m_bEditMode = false;
 	m_cCanvas = c;
-	
-	// The background image.
-	if(!m_qpmBackground)
-	{
-		m_qpmBackground = new QPixmap("images/background.png");
-		m_cCanvas->setBackgroundPixmap(*m_qpmBackground);
-		m_cCanvas->update();
-	}
+
+	changeTheme(0);
+	m_cCanvas->setBackgroundPixmap(*m_qpmBackground);
+	m_cCanvas->update();
+
 }
 
 
@@ -748,4 +749,23 @@ void PlayArea::printStroke()
 					(*i)->getGridPos().x(),
 					(*i)->getGridPos().y());
 	printf("\n");
+}
+
+void PlayArea::changeTheme(int themenum)
+{
+	// The background image.
+	switch(themenum)
+	{
+		case 0:
+			m_qpmBackground = new QPixmap(classic_background);
+			break;
+		case 1:
+			m_qpmBackground = new QPixmap(classicsquare_background);
+			break;
+		case 2:
+			m_qpmBackground = new QPixmap(oceanbarbeq_background);
+			break;
+
+	}
+	PlaySquare::changeTheme(themenum);
 }

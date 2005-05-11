@@ -32,11 +32,25 @@
 #include "playsquare.h"
 #include "stroqconst.h"
 
-#include "images/whitesquare.xpm"
-#include "images/blacksquare.xpm"
-#include "images/bordersquare.xpm"
+#include "images/classic/white.xpm"
+#include "images/classic/black.xpm"
+#include "images/classic/border.xpm"
+#include "images/classic/background.xpm"
+
+#include "images/classicsquare/white.xpm"
+#include "images/classicsquare/black.xpm"
+#include "images/classicsquare/border.xpm"
+#include "images/classicsquare/background.xpm"
+
+#include "images/oceanbarbeq/white.xpm"
+#include "images/oceanbarbeq/black.xpm"
+#include "images/oceanbarbeq/border.xpm"
+#include "images/oceanbarbeq/background.xpm"
+
 
 #define DEFAULT_UPDATED_RECT QRect((int)x(), (int)y(), width(), height())
+
+PlaySquare::Theme PlaySquare::m_tCurrentTheme = PlaySquare::ThemeClassic;
 
 QPixmap* PlaySquare::m_qpmSquares = NULL;
 
@@ -47,19 +61,13 @@ PlaySquare::PlaySquare(QCanvas *canvas, QPoint pos, Square::States state)
 	m_bHighlighted = false;
 	m_sState = state;
 	unsetLink();
-	
-	// Loads the pixmaps, if necessary
-	if(m_qpmSquares == NULL)
-	{
-		m_qpmSquares = new QPixmap[3];
-		m_qpmSquares[(int) Square::White] = QPixmap(whitesquare);
-		m_qpmSquares[(int) Square::Black] = QPixmap(blacksquare);
-		m_qpmSquares[(int) Square::Border] = QPixmap(bordersquare);
-	}
-	
+
+	if(!m_qpmSquares)
+		changeTheme(0);
+		
 	// Sets the pixel position on the canvas
 	setX(m_pqpGridPos.x() * DEFAULT_SIDE);
-	setY(m_pqpGridPos.y() * DEFAULT_SIDE);	
+	setY(m_pqpGridPos.y() * DEFAULT_SIDE);
 	setSize(DEFAULT_SIDE, DEFAULT_SIDE);
 	
 	show();
@@ -288,3 +296,33 @@ void PlaySquare::drawShape(QPainter &painter)
 	}
 }
 
+void PlaySquare::changeTheme(int themenum)
+{
+	// Loads the pixmaps, if necessary
+	if(m_qpmSquares == NULL)
+	{
+		m_qpmSquares = new QPixmap[3];		
+	}
+
+	switch(themenum)
+	{
+		case 0:
+			m_tCurrentTheme = PlaySquare::ThemeClassic;
+			m_qpmSquares[(int) Square::White] = QPixmap(classic_whitesquare);
+			m_qpmSquares[(int) Square::Black] = QPixmap(classic_blacksquare);
+			m_qpmSquares[(int) Square::Border] = QPixmap(classic_bordersquare);
+			break;
+		case 1:
+			m_tCurrentTheme = PlaySquare::ThemeClassicSquare;
+			m_qpmSquares[(int) Square::White] = QPixmap(classicsquare_whitesquare);
+			m_qpmSquares[(int) Square::Black] = QPixmap(classicsquare_blacksquare);
+			m_qpmSquares[(int) Square::Border] = QPixmap(classicsquare_bordersquare);
+			break;
+		case 2:
+			m_tCurrentTheme = PlaySquare::ThemeOceanBarbeQ;
+			m_qpmSquares[(int) Square::White] = QPixmap(oceanbarbeq_whitesquare);
+			m_qpmSquares[(int) Square::Black] = QPixmap(oceanbarbeq_blacksquare);
+			m_qpmSquares[(int) Square::Border] = QPixmap(oceanbarbeq_bordersquare);
+			break;
+	}
+}

@@ -24,6 +24,7 @@
 
 #include <qcanvas.h>
 #include <qlayout.h>
+#include <qcombobox.h>
 #include <qhbox.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
@@ -34,9 +35,14 @@
 #include <qwmatrix.h>
 
 #include "selectpuzzledialog.h"
+#include "playarea.h"
 #include "stroqconst.h"
 
-#include "images/checkmark.xpm"
+#include "images/misc/checkmark.xpm"
+
+#include "images/classic/icon.xpm"
+#include "images/classicsquare/icon.xpm"
+#include "images/oceanbarbeq/icon.xpm"
 
 /*
 QString SelectPuzzleDialog::m_qsPuzzles[] = {
@@ -309,6 +315,13 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	m_qpmNoCheckmark = QPixmap(12, 12);
 	m_qpmNoCheckmark.fill(Qt::white);
 
+	m_cbThemeSelect->insertItem(QPixmap((const char**) classic_icon),
+					QString("Classic"));
+	m_cbThemeSelect->insertItem(QPixmap((const char**) classicsquare_icon),
+					QString("ClassicSquare"));
+	m_cbThemeSelect->insertItem(QPixmap((const char**) oceanbarbeq_icon),
+					QString("OceanBarbeQ"));
+	
 	codesListBox->setSelectionMode(QListBox::Single);
 
 	QBoxLayout *vl = new QVBoxLayout(previewFrame);
@@ -374,6 +387,10 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	connect(puzzlePreviewCanvasView, SIGNAL(shown()),
 		this, SLOT(calibratePreviewCanvasView()));
 
+	// Theme change combo box
+	connect(m_cbThemeSelect, SIGNAL(activated(int)),
+		this, SLOT(changeTheme(int)));
+		
 	// Locks the canvasview so that we can't scroll it.
 	puzzlePreviewCanvasView->setEnabled(false);
 	
@@ -430,11 +447,8 @@ void SelectPuzzleDialog::previewPuzzle(int i)
 				.arg(m_ppPreviewPuzzle->getWidth())
 				.arg(m_ppPreviewPuzzle->getHeight()));
 	
-	QStringList::Iterator it;
-	for (it = puzzles.begin() ; it != puzzles.end() ; ++it)
-		if (puzzlecode == QStringList::split('-', (*it))[1])
-			solutionLength = settings.readNumEntry("/puzzles/" +
-					 (*it), 0);
+	solutionLength = settings.readNumEntry("/puzzles/" + puzzlecode, 0);
+	
 	if (solutionLength != 0)
 		bestStrokeLabelValue->setText(
 			QString("<font color=\"red\"><b>%1</b></font>")
@@ -536,4 +550,11 @@ QString SelectPuzzleDialog::getPuzzleCode(int puzzlenumber)
 		return m_qsPuzzles[puzzlenumber*2];
 	else
 		return QString("");
+}
+
+void SelectPuzzleDialog::changeTheme(int themeindex)
+{
+	PlayArea::changeTheme(themeindex);
+	puzzlePreviewCanvas->setAllChanged();
+	puzzlePreviewCanvas->update();
 }
