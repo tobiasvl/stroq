@@ -296,6 +296,11 @@ void PlaySquare::drawShape(QPainter &painter)
 	}
 }
 
+int PlaySquare::getCurrentTheme()
+{
+	return (int)m_tCurrentTheme;
+}
+
 void PlaySquare::changeTheme(int themenum)
 {
 	// Loads the pixmaps, if necessary

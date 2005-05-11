@@ -397,6 +397,9 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	// Loads the settings so that we can set wether or not puzzles have
 	// already been solved.
 	loadPuzzleList();
+	
+	// Sets the theme select to the current theme
+	m_cbThemeSelect->setCurrentItem(PlaySquare::getCurrentTheme());
 }
 
 SelectPuzzleDialog::~SelectPuzzleDialog()
@@ -555,6 +558,13 @@ QString SelectPuzzleDialog::getPuzzleCode(int puzzlenumber)
 void SelectPuzzleDialog::changeTheme(int themeindex)
 {
 	PlayArea::changeTheme(themeindex);
+	
+	QSettings settings;
+	settings.setPath("thelemmings.net", "StroQ");
+	// Get a list of the puzzles in the settings.
+	settings.writeEntry("theme", themeindex);
+	
+	
 	puzzlePreviewCanvas->setAllChanged();
 	puzzlePreviewCanvas->update();
 }

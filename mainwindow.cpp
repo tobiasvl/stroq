@@ -62,6 +62,12 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 	createActions();
 	createMenus();
 	loadFirstPuzzle();
+	
+	// Loads the theme
+	QSettings settings;
+	settings.setPath("thelemmings.net", "StroQ");
+	// Get a list of the puzzles in the settings.
+	playArea->changeTheme(settings.readNumEntry("theme", 0));
 }
 
 MainWindow::~MainWindow()

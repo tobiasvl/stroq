@@ -142,11 +142,18 @@ public:
 	 */
 	void toggle();
 	
+	
+	/**
+	 * Returns the index of the currently loaded theme
+	 */
+	static int PlaySquare::getCurrentTheme();
+	
 	/**
 	 * Changes the current theme
 	 * @param themenum Theme to use
 	 */
 	static void changeTheme(int themenum);
+	
 	
 private:
 	bool m_bHighlighted;  /**< true if the Square is currently highlighted */
