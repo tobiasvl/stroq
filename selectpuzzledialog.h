@@ -42,8 +42,9 @@ class SelectPuzzleDialog : public SelectPuzzleDialogBase
 	Q_OBJECT
 
 public:
-	SelectPuzzleDialog(QWidget *parent = 0, const char *name = 0,
-			   bool modal = true, WFlags fl = 0);
+	SelectPuzzleDialog(QWidget *parent = 0, int currentpuzzle = 0,
+					   const char *name = 0,
+					   bool modal = true, WFlags fl = 0);
 	~SelectPuzzleDialog();
 	
 	QCanvas *puzzlePreviewCanvas;

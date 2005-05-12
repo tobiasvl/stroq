@@ -305,7 +305,8 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 };
 	
 	
-SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
+SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, int currentpuzzle,
+									   const char *name,
                                        bool modal, WFlags fl)
 	: SelectPuzzleDialogBase(parent, name, modal, fl)
 {
@@ -400,6 +401,9 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, const char *name,
 	
 	// Sets the theme select to the current theme
 	m_cbThemeSelect->setCurrentItem(PlaySquare::getCurrentTheme());
+	
+	if(currentpuzzle != -1)
+		codesListBox->setCurrentItem(currentpuzzle);
 }
 
 SelectPuzzleDialog::~SelectPuzzleDialog()

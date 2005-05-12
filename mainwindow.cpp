@@ -68,6 +68,10 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 	settings.setPath("thelemmings.net", "StroQ");
 	// Get a list of the puzzles in the settings.
 	playArea->changeTheme(settings.readNumEntry("theme", 0));
+	
+	playArea->loadPuzzle(new Puzzle(SelectPuzzleDialog::getPuzzleCode(
+								 settings.readNumEntry("lastpuzzle", 0))));
+	setPuzzleNumber(settings.readNumEntry("lastpuzzle", 0));
 }
 
 MainWindow::~MainWindow()
@@ -89,7 +93,7 @@ void MainWindow::aboutQt()
 
 void MainWindow::selectPuzzle()
 {
-	SelectPuzzleDialog spd(this);
+	SelectPuzzleDialog spd(this, getPuzzleNumber());
 	if(spd.exec() == QDialog::Accepted)
 	{
 		playArea->loadPuzzle(new Puzzle(spd.getPuzzleCode()));
@@ -460,6 +464,10 @@ void MainWindow::strokeLengthChanged(int length)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	// Saves the current puzzle
+	QSettings settings;
+	settings.setPath("thelemmings.net", "StroQ");
+	settings.writeEntry("lastpuzzle", getPuzzleNumber());
 	event->accept();
 }
 
