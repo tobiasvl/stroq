@@ -178,6 +178,7 @@ void PlaySquare::drawShape(QPainter &painter)
 	*/
 	
 	// The actual square
+	/*
 	switch(m_sState)
 	{
 		case White:
@@ -202,7 +203,8 @@ void PlaySquare::drawShape(QPainter &painter)
 					 QBrush(QColor(100, 50, 20)));
 			break;
 	}
-	
+	*/
+	 
 	painter.drawPixmap((int)x() + DEFAULT_BORDER,
 			(int)y() + DEFAULT_BORDER,
 			m_qpmSquares[(int) m_sState], 0, 0,
