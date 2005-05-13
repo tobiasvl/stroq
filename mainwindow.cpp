@@ -62,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 	createActions();
 	createMenus();
 	loadFirstPuzzle();
-	
+
 	// Loads the theme
 	QSettings settings;
 	settings.setPath("thelemmings.net", "StroQ");
@@ -243,7 +243,7 @@ void MainWindow::createActions()
 	
 	downloadPuzzleOfTheDayAct = new QAction(tr("&Puzzle of the Day"),
 						0, this);
-	downloadPuzzleOfTheDayAct->setStatusTip(tr("Download the puzzle" \
+	downloadPuzzleOfTheDayAct->setStatusTip(tr("Download the puzzle " \
 			"of the day from the official StroQ site!"));
 	connect(downloadPuzzleOfTheDayAct, SIGNAL(activated()),
 		this, SLOT(downloadPuzzleOfTheDay()));
@@ -265,17 +265,17 @@ void MainWindow::createActions()
 	connect(editPuzzleAct, SIGNAL(activated()),
 		this, SLOT(toggleEditMode()));
 	
-	newEditPuzzleAct = new QAction("New puzzle...", 0, this);
+	newEditPuzzleAct = new QAction(tr("New puzzle..."), 0, this);
 	newEditPuzzleAct->setStatusTip(tr("Edit a new puzzle"));
 	connect(newEditPuzzleAct, SIGNAL(activated()),
 			playArea, SLOT(editModeSetDimensions()));
 	
-	invertPuzzleAct = new QAction("Invert", 0, this);
+	invertPuzzleAct = new QAction(tr("Invert"), 0, this);
 	invertPuzzleAct->setStatusTip(tr("Invert the puzzle"));
 	connect(invertPuzzleAct, SIGNAL(activated()),
 		playArea, SLOT(invertPuzzle()));
 	
-	copyPuzzleCodeAct = new QAction("Copy puzzle code",
+	copyPuzzleCodeAct = new QAction(tr("Copy puzzle code"),
 					CTRL + Key_C, this);
 	copyPuzzleCodeAct->setStatusTip(tr("Copy puzzle code to clipboard"));
 	connect(copyPuzzleCodeAct, SIGNAL(activated()),

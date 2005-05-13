@@ -24,37 +24,28 @@
  */
 
 #include <qapplication.h>
+#include <qtranslator.h>
+#include <qtextcodec.h>
+#include <qapplication.h>
 
 #include "mainwindow.h"
 #include "stroqconst.h"
 
+/**
+ * This is a message handler that does nothing to hide warning messages
+ */
+void doNothingMsgHandler( QtMsgType type, const char *msg ) {}
+
 int main(int argc, char *argv[])
 {
-	/*
-	printf("StroQ version %s\n", VERSION.latin1());
-	printf("Copyright (C) 2005 Luc Vo Van\n");
-	printf("This program is free software; you can redistribute it ");
-	printf("and/or modify\n");
-	printf("it under the terms of the GNU General Public License as ");
-	printf("published by\n");
-	printf("the Free Software Foundation; either version 2 of the");
-	printf("License, or\nany later version.\n\n");
-	printf("This program is distributed in the hope that it will be ");
-	printf("useful,\n");
-	printf("but WITHOUT ANY WARRANTY; without even the implied ");
-	printf("warranty of\n");
-	printf("MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  ");
-	printf("See the\n");
-	printf("GNU General Public License for more details.\n\n");
-	printf("You should have received a copy of the GNU General Public ");
-	printf("License\n");
-	printf("along with this program; if not, write to the Free ");
-	printf("Software\n");
-	printf("Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, ");
-	printf("USA.\n\n");
-	*/
-	
+	qInstallMsgHandler(doNothingMsgHandler);
+		
 	QApplication app(argc, argv);
+	// Selects the locale
+	QTranslator translator(0);
+	translator.load(QString("StroQ_") + QTextCodec::locale(), ".");
+	app.installTranslator(&translator);
+
 	MainWindow mwin;
 	app.setMainWidget(&mwin);
 	mwin.show();
