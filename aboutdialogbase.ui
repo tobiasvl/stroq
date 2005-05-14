@@ -24,7 +24,7 @@
         </property>
         <widget class="QLayoutWidget">
             <property name="name">
-                <cstring>layout3</cstring>
+                <cstring>layout10</cstring>
             </property>
             <hbox>
                 <property name="name">
@@ -79,20 +79,12 @@
                         </spacer>
                     </vbox>
                 </widget>
-                <widget class="QLabel">
+                <widget class="QTextEdit">
                     <property name="name">
-                        <cstring>m_plAboutText</cstring>
+                        <cstring>m_teAbout</cstring>
                     </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>7</hsizetype>
-                            <vsizetype>7</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="text">
-                        <string>m_plAboutText</string>
+                    <property name="readOnly">
+                        <bool>true</bool>
                     </property>
                 </widget>
             </hbox>

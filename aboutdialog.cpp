@@ -25,6 +25,7 @@
 #include <qcanvas.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
+#include <qtextedit.h>
 #include <qlayout.h>
 #include <qpixmap.h>
 
@@ -60,8 +61,8 @@ AboutDialog::AboutDialog(QWidget *parent, const char *name,
 		"Polarium, (C)2004-2005 Nintendo/MITCHELL. "\
 		"Chokkan Hitofude, (C) 2004-2005  Nintendo/MITCHELL.";
 
-	m_plAboutText->setTextFormat(Qt::RichText);
-	m_plAboutText->setText(aboutString);
+	m_teAbout->setTextFormat(Qt::RichText);
+	m_teAbout->setText(aboutString);
 	setCaption(tr("About StroQ "));
 	m_pbOK->setText(tr("OK"));
 	
