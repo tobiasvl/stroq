@@ -109,6 +109,7 @@ void MainWindow::toggleEditMode()
 	playArea->toggleEditMode();
 	newEditPuzzleAct->setEnabled(playArea->getEditMode());
 	invertPuzzleAct->setEnabled(playArea->getEditMode());
+	runPuzzleAct->setEnabled(!playArea->getEditMode());
 
 	if(playArea->getEditMode())
 		setCaption("StroQ: Edit mode");
