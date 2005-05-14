@@ -68,10 +68,10 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 	settings.setPath("thelemmings.net", "StroQ");
 	// Get a list of the puzzles in the settings.
 	playArea->changeTheme(settings.readNumEntry("theme", 0));
-	
+	int lastpuzzlenum = settings.readNumEntry("lastpuzzle", 0);
 	playArea->loadPuzzle(new Puzzle(SelectPuzzleDialog::getPuzzleCode(
-								 settings.readNumEntry("lastpuzzle", 0))));
-	setPuzzleNumber(settings.readNumEntry("lastpuzzle", 0));
+								 lastpuzzlenum)));
+	setPuzzleNumber(lastpuzzlenum);
 }
 
 MainWindow::~MainWindow()

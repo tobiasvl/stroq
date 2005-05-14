@@ -553,7 +553,9 @@ QString SelectPuzzleDialog::getPuzzleCode(int puzzlenumber)
 	while(m_qsPuzzles[i])
 		i++;
 	
-	if(puzzlenumber < (i/2)-1)
+	if(puzzlenumber < 0)
+		return m_qsPuzzles[0];
+	else if(puzzlenumber < (i/2)-1)
 		return m_qsPuzzles[puzzlenumber*2];
 	else
 		return QString("");

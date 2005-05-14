@@ -18,7 +18,7 @@
  
  Class          :   AboutDialog
  Author         :   Luc Vo Van
- Original Date  :   28.05.2005
+ Original Date  :   28.04.2005
  Description    :   The About dialog
  */
 
