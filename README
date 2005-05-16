@@ -81,7 +81,10 @@ stroke of your mouse. StroQ runs under Windows, Linux/*BSD and Mac OSX.
       Windows/Visual Studio
        You will need to have Qt 3.x for Windows. As with the Unix build,
        run qmake -project and qmake. Open the generated .pro file from
-       Visual Studio 2003 and compile.
+       Visual Studio 2003 and compile. StroQ requires you to enable
+       RTTI (/GR) to produce a working binary.
+       Using Visual Studio, go into the project properties, C/C++,
+       language, and enable RTTI.
        
 4. Internet Connectivity
      StroQ has very limited internet support. It can connect to the StroQ
