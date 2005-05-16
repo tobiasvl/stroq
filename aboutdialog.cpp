@@ -42,8 +42,10 @@ AboutDialog::AboutDialog(QWidget *parent, const char *name,
 	QString aboutString = "<b>StroQ " + VERSION + "</b><br/><br/>"\
 		"StroQ - A Polarium/Chokkan Hitofude Clone<br/>"\
 		"Copyright (C) 2005 Luc Vo Van<br/><br/>"\
-		"Contribution by Ahmed Ait Mouss (code), XiaoGuang Li for "\
-		"some of the graphics. I would like to thank the puzzle "\
+
+		"Code contribution by Ahmed Ait Mouss<br/>"\
+		"Graphic design by XiaoGuang Li<br/><br/>"\
+		"I would like to thank the puzzle "\
 		"contributors from the Polarium GameFAQs message boards "\
 		"(http://www.gamefaqs.com) including Herb007 (al1125), "\
 		"NickJ, Perdevious, Evan1109, Avalanche, OriginalCracker, "\

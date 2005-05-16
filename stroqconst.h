@@ -32,7 +32,7 @@
 	* URL to the puzzle of the day
 	*/
 	const QString POTD_HOST = "stroq.sourceforge.net";
-	const QString POTD_FILE = "/potd";
+	const QString POTD_FILE = "/potd.php";
 	
 	const unsigned int MAX_SIDE = 63; /**< Maximum size number of
 					       squares on the side of a

@@ -1,13 +1,13 @@
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------
                     StroQ - A Polarium/Chokkan Hitofude Clone
                               (C) 2005, Luc Vo Van
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 
 April 19th 2005: version 0.2
 
-StroQ is an addictive puzzle game where you have to flip white and black tiles
-in order to form horizontal lines of the same color in a single stroke of your
-mouse. StroQ runs under Windows, Linux/*BSD and Mac OSX.
+StroQ is an addictive puzzle game where you have to flip white and black
+tiles in order to form horizontal lines of the same color in a single
+stroke of your mouse. StroQ runs under Windows, Linux/*BSD and Mac OSX.
 
 
 1. Introduction
@@ -18,23 +18,24 @@ mouse. StroQ runs under Windows, Linux/*BSD and Mac OSX.
 6. License
 
 1. Introduction
-     StroQ is a clone of the puzzle game Polarium/Chokkan Hitofude which was
-     originally available on the Nintendo DS, and played with a pen. If you
-     have already played these games, StroQ currently implements only their
-     "puzzle" mode.
+     StroQ is a clone of the puzzle game Polarium/Chokkan Hitofude which
+     was originally available on the Nintendo DS, and played with a pen.
+     If you have already played these games, note that StroQ currently
+     implements only their "puzzle" mode.
 
 2. Playing StroQ
-     The goal of the game is simple, draw a continuous line, the stroke, from
-     one square on the puzzle to another. When you run the puzzle (press F5)
-     white and black squares along this line will flip over (white becoming
-     black, and black becoming white).
+     The goal of the game is simple, draw a continuous line, the stroke,
+     from one square on the puzzle to another. When you run the puzzle
+     (press F5) white and black squares along this line will flip over
+     (white becoming black, and black becoming white).
      
      All uniform horizontal lines (all white, or all black) will then
      disappear. The puzzle is solved when all white and black squares have
      disappeared.
      
      You can draw the stroke by:
-       - Left-clicking on a square with and holding it while moving the cursor
+       - Left-clicking on a square with and holding it while moving the
+         cursor
        - Left-clicking on squares successively, the stroke will be extended
          with each valid left-click
        - Use the arrows on your keyboard to move the end of the stroke,
@@ -46,62 +47,76 @@ mouse. StroQ runs under Windows, Linux/*BSD and Mac OSX.
        - Right clicking anywhere on puzzle
 
 3. Installing/Building
-     The Qt 3.3.x libraries are required in order to run stroke. Building the
-     game from source code requires the Qt development package (dev) as well
-     as GCC. If you are building with Visual Studio, you'll need the Microsoft
-     C++ compiler at least in its version 7.0.
+     The Qt 3.3.x libraries are required in order to run stroke. Building
+     the game from source code requires the Qt development package (dev)
+     as well as GCC. If you are building with Visual Studio, you'll need
+     the Microsoft C++ compiler at least in its version 7.0.
 
      To install from a binary package, just extract the archive which will
      create a StroQ/ directory, and run the StroQ executable within.
      
      Building from source:
       Unix/MacOSX
-       Extract the source package, which will create a StroQ/ directory, and
-       run:
+       Extract the source package, which will create a StroQ/ directory,
+       and run:
        
          qmake -project             // Creates a Makefile for your platform
          qmake
          make                       // Starts building the game
          ./StroQ                    // Launches the game
+
+
+      OSX Specific
+       On OSX, you probably want to build StroQ with its icon, and compile
+       it using Apple's XCode IDE. The build process is then done as
+       follows
+
+       export QMAKESPEC=macx-pbuilder
+       qmake -project
+       echo "RC_FILE = bundle/icon.icns" >> StroQ.pro
+       qmake
+       [Run XCode, open StroQ.xcode, compile, run]
+    
      
       Windows/Visual Studio
-       You will need to have Qt 3.x for Windows. As with the Unix build, run
-       qmake -project and qmake. Open the generated .pro file from Visual
-       Studio 2003 and compile.
+       You will need to have Qt 3.x for Windows. As with the Unix build,
+       run qmake -project and qmake. Open the generated .pro file from
+       Visual Studio 2003 and compile.
        
 4. Internet Connectivity
      StroQ has very limited internet support. It can connect to the StroQ
-     website and download what is called the "Puzzle of the Day". As you have
-     probably guessed, this puzzle is updated everyday to keep players
+     website and download what is called the "Puzzle of the Day". As you
+     have probably guessed, this puzzle is updated everyday to keep players
      entertained.
      
      Internet support in StroQ does not current work with proxies, but will
      in the near future. Sorry about that.
        
 5. Thanks and Credits
-     Contribution by Ahmad Ait Mouss (code), XiaoGuang Li for some of the
-     graphics. I would like to thank the puzzle contributors from the Polarium
-     GameFAQs message boards (http://www.gamefaqs.com) including Herb007
-     (al1125), NickJ, Perdevious, Evan1109, Avalanche, OriginalCracker,
-     TS2Master, skarmachild5000, nonexistinghero, pikaafro, klasoen,
-     menmanelf.
+     Contribution by Ahmad Ait Mouss (code), XiaoGuang Li for the
+     graphics. I would like to thank the puzzle contributors from the
+     Polarium GameFAQs message boards (http://www.gamefaqs.com) including
+     Herb007 (al1125), NickJ, Perdevious, Evan1109, Avalanche,
+     OriginalCracker, TS2Master, skarmachild5000, nonexistinghero,
+     pikaafro, klasoen, menmanelf and many others!
      Some puzzles used with permission from the Follarium project
      (http://www.polarium-puzzles.com/) by jandujar.
 
-     I would like to thank everyone from #tukif for their trollesque support
-     as well as my colleagues for making me realize that playing small games
-     can definitely be fun. Thanks to Trolltech for making Qt freely available
-     to free software developments; your toolkit turned C++ into something
-     usable, even by the likes of me :)
+     I would like to thank everyone from #tukif for their trollesque
+     support as well as my colleagues for making me realize that playing
+     small games can definitely be fun. Thanks to Trolltech for making Qt
+     freely available to free software developments; your toolkit turned
+     C++ into something usable, even by the likes of me :)
      
-     I would like not to thank Blizzard for their MMORPG has taken away many
-     hours of coding away from StroQ, and sleeping in general. I'm just a
-     willing victim :)
+     I would like not to thank Blizzard for their MMORPG has taken away
+     many hours of coding away from StroQ, and sleeping in general. I'm
+     just a willing victim :)
 
-     I develop this software in my spare time and any feedback, even a simple
-     "Hello I play StroQ once in a while" is always greatly appreciated. This
-     is also my first project written in C++ so please be indulgent, and don't
-     hesitate to submit suggestions and/or patches.
+     I develop this software in my spare time and any feedback, even a
+     simple "Hello I play StroQ once in a while" is always greatly
+     appreciated. This is also my first project written in C++ so please
+     be indulgent, and don't hesitate to submit suggestions and/or
+     patches.
      
      If you like this game, consider buying the Nintendo DS game Polarium
      (titled 'Chokkan Hitofude' in Japan) from which StroQ was more than
