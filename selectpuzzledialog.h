@@ -120,7 +120,7 @@ public slots:
 
 private:
 	QString m_qsSelectedCode; /**< The code that was selected (if any) */
-	int m_iSelectedIndex; /**< The selected puzzle number */
+	int m_iSelectedPuzzle; /**< The selected puzzle number */
 	
 	QPixmap m_qpmCheckmark;
 	QPixmap m_qpmNoCheckmark;

@@ -50,7 +50,8 @@ AboutDialog::AboutDialog(QWidget *parent, const char *name,
 		"(http://www.gamefaqs.com) including Herb007 (al1125), "\
 		"NickJ, Perdevious, Evan1109, Avalanche, OriginalCracker, "\
 		"TS2Master, skarmachild5000, nonexistinghero, pikaafro, "\
-		"klasoen, menmanelf. Some puzzles used with permission "\
+		"klasoen, menmanelf, Osaka and all the other puzzle "\
+		"contributors. Some puzzles used with permission "\
 		"from the Follarium project "\
 		"(http://www.polarium-puzzles.com/) by jandujar.<br/><br/>"\
 		"This program is free software; you can redistribute it "\

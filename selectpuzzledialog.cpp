@@ -165,7 +165,10 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 */
 
 QString SelectPuzzleDialog::m_qsPuzzles[] = {
-	// 00-09
+	// 00
+	"", "",
+	
+	// 01-09
 	"AONAAANNFFFNI", "Lemming",
 	"BCCAAAACLGLHIHLGLGLADEDE", "Herb007",
 	"BBKAAAACODLCFJGMPKCM", "Herb007",
@@ -402,8 +405,8 @@ SelectPuzzleDialog::SelectPuzzleDialog(QWidget *parent, int currentpuzzle,
 	// Sets the theme select to the current theme
 	m_cbThemeSelect->setCurrentItem(PlaySquare::getCurrentTheme());
 	
-	if(currentpuzzle != -1)
-		codesListBox->setCurrentItem(currentpuzzle);
+	if(currentpuzzle > 0)
+		codesListBox->setCurrentItem(currentpuzzle-1);
 }
 
 SelectPuzzleDialog::~SelectPuzzleDialog()
@@ -419,12 +422,13 @@ QString SelectPuzzleDialog::getPuzzleCode()
 
 int SelectPuzzleDialog::getPuzzleNumber()
 {
-	return m_iSelectedIndex;
+	return m_iSelectedPuzzle;
 }
 
 void SelectPuzzleDialog::previewPuzzle(int i)
 {
-	QString puzzlecode = m_qsPuzzles[2*i];
+	int puzzleIndex = i+1;
+	QString puzzlecode = m_qsPuzzles[2*puzzleIndex];
 	QString labelText;
 	QSettings settings;
 	settings.setPath("thelemmings.net", "StroQ");
@@ -447,8 +451,8 @@ void SelectPuzzleDialog::previewPuzzle(int i)
 	calibratePreviewCanvasView();
 
 	// Sets the description labels.
-	indexLabelValue->setText(QString("%1").arg(i));
-	authorLabelValue->setText(m_qsPuzzles[(2*i)+1]);
+	indexLabelValue->setText(QString("%1").arg(puzzleIndex));
+	authorLabelValue->setText(m_qsPuzzles[(2*puzzleIndex)+1]);
 
 	sizeLabelValue->setText(QString("%1x%2")
 				.arg(m_ppPreviewPuzzle->getWidth())
@@ -491,14 +495,14 @@ void SelectPuzzleDialog::selectPuzzle()
 
 void SelectPuzzleDialog::selectPuzzle(int selectedIndex)
 {
-	m_qsSelectedCode = m_qsPuzzles[2*selectedIndex];
-	m_iSelectedIndex = selectedIndex;
+	m_qsSelectedCode = m_qsPuzzles[2*(selectedIndex+1)];
+	m_iSelectedPuzzle = selectedIndex+1;
 	accept();
 }
 
 void SelectPuzzleDialog::loadPuzzleList()
 {
-	int i = 0;
+	int i = 2;
 	QSettings settings;
 	settings.setPath("thelemmings.net", "StroQ");
 	
@@ -549,12 +553,12 @@ void SelectPuzzleDialog::resetSave()
 QString SelectPuzzleDialog::getPuzzleCode(int puzzlenumber)
 {
 	// Counts how many puzzles we have in order to do boundaries check
-	int i = 0;
+	int i = 1;
 	while(m_qsPuzzles[i])
 		i++;
 	
-	if(puzzlenumber < 0)
-		return m_qsPuzzles[0];
+	if(puzzlenumber < 1)
+		return m_qsPuzzles[2];
 	else if(puzzlenumber < (i/2)-1)
 		return m_qsPuzzles[puzzlenumber*2];
 	else

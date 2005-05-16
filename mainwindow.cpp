@@ -48,6 +48,8 @@
 #include "playarea.h"
 #include "square.h"
 
+#include "images/misc/next.xpm"
+
 MainWindow::MainWindow(QWidget *parent, const char *name)
 	: QMainWindow(parent, name, 0)
 {
@@ -67,11 +69,11 @@ MainWindow::MainWindow(QWidget *parent, const char *name)
 	QSettings settings;
 	settings.setPath("thelemmings.net", "StroQ");
 	// Get a list of the puzzles in the settings.
-	playArea->changeTheme(settings.readNumEntry("theme", 0));
-	int lastpuzzlenum = settings.readNumEntry("lastpuzzle", 0);
+	playArea->changeTheme(settings.readNumEntry("theme", 1));
+	int lastpuzzlenum = settings.readNumEntry("lastpuzzle", 1);
+	setPuzzleNumber(lastpuzzlenum);
 	playArea->loadPuzzle(new Puzzle(SelectPuzzleDialog::getPuzzleCode(
 								 lastpuzzlenum)));
-	setPuzzleNumber(lastpuzzlenum);
 }
 
 MainWindow::~MainWindow()
@@ -96,8 +98,8 @@ void MainWindow::selectPuzzle()
 	SelectPuzzleDialog spd(this, getPuzzleNumber());
 	if(spd.exec() == QDialog::Accepted)
 	{
-		playArea->loadPuzzle(new Puzzle(spd.getPuzzleCode()));
 		setPuzzleNumber(spd.getPuzzleNumber());
+		playArea->loadPuzzle(new Puzzle(spd.getPuzzleCode()));
 	}
 
 	// Updates the playArea in case the theme has changed
@@ -134,11 +136,20 @@ void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 {
 	// Changes the window's caption.
 	QString caption = "StroQ";
-	m_sCurrentCode = puzzle->getCode();
 
 	if (playArea->getEditMode())
 		caption += " : Edit";
-	caption += ": " + m_sCurrentCode;
+
+	// If we're using a stock puzzle, display its number. Otherwise
+	// display the puzzle code
+	if(getPuzzleNumber() > 0)
+		caption += ": #" + QString::number(getPuzzleNumber());
+	else
+	{
+		m_sCurrentCode = puzzle->getCode();
+		caption += ": " + m_sCurrentCode;
+	}
+
 	setCaption(caption);
 	
 	// Loads the best stroke length (if it exists).
@@ -166,8 +177,8 @@ void MainWindow::enterPuzzleCode()
 	{
 		if (Puzzle::isCodeValid(code))
 		{
-			playArea->loadPuzzle(new Puzzle(code));
 			setPuzzleNumber(-1);
+			playArea->loadPuzzle(new Puzzle(code));
 		}
 		else
 		{
@@ -205,8 +216,8 @@ void MainWindow::downloadPuzzleOfTheDayFinished(bool error)
 		potdBuffer->open(IO_ReadOnly);
 		QTextStream ts(potdBuffer);
 		QString potd = ts.readLine();
-		playArea->loadPuzzle(new Puzzle(potd));
 		setPuzzleNumber(-2);
+		playArea->loadPuzzle(new Puzzle(potd));
 		potdBuffer->close();
 	}
 	potdHttp.abort();
@@ -350,7 +361,8 @@ void MainWindow::createMenus()
 	statusBar()->addWidget(m_lCurrentStrokeLength, 0, true);
 	m_bNextPuzzle = new QToolButton(statusBar(), "Next puzzle");
 	
-	m_bNextPuzzle->setUsesTextLabel(false);	
+	m_bNextPuzzle->setUsesTextLabel(false);
+	m_bNextPuzzle->setPixmap(QPixmap(nextButtonPixmap));
 	statusBar()->addWidget(m_bNextPuzzle, 0, true);
 	
 	// Next button puzzle
@@ -372,8 +384,8 @@ void MainWindow::createGameArea()
 
 void MainWindow::loadFirstPuzzle()
 {
-	playArea->loadPuzzle(new Puzzle(SelectPuzzleDialog::getPuzzleCode(0)));
-	setPuzzleNumber(0);
+	setPuzzleNumber(1);
+	playArea->loadPuzzle(new Puzzle(SelectPuzzleDialog::getPuzzleCode(1)));
 	playArea->show();
 }
 
@@ -392,7 +404,7 @@ void MainWindow::loadNextPuzzle()
 {
 	// If we currently have a stock puzzle loaded, we go to the next
 	// puzzle. Otherwise we do nothing.
-	if(getPuzzleNumber() >= 0)
+	if(getPuzzleNumber() >= 1)
 	{
 		// Get the next puzzle number (empty if this is the last puzzle)
 		QString nextcode =
