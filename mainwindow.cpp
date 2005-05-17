@@ -108,15 +108,12 @@ void MainWindow::selectPuzzle()
 
 void MainWindow::toggleEditMode()
 {
-	playArea->toggleEditMode();
+	playArea->toggleEditMode();	
+
+	setPuzzleNumber(-1); // When in edit mode, we go custom
 	newEditPuzzleAct->setEnabled(playArea->getEditMode());
 	invertPuzzleAct->setEnabled(playArea->getEditMode());
 	runPuzzleAct->setEnabled(!playArea->getEditMode());
-
-	if(playArea->getEditMode())
-		setCaption("StroQ: Edit mode");
-	else
-		setCaption("StroQ");
 }
 
 void MainWindow::copyPuzzleCode()
@@ -137,18 +134,19 @@ void MainWindow::puzzleChanged(Puzzle* puzzle, QSize sizeHint)
 	// Changes the window's caption.
 	QString caption = "StroQ";
 
+	m_sCurrentCode = puzzle->getCode();
+
 	if (playArea->getEditMode())
-		caption += " : Edit";
+		caption += " : Edit : " + m_sCurrentCode;
 
 	// If we're using a stock puzzle, display its number. Otherwise
 	// display the puzzle code
-	if(getPuzzleNumber() > 0)
+	else if(getPuzzleNumber() > 0 && !playArea->getEditMode())
 		caption += ": #" + QString::number(getPuzzleNumber());
+	else if(getPuzzleNumber() == -2)
+		caption += ": Download : " + m_sCurrentCode;
 	else
-	{
-		m_sCurrentCode = puzzle->getCode();
-		caption += ": " + m_sCurrentCode;
-	}
+		caption += ": Custom : " + m_sCurrentCode;
 
 	setCaption(caption);
 	
@@ -477,10 +475,14 @@ void MainWindow::strokeLengthChanged(int length)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	// Saves the current puzzle
-	QSettings settings;
-	settings.setPath("thelemmings.net", "StroQ");
-	settings.writeEntry("lastpuzzle", getPuzzleNumber());
+	// If the loaded puzzle is a stock one, save it for next time
+	if(getPuzzleNumber() > 0)
+	{
+		// Saves the current puzzle
+		QSettings settings;
+		settings.setPath("thelemmings.net", "StroQ");
+		settings.writeEntry("lastpuzzle", getPuzzleNumber());
+	}
 	event->accept();
 }
 

@@ -687,6 +687,9 @@ void PlayArea::toggleEditMode()
 {
 	m_bEditMode = !m_bEditMode;
 	resetGrid();
+	
+	// Updates the mainwindow
+	emit puzzleChanged(m_ppPlayPuzzle, sizeHint());
 }
 
 void PlayArea::invertPuzzle()

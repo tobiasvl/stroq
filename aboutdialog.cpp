@@ -39,12 +39,15 @@ AboutDialog::AboutDialog(QWidget *parent, const char *name,
 			: AboutDialogBase(parent, name, modal, fl)
 {
 	m_plAboutIcon->setPixmap(QPixmap((const char**) aboutimage_xpm));
-	QString aboutString = "<b>StroQ " + VERSION + "</b><br/><br/>"\
-		"StroQ - A Polarium/Chokkan Hitofude Clone<br/>"\
-		"Copyright (C) 2005 Luc Vo Van<br/><br/>"\
-
-		"Code contribution by Ahmed Ait Mouss<br/>"\
+	QString aboutString = \
+		"<b>StroQ " + VERSION + "</b><br/>"\
+		"A Polarium/Chokkan Hitofude Clone<br/>"\
+		"Copyright (C) 2005 Luc Vo Van<br/>"\
+		"Code contributions by Ahmed Ait Mouss<br/>"\
 		"Graphic design by XiaoGuang Li<br/><br/>"\
+
+		"Website: http://stroq.sourceforge.net<br/><br/>"\
+
 		"I would like to thank the puzzle "\
 		"contributors from the Polarium GameFAQs message boards "\
 		"(http://www.gamefaqs.com) including Herb007 (al1125), "\
