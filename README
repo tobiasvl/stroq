@@ -1,6 +1,9 @@
 ---------------------------------------------------------------------------
                     StroQ - A Polarium/Chokkan Hitofude Clone
                               (C) 2005, Luc Vo Van
+
+                         http://stroq.sourceforge.net
+
 ---------------------------------------------------------------------------
 
 May 16th 2005: version 0.2
@@ -14,8 +17,9 @@ stroke of your mouse. StroQ runs under Windows, Linux/*BSD and Mac OSX.
 3. Installing/Building
 2. Playing StroQ
 4. Internet Connectivity
-5. Thanks and Credits
+5. Thanks, credits and contact
 6. License
+
 
 1. Introduction
      StroQ is a clone of the puzzle game Polarium/Chokkan Hitofude which
@@ -124,6 +128,9 @@ stroke of your mouse. StroQ runs under Windows, Linux/*BSD and Mac OSX.
      If you like this game, consider buying the Nintendo DS game Polarium
      (titled 'Chokkan Hitofude' in Japan) from which StroQ was more than
      largely inspired.
+
+     You can contact me by mail, thelemmings[at]thelemmings[dot]net
+     Or via the StroQ website on Sourceforge, http://stroq.sourceforge.net
 
 6. License
      StroQ is free software; you can redistribute it and/or modify it
