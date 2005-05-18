@@ -685,11 +685,19 @@ bool PlayArea::getEditMode()
 
 void PlayArea::toggleEditMode()
 {
+	// Switch the mode
 	m_bEditMode = !m_bEditMode;
-	resetGrid();
+	
+	// Switched TO edit mode, resets the puzzle to its original state
+	if(m_bEditMode)
+		resetGrid();
+	// Switched FROM edit mode, use the play puzzle as an original puzzle
+	else
+		loadPuzzle(new Puzzle(m_ppPlayPuzzle));
 	
 	// Updates the mainwindow
 	emit puzzleChanged(m_ppPlayPuzzle, sizeHint());
+
 }
 
 void PlayArea::invertPuzzle()
