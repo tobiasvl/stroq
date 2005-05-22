@@ -168,7 +168,19 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	// 00
 	"", "",
 	
-	// 01-10
+	// 01-10 Tutorial puzzles
+	"ANMAAALGN", "Lemming",
+	"AKIACE", "Lemming",
+	"ANEAAAGJ", "Lemming",
+	"ANMAAAFFC", "Lemming",
+	"ANMAAAFGK", "Lemming",
+	"ANMAAAKAF", "Lemming",
+	"ALMABHE", "Lemming",
+	"AODAAAKFK", "Lemming",
+	"AOFAAALJJJN", "Lemming",
+	"AOFAAALBJIN", "Lemming",
+	
+	// 11-20
 	"ALIABF", "Lemming",
 	"AONAAANNFFFNI", "Lemming",
 	"BCCAAAACLGLHIHLGLGLADEDE", "Herb007",
@@ -180,7 +192,7 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCBAAAACKOOLDDLI", "Herb007",
 	"BCCAAAADFLJDOOAHBNADOMAM", "Herb007",
 
-	// 11-20
+	// 21-30
 	"BCBIAAABPJANOJCJDNPA", "Herb007",
 	"BBOAAAADBODOPNPFODMHIM", "Herb007",
 	"APOAAAGNAEKBEJCFA", "Herb007",
@@ -192,7 +204,7 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCCAAAADMAAFMAAMMABMEADM", "Herb007",
 	"BCCAAAACAFPJGLCPEPGNPKAE", "Herb007",
 	
-	// 21-30
+	// 31-40
 	"BBGAAAAAJOBKPMFPGM", "Herb007",
 	"BCBMAAABKCKPLNAPNPFEFI", "Herb007",
 	"BCBEAAAAJBPJGJPIJA", "Herb007",
@@ -204,7 +216,7 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BBGAAAADEFJBPABONE","Avalanche",
 	"BCCAAAACAHPHPHPHPHOPNPDM","originalcracker",
 
-	// 31-40
+	// 41-50
 	"BCCAAAADOECECHOGHOECECHM","originalcracker",
 	"BCCAAAACPMAOPOAPOPOPOOAM","originalcracker",
 	"AOOAAAOPDLAKME","originalcracker",
@@ -216,7 +228,7 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCCAAAADPIAHPICECAEAIBAA","originalcracker",
 	"BCBEAAADAKPFECPKAE","TS2Master",
 
-	// 41-50
+	// 51-60
 	"BCCAAAAAPAJALAIABANAJAPA","skarmachild5000",
 	"BCBMAAADGOGGGFPIPCPGAE","skarmachild5000",
 	"BCCAAAABPJPJPJPJPIGBAIGA","skarmachild5000",
@@ -228,7 +240,7 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCCAAAADAPIPMPOPHPDPBPAM","skarmachild5000",
 	"BCCAAAAAEBDFLEDEHFDFDEEE","skarmachild5000",
 
-	// 51-60
+	// 61-70
 	"BCBMAAADKPKPKPKOPKPLAE","menmanelf",
 	"APPAAAJABAAIBADOPMA","Evan1109",
 	"APOAAADAAFIBBBIHA","Evan1109",
@@ -240,7 +252,7 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BBGAAAADCBHPDKPIOE","Leonidas",
 	"BCCAAAADGCEGOMOOICOOOOIA","fagotero",
 	
-	// 61-70
+	// 71-80
 	"BCCAAAACAFPJGJPJJKGHAPGM","fagotero",
 	"BCCAAAABJKGGJGAGPGGFAIPA","Stef_18",
 	"BCCAAAACAFGIJDGPGMJBGKAE","Stef_18",
@@ -252,7 +264,7 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCCAAAAAAIAIBEBEAIAIBEBE","Maurizio15",
 	"BCCAAAAAPAPAGBPJPLGNJJPI","Maurizio15",
 
-	// 71-80
+	// 81-90
 	"BCCAAAABPMDMBMEMBNPNPMBM","Maurizio15",
 	"BCCAAAADLPLPLPLMAHLPLPLM","lol",
 	"BBGAAAAALKGOBDLNII","Opium",
@@ -264,7 +276,7 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCCAAAADKPFGKJFGKLNPFPBM","perdevious",
 	"BCCAAAADBPFNFGKPBPLPFMOE","Me",
 	
-	// 81-90
+	// 91-100
 	"BCCAAAABPKPHAPAPAPAOPFPI","t3hmuffins",
 	"BCCAAAADAOAFJJJKAGJGJGJE","FireHawk13",
 	"BCCAAAAAFIINHOCHPIEAHGKI","PSS Valenc",
@@ -276,7 +288,7 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCCAAAADLDADAEGGGCAMAMNM","PickleHead",
 	"BCBMAAAAGBGIGDJMPCAHAM","luigi7667",
 	
-	// 91-100
+	// 101-110
 	"BBOAAAADBPHOPIOKPHNHCE","luigi7667",
 	"AOPAAAONPLHONPK","Lord RM",
 	"BCCAAAAABDMDMDHPOMDMDOAA","Lord RM",
@@ -288,7 +300,7 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"BCCAAAACAFAIPAPAPAPBAKAE","Luigisan",
 	"BCCAAAAAANIOIDIJPJPJPIGA","Mr_Monkey",
 	
-	// 101-110
+	// 111-120
 	"BCCAAAACKJEGKJFGIJFGKJFE","Impossible",
 	"AONAAAOKLKKOI","Ghostly",
 	"APGAAAANBHNPKIK","Zitun",
@@ -300,7 +312,7 @@ QString SelectPuzzleDialog::m_qsPuzzles[] = {
 	"APPAAAOONIKEBGMNKKI","linktrm",
 	"BCCAAAABPNABHJEJGJAJPKAE","bascu_RD",
 	
-	// 111-115
+	// 121-125
 	"BAOAAAACOKOOKM","Cymoro",
 	"BCBEAAAAIGPKBKPIIE","Cymoro",
 	"APPAAAGPOPPHOPMBADI","Evang",
