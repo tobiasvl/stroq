@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/makefile.mk
+
+pre-build::
+	qmake -project
+	qmake
+
+clean::
+	-make distclean
+	rm -f Makefile
+	rm -f stroq-0.2.pro
+
+install/stroq::
+	mkdir -p debian/stroq/usr/bin
+	cp stroq-0.2 debian/stroq/usr/bin/stroq

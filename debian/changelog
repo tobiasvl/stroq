@@ -1,0 +1,5 @@
+stroq (0.2-1) unstable; urgency=low
+
+  * Initial debian package
+
+ -- Arnaud Cornet <cuicui@t1r.net>  Tue, 24 May 2005 11:46:12 +0200
