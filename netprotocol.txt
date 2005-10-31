@@ -1,0 +1,74 @@
+StroQ MP
+--------
+StroQ 0.5 features a new multiplayer mode, where players face each other on
+one on one versus matches through a dedicated server. The server handles user
+accounts, games and chats.
+
+The network protocol is based on TCP.
+
+Out of game communication
+-------------------------
+Upon connecting, a player is added to the main chatroom. His options are then
+to:
+
+ - Ladder game)
+ - Free game
+ - Chat in the room
+ - Quit
+
+Ladder games are matches set up by the server, it pits a player against
+another player of similar ranking (if possible) who is also looking for a
+ladder match.
+
+Free games are no-reward games, played just for fun.
+
+Communication details
+---------------------
+Handshaking:
+ (Client) [username;password;client;version]
+
+ (Server) [accept]                           - Connection accepted
+	  [error;version]                    - The client version is obsolete
+	  [error;authentication]             - The username/password is
+	                                       incorrect
+
+ (Server) [stats;rk;xp;ll;mp;mw;ma;lg;tc;ls;op]
+                                             - Stats about the player
+           rk: Rank
+	   xp: Ladder points
+           ll: Last login date (YYYYMMDD)
+           mp: Ladder matches played
+	   mw: Ladder matches won
+	   am: Average match time
+	   lg: Last game (won=1/lost=0)
+	   tc: Time connected (in seconds)
+	   ls: Lines sent
+	   op: Options used
+
+ (Server) [players;player1;player2....]    - List of connected players
+ 
+Chat:
+ (Client) [chat;text]                      - Chat request
+ (Server) [chat;user;text]                 - Public chat message from user
+
+Games:
+ (Client) [ladder]                         - Ladder game request
+ (Client) [free;username]                  - Free game with username request
+
+ (Server) [laddergame;username]            - Ladder game starts with username
+ (Server) [freegame;username]              - Free game starts with username
+
+In-game:
+ (Server) [matchstart;puzzlecode]          - Game start notification and puzzle
+                                             content
+ (Server) [gameover;username]              - Game is over, username won
+ (Server) [matchover;username]             - Match is over, username won
+
+ (Client) [option;option]                  - Option sent by the player
+ (Client) [stroq;s1;s2;s3;s4...]           - Squares validated by the player
+ (Server) [lreceived;s1;v1;s2;v2...]       - Blocks received 
+           sn: square number n
+	   vn: value (white, black, bonus)
+ (Server) [lcleared;l1;l2...]              - Lines cleared (by their numbers)
+ (Server) [option;o]                       - Option to apply
+					     
