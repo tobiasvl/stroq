@@ -11,7 +11,7 @@ Out of game communication
 Upon connecting, a player is added to the main chatroom. His options are then
 to:
 
- - Ladder game)
+ - Ladder game
  - Free game
  - Chat in the room
  - Quit
@@ -51,6 +51,11 @@ Chat:
  (Client) [chat;text]                      - Chat request
  (Server) [chat;user;text]                 - Public chat message from user
 
+For all messages described below, every (Client) message has a corresponding
+ (SERVER) [<message>ok;...] acknowledgment message. Clients should react
+only on server messages, not upon sending a message to the server.
+
+
 Games:
  (Client) [ladder]                         - Ladder game request
  (Client) [free;username]                  - Free game with username request
@@ -65,10 +70,17 @@ In-game:
  (Server) [matchover;username]             - Match is over, username won
 
  (Client) [option;option]                  - Option sent by the player
- (Client) [stroq;s1;s2;s3;s4...]           - Squares validated by the player
- (Server) [lreceived;s1;v1;s2;v2...]       - Blocks received 
-           sn: square number n
-	   vn: value (white, black, bonus)
+ (Client) [stroq;square]                   - Square to add to the stroke
+ (Client) [stroqvalidate]                  - Validates the current stroke
+ (Client) [stroqreset]                     - Resets the current stroke
  (Server) [lcleared;l1;l2...]              - Lines cleared (by their numbers)
  (Server) [option;o]                       - Option to apply
-					     
+   
+ (Server) [sreceived;s1;v1;s2;v2...]       - Squares received, currently
+           sn: square number n               at position 0 out of 100
+	   vn: value (white, black, bonus)
+ (Server) [ssent;s1;v1;s2;v2...]           - Squares sent, currently at
+                                             position 0 out of 100
+ (Server) [sreceivedadvance;n]             - Advances the received squares by n
+ (Server) [ssentadvance;n]                 - Advances the sent squares by n
+
