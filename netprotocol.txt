@@ -4,7 +4,8 @@ StroQ 0.5 features a new multiplayer mode, where players face each other on
 one on one versus matches through a dedicated server. The server handles user
 accounts, games and chats.
 
-The network protocol is based on TCP.
+The network protocol is based on TCP, and each message is preceded by a
+2 bytes header indicating the size, in bytes, of the message that follows.
 
 Out of game communication
 -------------------------
