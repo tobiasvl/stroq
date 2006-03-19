@@ -79,7 +79,7 @@ public:
 	 * Builds a puzzle made of PlaySquares given a code. See previous
 	 * method.
 	 */
-	Puzzle::Puzzle(QString code, QCanvas *canvas);
+	Puzzle(QString code, QCanvas *canvas);
 	
 	/**
 	 * Class destructor

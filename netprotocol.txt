@@ -26,9 +26,10 @@ Free games are no-reward games, played just for fun.
 Communication details
 ---------------------
 Handshaking:
- (Client) [username;password;client;version]
+ (Client) [authentication;username;password;client;version]
 
  (Server) [accept]                           - Connection accepted
+          [error;protocol]                   - The init. message is invalid
 	  [error;version]                    - The client version is obsolete
 	  [error;authentication]             - The username/password is
 	                                       incorrect
@@ -48,12 +49,17 @@ Handshaking:
 
  (Server) [players;player1;player2....]    - List of connected players
  
-Chat:
+Chat and notices:
+ (Server) [notice;text]                    - Server notice
+ (Server) [playerlist;u1;u2...]            - Player list
+ (Server) [playerjoined;username]          - Player <username> connected
+ (Server) [playerparted;username]          - Player <username> disconnected
+
  (Client) [chat;text]                      - Chat request
  (Server) [chat;user;text]                 - Public chat message from user
 
 For all messages described below, every (Client) message has a corresponding
- (SERVER) [<message>ok;...] acknowledgment message. Clients should react
+(SERVER) [<message>ok;...] acknowledgment message. Clients should react
 only on server messages, not upon sending a message to the server.
 
 

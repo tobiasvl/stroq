@@ -146,7 +146,7 @@ public:
 	/**
 	 * Returns the index of the currently loaded theme
 	 */
-	static int PlaySquare::getCurrentTheme();
+	static int getCurrentTheme();
 	
 	/**
 	 * Changes the current theme

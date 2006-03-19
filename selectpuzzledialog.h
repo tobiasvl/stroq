@@ -67,7 +67,7 @@ public:
 	
 	// The following two methods are used to get the results of the dialog
 	QString getPuzzleCode();
-	int SelectPuzzleDialog::getPuzzleNumber();
+	int getPuzzleNumber();
 
 signals:
 	/**
